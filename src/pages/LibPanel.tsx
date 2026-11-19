@@ -723,7 +723,7 @@ export function LibPanel(p: Props) {
                 >
                   <span>Бібліотека</span>
                   <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
-                    <Icon n="down" s={18} />
+                    <Icon n="down" s={22} />
                   </span>
                 </button>
                 {collapseBtn}
@@ -752,7 +752,7 @@ export function LibPanel(p: Props) {
                     <span>Знайдені історії</span>
                     <small className="lib-count">{p.foundStories.length}</small>
                     <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
-                      <Icon n="down" s={18} />
+                      <Icon n="down" s={22} />
                     </span>
                   </button>
                   {foundOpen && p.foundQuery && (
