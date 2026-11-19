@@ -549,13 +549,6 @@ export default function Search() {
                     <h1>Що ви шукаєте в архіві?</h1>
                     {composer}
                     {disclaimer}
-                    <div className="sugs2">
-                      {SUGGESTIONS.slice(0, 3).map((s) => (
-                        <button key={s} onClick={() => send(s)}>
-                          {s}
-                        </button>
-                      ))}
-                    </div>
                     {!aiCan && (
                       <p className="locknote">
                         <Icon n="lock" s={13} /> Відповіді ШІ — з Розширеною роллю.
