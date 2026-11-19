@@ -176,3 +176,7 @@
 .acc-head:hover .acc-chev { color: var(--color-text); }
 .acc-head:focus-visible { outline-offset: -2px; border-radius: var(--radius-md); }
 .sel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-2); color: var(--color-text-muted); font-size: var(--fs-md); }
+
+/* акцент на назвах у знайдених матеріалах */
+.found-item { color: var(--color-text); font-size: var(--fs-base); font-weight: var(--fw-medium); }
+.found-item:hover .found-title { text-decoration: underline; text-underline-offset: 3px; }

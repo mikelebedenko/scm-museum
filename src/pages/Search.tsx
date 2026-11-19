@@ -22,6 +22,8 @@ import {
   fragWho,
   stories,
   storyCover,
+  storyMedia,
+  story,
   RUBRICS,
   fragments,
 } from "../data"
@@ -68,6 +70,7 @@ export default function Search() {
   const [foundOpen, setFoundOpen] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
+  const [bType, setBType] = useState<"all" | "video" | "audio" | "text">("all")
   useEffect(() => {
     userRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
   }, [chat?.msgs.length, busy])
@@ -123,9 +126,16 @@ export default function Search() {
     setSel((x) => (x.includes(id) ? x.filter((y) => y !== id) : [...x, id]))
   const toggleTag = (t: string) =>
     setTagF((x) => (x.includes(t) ? x.filter((y) => y !== t) : [...x, t]))
+  const storyTypes = (id: string) => {
+    const t = new Set<string>(storyMedia(id).map((m) => m.kind))
+    if (story(id).hasText) t.add("text")
+    return t
+  }
+  const openStories = stories.filter((s) => status[s.id] === "Відкрита")
   const browseStories = stories.filter(
     (s) =>
       status[s.id] === "Відкрита" &&
+      (bType === "all" || storyTypes(s.id).has(bType)) &&
       (rubric === "all" ||
         RUBRICS.find((item) => item.id === rubric)?.storyIds.includes(s.id)),
   )
@@ -370,6 +380,20 @@ export default function Search() {
           <Icon n="back" s={14} /> До чату
         </LinkButton>
         <div className="rubric-tabs">
+          {(
+            [
+              ["all", "Усі типи"],
+              ["video", "Відео"],
+              ["audio", "Аудіо"],
+              ["text", "Текст"],
+            ] as const
+          ).map(([k, l]) => (
+            <FilterButton key={k} active={bType === k} onClick={() => setBType(k)}>
+              {l}
+            </FilterButton>
+          ))}
+        </div>
+        <div className="rubric-tabs">
           <FilterButton active={rubric === "all"} onClick={() => setRubric("all")}>
             Усі історії
           </FilterButton>
@@ -519,6 +543,14 @@ export default function Search() {
           </button>
           {libOpen && <nav className="side-nav">
             <button
+              className={view === "browse" ? "on" : ""}
+              onClick={() => setView("browse")}
+            >
+              <Icon n="video" s={20} />
+              <span className="lbl">Усі матеріали</span>
+              <small>{openStories.length}</small>
+            </button>
+            <button
               className={topicsOpen ? "on" : ""}
               aria-expanded={topicsOpen}
               onClick={() => setTopicsOpen(!topicsOpen)}
@@ -547,11 +579,6 @@ export default function Search() {
               <Icon n="star" s={20} />
               <span className="lbl">Обране</span>
               {data.favs.length > 0 && <small>{data.favs.length}</small>}
-            </button>
-            <button onClick={() => setScripts(true)}>
-              <Icon n="file" s={20} />
-              <span className="lbl">Чернетки</span>
-              {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
             </button>
             <button onClick={() => setTagsM(true)}>
               <Icon n="tag" s={20} />
@@ -591,30 +618,30 @@ export default function Search() {
                   </li>
                 ))}
               </ul>}
-              {scriptIds.length > 0 && (
-                <div className="sel-row">
-                  <span>
-                    Вибрано:{" "}
-                    {[
-                      storySel.length ? `${storySel.length} іст.` : "",
-                      picked.length ? `${picked.length} фрагм.` : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </span>
-                  <LinkButton onClick={clearSel}>Скасувати</LinkButton>
-                </div>
-              )}
-              {scriptIds.length > 0 && (
-                <Button
-                  variant="primary"
-                  disabled={!perms.has("script")}
-                  onClick={() => setScript(true)}
-                >
-                  <Icon n="spark" s={14} />
-                  Згенерувати сценарій
-                </Button>
-              )}
+            </div>
+          )}
+          {scriptIds.length > 0 && (
+            <div className="lib-section">
+              <div className="sel-row">
+                <span>
+                  Вибрано:{" "}
+                  {[
+                    storySel.length ? `${storySel.length} іст.` : "",
+                    picked.length ? `${picked.length} фрагм.` : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+                <LinkButton onClick={clearSel}>Скасувати</LinkButton>
+              </div>
+              <Button
+                variant="primary"
+                disabled={!perms.has("script")}
+                onClick={() => setScript(true)}
+              >
+                <Icon n="spark" s={14} />
+                Згенерувати сценарій
+              </Button>
             </div>
           )}
         </aside>
