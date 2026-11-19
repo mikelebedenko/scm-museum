@@ -57,26 +57,11 @@
 
 /* картка результату */
 .hits { display: grid; gap: var(--space-3); }
-.hit { display: grid; grid-template-columns: var(--hit-thumb-width) minmax(0, 1fr); gap: var(--hit-gap); padding: var(--space-3); background: var(--card-bg); border: var(--border-width) solid var(--card-border); border-radius: var(--card-radius); transition: var(--duration-base); }
-.hit:hover { border-color: var(--card-border-hover); }
-.hit.sel { border-color: var(--card-border-selected); background: var(--color-accent-wash); }
-.hit-thumb { position: relative; align-self: start; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-md); background: var(--color-surface-3); }
-.hit-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--duration-slow); }
-.hit-thumb:hover img { transform: scale(1.05); }
-.hit-play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-on-accent); }
-.hit-play::before { content: ''; position: absolute; width: var(--control-md); height: var(--control-md); border-radius: var(--radius-full); background: var(--color-accent); opacity: .92; }
-.hit-play svg { position: relative; margin-left: var(--space-half); }
-.hit-dur { position: absolute; right: var(--space-2); bottom: var(--space-2); padding: var(--space-half) var(--space-2); border-radius: var(--radius-xs); background: var(--color-overlay-strong); color: var(--color-text-on-media); font: var(--type-mono); }
 .hit-body { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
 .hit-body h3 { font: var(--type-h4); }
-.hit-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); font: var(--type-caption); color: var(--color-text-muted); }
-.hit-meta .tcr { font: var(--type-mono); color: var(--color-text); }
-.hit-meta .score { color: var(--color-accent); font-weight: var(--fw-semibold); }
 .hit-quote { padding-left: var(--space-3); border-left: var(--border-width-thick) solid var(--color-border-strong); font: var(--type-body-sm); font-style: italic; color: var(--color-text-muted); }
 .hit-quote b { font-style: normal; font-weight: var(--fw-medium); color: var(--color-accent); }
 .hit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.hit-pick { display: inline-flex; align-items: center; gap: var(--space-2); }
-.hit-pick em { font: var(--type-caption); font-style: normal; color: var(--color-text-muted); }
 .ib.bad.on { color: var(--color-danger); }
 
 /* каталог тем */
@@ -368,4 +353,15 @@
 .sel-toggle:focus-visible { outline-offset: 0; }
 
 /* «+» у «Новий чат»: видимий край значка на одній вертикалі із заголовком і списком */
-.side:not(.is-rail) .side-nav button:first-child svg { margin-left: calc(var(--space-1) * -1); margin-right: var(--space-1); }
+.side:not(.is-rail) .side-nav button:first-child { gap: var(--space-2); }
+.side:not(.is-rail) .side-nav button:first-child svg { margin-left: calc(var(--space-1) * -1); margin-right: calc(var(--space-1) * -1); }
+
+/* картка результату в чаті — та сама анатомія, що й картки бібліотеки */
+.lib-story.hit { grid-template-columns: var(--hit-thumb-width) minmax(0, 1fr); gap: var(--space-4); padding: var(--space-3); }
+.lib-story.hit.is-text { grid-template-columns: minmax(0, 1fr); }
+.hit-body { gap: var(--space-2); }
+.hit-quote { position: relative; padding-left: var(--space-3); border-left: var(--border-width-thick) solid var(--color-border-strong); color: var(--color-text-muted); font-style: italic; font-size: var(--fs-base); line-height: var(--lh-relaxed); }
+.hit-quote b { font-style: normal; font-weight: var(--fw-medium); color: var(--color-accent); }
+.hit-actions { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.hit-score { padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+.lib-story-body p.hit-quote { -webkit-line-clamp: 5; }

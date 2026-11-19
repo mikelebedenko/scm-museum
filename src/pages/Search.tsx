@@ -200,34 +200,67 @@ export default function Search() {
     const key = `${m.id}:${f.id}`
     const fav = data.favs.includes(mm.storyId)
     const open = () => setPlayReq({ id: mm.id, t: s, e, n: Date.now() })
+    const picked = sel.includes(f.id)
+    const check = (
+      <Checkbox
+        className="lib-thumb-sel"
+        title="Додати до сценарію"
+        checked={picked}
+        onChange={() => toggleSel(f.id)}
+      />
+    )
     return (
-      <article key={h.fid} className={`hit ${sel.includes(f.id) ? "sel" : ""}`}>
-        <button className="hit-thumb" onClick={open} aria-label={`Відкрити ${mm.title} з ${fmt(s)}`}>
-          <img
-            src={thumbUrl(mm.id, 480, 270)}
-            alt=""
-            loading="lazy"
-            onError={(ev) => {
-              ev.currentTarget.style.visibility = "hidden"
-            }}
-          />
-          <span className="hit-play">
-            <Icon n="play" s={16} fill />
+      <article
+        key={h.fid}
+        className={`lib-story hit is-${mm.kind} ${picked ? "selected" : ""}`}
+      >
+        {mm.kind !== "text" && (
+          <div className="lib-thumb">
+            <button onClick={open} aria-label={`Відкрити ${mm.title} з ${fmt(s)}`}>
+              {mm.kind === "video" ? (
+                <img
+                  src={thumbUrl(mm.id, 480, 270)}
+                  alt=""
+                  loading="lazy"
+                  onError={(ev) => {
+                    ev.currentTarget.style.visibility = "hidden"
+                  }}
+                />
+              ) : (
+                <span className="lib-thumb-audio">
+                  <Icon n="audio" s={36} />
+                </span>
+              )}
+            </button>
+            {check}
+          </div>
+        )}
+        <div className="lib-story-body hit-body">
+          {mm.kind === "text" ? (
+            <div className="lib-story-head">
+              {check}
+              <button className="lib-story-title" onClick={open}>
+                {mm.story}
+              </button>
+            </div>
+          ) : (
+            <button className="lib-story-title" onClick={open}>
+              {mm.story}
+            </button>
+          )}
+          <span className="found-meta">
+            <Tip text={mm.kind === "video" ? "Відео" : mm.kind === "audio" ? "Аудіо" : "Текст"}>
+              <Icon n={mm.kind === "text" ? "file" : mm.kind} s={14} />
+            </Tip>
+            <Tip text="Позначений фрагмент">
+              <span>
+                {fmt(s)} – {fmt(e)}
+              </span>
+            </Tip>
+            <Tip text="Збіг із запитом">
+              <span className="hit-score">{h.score}%</span>
+            </Tip>
           </span>
-          <span className="hit-dur">{fmt(mm.duration)}</span>
-        </button>
-        <div className="hit-body">
-          <h3>{mm.story}</h3>
-          <p className="hit-meta">
-            <span className={`kind ${mm.kind}`}>
-              <Icon n={mm.kind === "text" ? "file" : mm.kind} s={12} />
-              {mm.kind === "video" ? "Відео" : mm.kind === "audio" ? "Аудіо" : "Текст"}
-            </span>
-            <span className="tcr">
-              {fmt(s)} – {fmt(e)}
-            </span>
-            <span className="score">{h.score}%</span>
-          </p>
           <p className="hit-quote">
             <b>{fragWho(f)}:</b> «{fragQuote(f)}»
           </p>
@@ -237,14 +270,6 @@ export default function Search() {
               Відкрити з {fmt(s)}
             </Button>
             <span className="grow" />
-            <Checkbox
-              className="hit-pick"
-              title="Додати до сценарію"
-              checked={sel.includes(f.id)}
-              onChange={() => toggleSel(f.id)}
-            >
-              <em>У сценарій</em>
-            </Checkbox>
             <IconButton
               size="sm"
               className="fav"
