@@ -379,3 +379,19 @@
 .lib-hero.is-text .lib-thumb-audio { width: 100%; height: 100%; display: block; }
 .lib-quote-wrap { display: grid; gap: var(--space-2); justify-items: start; }
 .lib-quote { padding-left: var(--space-3); border-left: var(--border-width-thick) solid var(--color-border-strong); color: var(--color-text-muted); font-style: italic; line-height: var(--lh-relaxed); }
+
+/* аудіо-герой: хвиля на всю ширину, кнопка відтворення акцентна й не зливається з нею */
+.lib-wave { position: absolute; inset: 30% var(--space-6); display: flex; align-items: center; gap: var(--space-1); }
+.lib-wave i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-accent) 38%, transparent); }
+.lib-hero-play.is-accent::before { background: var(--color-accent); }
+.lib-hero-play.is-accent svg { position: relative; margin-left: var(--space-half); color: var(--color-text-on-accent); }
+
+/* текстовий герой: «сторінка» з рядками та підписана кнопка «Читати» */
+.lib-lines { position: absolute; inset: var(--space-8) var(--space-10); display: grid; align-content: space-between; }
+.lib-lines i { display: block; height: var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 12%, transparent); }
+.lib-lines i:nth-child(1) { width: 100%; }
+.lib-lines i:nth-child(2) { width: 92%; }
+.lib-lines i:nth-child(3) { width: 97%; }
+.lib-lines i:nth-child(4) { width: 70%; }
+.lib-lines i:nth-child(5) { width: 84%; }
+.lib-read-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-md); padding: 0 var(--space-5); border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-text-on-accent); font: var(--type-label); }

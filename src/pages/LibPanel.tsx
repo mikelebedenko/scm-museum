@@ -560,16 +560,25 @@ export function LibPanel(p: Props) {
         )}
         {cover.kind === "audio" && (
           <button className="lib-hero is-audio" onClick={() => play(cover.id)} aria-label="Відтворити">
-            <span className="lib-thumb-audio">
-              <Icon n="audio" s={56} />
+            <span className="lib-thumb-audio" />
+            <span className="lib-wave" aria-hidden>
+              {Array.from({ length: 34 }).map((_, i) => (
+                <i key={i} style={{ height: `${14 + ((i * 37) % 70)}%` }} />
+              ))}
             </span>
-            <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
+            <span className="lib-hero-play is-accent"><Icon n="play" s={20} fill /></span>
           </button>
         )}
         {cover.kind === "text" && (
           <button className="lib-hero is-text" onClick={() => play(cover.id, true)} aria-label="Читати">
             <span className="lib-thumb-audio" />
-            <span className="lib-hero-play"><Icon n="file" s={20} /></span>
+            <span className="lib-lines" aria-hidden>
+              <i /><i /><i /><i /><i />
+            </span>
+            <span className="lib-read-btn">
+              <Icon n="file" s={16} />
+              Читати
+            </span>
           </button>
         )}
         <div className="lib-detail-head">
