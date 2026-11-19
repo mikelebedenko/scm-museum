@@ -299,13 +299,7 @@ export function LibPanel(p: Props) {
           {kind === "text" ? (
             <div className="lib-story-head">
               {check}
-              <button
-                className="lib-story-title"
-                onClick={() => {
-                  if (picked) setSheet(false)
-                  play(cover.id, true)
-                }}
-              >
+              <button className="lib-story-title" onClick={goStory}>
                 {st.title}
               </button>
             </div>
@@ -543,16 +537,50 @@ export function LibPanel(p: Props) {
     const cover = storyCover(nav.id)
     const media = storyMedia(nav.id)
     const fav = data.favs.includes(nav.id)
+    const sel = p.storySel.includes(nav.id)
+    const genre = genreOf(st.tags)
     title = "Історія"
     body = (
       <div className="lib-detail">
-        {cover.kind === "text" ? null : (
+        {cover.kind === "video" && (
           <button className="lib-hero" onClick={() => play(cover.id)} aria-label="Відтворити">
             <img src={thumbUrl(cover.id, 640, 360)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} />
             <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
           </button>
         )}
-        <h3>{st.title}</h3>
+        {cover.kind === "audio" && (
+          <button className="lib-hero is-audio" onClick={() => play(cover.id)} aria-label="Відтворити">
+            <span className="lib-thumb-audio">
+              <Icon n="audio" s={56} />
+            </span>
+            <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
+          </button>
+        )}
+        {cover.kind === "text" && (
+          <div className="lib-excerpt">
+            <p>{cover.segments[0]?.uk}</p>
+            <Button variant="primary" size="sm" onClick={() => play(cover.id, true)}>
+              <Icon n="file" s={14} />
+              Читати
+            </Button>
+          </div>
+        )}
+        <div className="lib-detail-head">
+          <h3>{st.title}</h3>
+          <p className="lib-meta">
+            {cover.kind === "text" && genre ? (
+              <span className="lib-genre">{genre}</span>
+            ) : (
+              <span className={`kind ${cover.kind}`}>
+                <Icon n={TYPE_ICON[cover.kind]} s={12} />
+                {TYPE_LABEL[cover.kind]}
+              </span>
+            )}
+            {cover.speaker} · {cover.recorded}
+            {cover.duration > 0 && ` · ${fmt(cover.duration)}`}
+            {cover.kind === "text" && cover.readMin ? ` · ${cover.readMin} хв читання` : ""}
+          </p>
+        </div>
         <p className="lib-hint">{st.summary}</p>
         <div className="chips">
           {st.tags.map((t) => <Chip key={t}>{t}</Chip>)}
@@ -562,10 +590,14 @@ export function LibPanel(p: Props) {
             <Icon n="star" s={14} fill={fav} />
             {fav ? "У вибраному" : "Додати до вибраного"}
           </Button>
+          <Button size="sm" variant={sel ? "primary" : "default"} onClick={() => p.onToggleStory(nav.id)}>
+            <Icon n={sel ? "check" : "plus"} s={14} />
+            {sel ? "У сценарії" : "Додати до сценарію"}
+          </Button>
         </div>
         {(() => {
-          const extra = cover.kind === "text" ? media : media.slice(1)
-          const showTr = st.hasText && !media.every((m) => m.kind === "text")
+          const extra = media.slice(1)
+          const showTr = st.hasText && cover.kind !== "text"
           if (extra.length === 0 && !showTr) return null
           return (
             <>
