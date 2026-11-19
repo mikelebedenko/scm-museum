@@ -1,5 +1,9 @@
+// Висоти стовпчиків дзеркальної хвилі (центр — найвищий пік)
+const BARS = [4, 9, 14, 8, 18, 26, 16, 23, 11, 17, 7, 12, 4]
+
 /**
- * Логотип SCM.Museum: фасад музею (фронтон і колони). Кольори — з токенів.
+ * Логотип SCM.Museum: звукова хвиля — архів усної історії.
+ * Кольори — з токенів.
  */
 export function Logo({ size = "var(--logo-size)" }: { size?: number | string }) {
   return (
@@ -13,16 +17,14 @@ export function Logo({ size = "var(--logo-size)" }: { size?: number | string }) 
     >
       <circle cx="20" cy="20" r="20" fill="var(--color-accent)" />
       <g
-        fill="var(--color-text-on-accent)"
         stroke="var(--color-text-on-accent)"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
+        strokeWidth="1.7"
+        strokeLinecap="round"
       >
-        <path d="M20 9.5 30.5 15.5H9.5Z" />
-        <rect x="12" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
-        <rect x="18.25" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
-        <rect x="24.5" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
-        <rect x="9.5" y="28.5" width="21" height="2.5" rx="0.5" stroke="none" />
+        {BARS.map((h, i) => {
+          const x = 20 + (i - 6) * 2.5
+          return <line key={i} x1={x} y1={20 - h / 2} x2={x} y2={20 + h / 2} />
+        })}
       </g>
     </svg>
   )
