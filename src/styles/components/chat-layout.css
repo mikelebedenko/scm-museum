@@ -98,7 +98,7 @@
 .msg-ai .aitext { font: var(--type-body-lg); line-height: var(--lh-relaxed); }
 .msg-user { border-radius: var(--radius-xl); font: var(--type-body-lg); }
 .cmp + .disclaimer { margin-top: var(--space-2); }
-.chat-scroll > .chat-dock { background: linear-gradient(to top, var(--color-bg) 75%, transparent); padding-top: var(--space-6); }
+.chat-scroll > .chat-dock { background: linear-gradient(to top, var(--panel-bg) 75%, transparent); padding-top: var(--space-6); }
 
 /* розгорнута панель — картка з заголовком, як «Джерела» в референсі */
 .side:not(.is-rail) { padding: var(--space-4); background: var(--panel-bg); border-radius: var(--panel-radius); }
@@ -130,3 +130,6 @@
 .lib-section .side-label { margin: 0; padding: 0; font: var(--type-h4); font-weight: var(--fw-medium); letter-spacing: var(--ls-normal); text-transform: none; color: var(--color-text); }
 .lib-hint { font: var(--type-caption); color: var(--color-text-muted); }
 .lib-section .btn { width: 100%; }
+
+/* центральна область — теж картка, як бічні панелі */
+.main { background: var(--panel-bg); border-radius: var(--panel-radius); }
