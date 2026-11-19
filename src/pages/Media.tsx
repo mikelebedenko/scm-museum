@@ -366,15 +366,19 @@ export default function Media({
             )}
             <div className="mtitle">
               <div>
-                <h1>{m.title}</h1>
+                <h1>
+                  {textual && m.kind !== "text"
+                    ? `${m.story}: текст і транскрипція`
+                    : m.title}
+                </h1>
                 <p>
-                  <span className={`kind ${m.kind}`}>
-                    <Icon n={m.kind === "text" ? "file" : m.kind} s={12} />
-                    {m.kind === "video" ? "Відео" : m.kind === "audio" ? "Аудіо" : "Текст"}
+                  <span className={`kind ${textual ? "text" : m.kind}`}>
+                    <Icon n={textual ? "file" : (m.kind as "video" | "audio")} s={12} />
+                    {textual ? "Текст" : m.kind === "video" ? "Відео" : "Аудіо"}
                   </span>
                   <span className="open">Відкрита</span>
                   {LANG[m.lang]} · {m.recorded}
-                  {m.duration > 0 && ` · ${fmt(m.duration)}`}
+                  {!textual && m.duration > 0 && ` · ${fmt(m.duration)}`}
                 </p>
               </div>
               <Button
@@ -393,22 +397,24 @@ export default function Media({
               </Button>
             </div>
           </section>
-          <section className="mright">
-            <Tabs
-              value={tab}
-              onChange={setTab}
-              options={[
-                { value: "tr", label: "Транскрипція" },
-                { value: "info", label: "Метадані й теги" },
-              ]}
-            />
-            {tab === "tr" ? (
+          <section className={`mright ${textual ? "is-text" : ""}`}>
+            {!textual && (
+              <Tabs
+                value={tab}
+                onChange={setTab}
+                options={[
+                  { value: "tr", label: "Транскрипція" },
+                  { value: "info", label: "Метадані й теги" },
+                ]}
+              />
+            )}
+            {tab === "tr" || textual ? (
               <div className="trans">
                 {m.segments.map((s, i) => (
                   <button
                     key={i}
                     ref={i === idx ? cur : undefined}
-                    className={`tl ${textual ? "no-time" : ""} ${i === idx ? "cur" : ""} ${
+                    className={`tl ${textual ? "no-time" : ""} ${i === idx && !textual ? "cur" : ""} ${
                       s.s >= t0 && e0 > t0 && s.e <= e0 ? "hit" : ""
                     }`}
                     onClick={() => {
