@@ -32,6 +32,15 @@ import { TagPicker, UserTagChips, TagFilter, LangFilter } from "./shared"
 import { TagsModal, FavoritesModal } from "./Library"
 import type { Msg } from "../types"
 
+/** Українська множина: 1 / 2–4 / 5+ (і 11–14). */
+const plural = (n: number, one: string, few: string, many: string) => {
+  const m10 = n % 10
+  const m100 = n % 100
+  if (m10 === 1 && m100 !== 11) return one
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few
+  return many
+}
+
 export default function Search() {
   const { state } = useStore()
   const { data, perms } = useMe()
@@ -248,6 +257,7 @@ export default function Search() {
               {mm.story}
             </button>
           )}
+          <span className="hit-mat">{mm.title}</span>
           <span className="found-meta">
             <Tip text={mm.kind === "video" ? "Відео" : mm.kind === "audio" ? "Аудіо" : "Текст"}>
               <Icon n={mm.kind === "text" ? "file" : mm.kind} s={14} />
@@ -357,6 +367,19 @@ export default function Search() {
                     <Icon n="lock" s={14} />
                     {hid} фрагм. приховано: історію більше не позначено як «Відкрита».
                   </div>
+                )}
+                {vis.length > 0 && (
+                  <p className="hits-sum">
+                    {vis.length} {plural(vis.length, "фрагмент", "фрагменти", "фрагментів")}
+                    {" з "}
+                    {new Set(vis.map((h) => mat(frag(h.fid).mid).storyId)).size}{" "}
+                    {plural(
+                      new Set(vis.map((h) => mat(frag(h.fid).mid).storyId)).size,
+                      "історії",
+                      "історій",
+                      "історій",
+                    )}
+                  </p>
                 )}
                 <div className="hits">
                   {vis.map((h) => renderHit(m, h))}

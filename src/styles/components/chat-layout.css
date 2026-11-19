@@ -458,3 +458,7 @@
 /* шапки панелей однакової висоти: заголовок не «стрибає» між екранами і між лівою та правою панеллю */
 .lib-crumb { min-height: var(--control-lg); }
 .side-top { min-height: var(--control-lg); }
+
+/* чат: зведення «N фрагментів з M історій» і назва матеріалу під заголовком карточки */
+.hits-sum { margin: 0 0 var(--space-3); color: var(--color-text-subtle); font-size: var(--fs-md); }
+.hit-mat { color: var(--color-text-subtle); font-size: var(--fs-sm); line-height: var(--lh-snug); }
