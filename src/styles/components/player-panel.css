@@ -5,3 +5,10 @@
 .scr { padding: var(--space-3) 0; border-bottom: var(--border-width) solid var(--color-border); } .scr-h { display: flex; align-items: center; gap: var(--space-3); } .scr-h .hlink { flex: 1; } .scr-h small { color: var(--color-text-subtle); font-size: var(--fs-sm); }
 .colhead .btn { white-space: nowrap; }
 .mpanel .trans { max-height: 340px; position: relative; }
+
+/* вбудований режим (права панель бібліотеки) */
+.mpanel.inline { position: static; inset: auto; z-index: auto; overflow: visible; background: none; border-radius: 0; }
+.mpanel.inline .media { padding: 0; }
+.mpanel.inline .mgrid { gap: var(--space-4); }
+.mpanel.inline .mtitle { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+.mpanel.inline .mtitle h1 { font: var(--type-h3); }

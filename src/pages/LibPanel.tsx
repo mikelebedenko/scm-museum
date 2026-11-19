@@ -5,10 +5,12 @@ import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
 import { Icon, type IconName } from "../ui"
+import Media from "./Media"
 import { Chip } from "../components/Chip"
 import { useActions, useMe, useStore } from "../store"
 import {
   RUBRICS,
+  materials,
   stories,
   story,
   storyMedia,
@@ -27,6 +29,7 @@ type Nav =
   | { v: "tags" }
   | { v: "tag"; id: string }
   | { v: "story"; id: string; prev: Nav }
+  | { v: "play"; id: string; text: boolean; prev: Nav }
 
 type TypeFilter = "all" | "video" | "audio" | "text"
 
@@ -43,7 +46,6 @@ type Props = {
   canScript: boolean
   busy: boolean
   onToggleStory: (id: string) => void
-  onOpenMedia: (mediaId: string) => void
   onClear: () => void
   onGenerate: () => void
   onAsk: (q: string) => void
@@ -69,7 +71,7 @@ export function LibPanel(p: Props) {
   const tagCount = (tagId: string) => tagStories(tagId).length
 
   const back = () => {
-    if (nav.v === "story") { setNav(nav.prev); return }
+    if (nav.v === "story" || nav.v === "play") { setNav(nav.prev); return }
     if (nav.v === "topic") setNav({ v: "topics" })
     else if (nav.v === "tag") setNav({ v: "tags" })
     else setNav({ v: "menu" })
@@ -82,8 +84,12 @@ export function LibPanel(p: Props) {
     setType("all")
     setTopic("all")
   }
+  const play = (id: string, text = false) =>
+    setNav({ v: "play", id, text, prev: nav })
   const openStory = (id: string) => setNav({ v: "story", id, prev: nav })
 
+  const storyOf = (mediaId: string) =>
+    materials.find((m) => m.id === mediaId)!.storyId
   const typesOf = (id: string) => {
     const t = new Set<string>(storyMedia(id).map((m) => m.kind))
     if (story(id).hasText) t.add("text")
@@ -278,7 +284,7 @@ export function LibPanel(p: Props) {
     title = "Історія"
     body = (
       <div className="lib-detail">
-        <button className="lib-hero" onClick={() => p.onOpenMedia(cover.id)} aria-label="Відтворити">
+        <button className="lib-hero" onClick={() => play(cover.id)} aria-label="Відтворити">
           <img src={thumbUrl(cover.id, 640, 360)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} />
           <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
         </button>
@@ -300,7 +306,7 @@ export function LibPanel(p: Props) {
         <ul className="found-list">
           {media.map((m) => (
             <li key={m.id}>
-              <button className="found-item" onClick={() => p.onOpenMedia(m.id)}>
+              <button className="found-item" onClick={() => play(m.id)}>
                 <span className="found-title">{m.title}</span>
                 <span className="found-meta">
                   <Icon n={TYPE_ICON[m.kind]} s={14} />
@@ -311,7 +317,44 @@ export function LibPanel(p: Props) {
           ))}
           {st.hasText && (
             <li>
-              <button className="found-item" onClick={() => p.onOpenMedia(media[0].id)}>
+              <button className="found-item" onClick={() => play(media[0].id, true)}>
+                <span className="found-title">Текст і транскрипція</span>
+                <span className="found-meta"><Icon n="file" s={14} /></span>
+              </button>
+            </li>
+          )}
+        </ul>
+      </div>
+    )
+  } else if (nav.v === "play") {
+    const cur = nav
+    const st = story(storyOf(cur.id))
+    title = st.title
+    body = (
+      <div className="lib-detail">
+        <Media key={`${cur.id}:${cur.text}`} id={cur.id} inline textOnly={cur.text} onClose={back} />
+        <div className="side-label">Матеріали історії</div>
+        <ul className="found-list">
+          {storyMedia(st.id).map((m) => (
+            <li key={m.id}>
+              <button
+                className={`found-item ${!cur.text && m.id === cur.id ? "is-current" : ""}`}
+                onClick={() => setNav({ ...cur, id: m.id, text: false })}
+              >
+                <span className="found-title">{m.title}</span>
+                <span className="found-meta">
+                  <Icon n={TYPE_ICON[m.kind]} s={14} />
+                  {fmt(m.duration)}
+                </span>
+              </button>
+            </li>
+          ))}
+          {st.hasText && (
+            <li>
+              <button
+                className={`found-item ${cur.text ? "is-current" : ""}`}
+                onClick={() => setNav({ ...cur, text: true })}
+              >
                 <span className="found-title">Текст і транскрипція</span>
                 <span className="found-meta"><Icon n="file" s={14} /></span>
               </button>

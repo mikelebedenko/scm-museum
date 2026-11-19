@@ -464,7 +464,6 @@ export default function Search() {
         canScript={perms.has("script")}
         busy={busy}
         onToggleStory={toggleStory}
-        onOpenMedia={(id) => setMedia({ id, t: 0, e: 0 })}
         onClear={clearSel}
         onGenerate={() => setScript(true)}
         onAsk={send}

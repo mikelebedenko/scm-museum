@@ -24,11 +24,15 @@ export default function Media({
   t0 = 0,
   e0 = 0,
   onClose,
+  inline = false,
+  textOnly = false,
 }: {
   id: string
   t0?: number
   e0?: number
   onClose: () => void
+  inline?: boolean
+  textOnly?: boolean
 }) {
   const { state } = useStore()
   const { data } = useMe()
@@ -107,20 +111,24 @@ export default function Media({
   const frs = fragments.filter((f) => f.mid === m.id)
 
   return (
-    <div className="mpanel">
+    <div className={`mpanel ${inline ? "inline" : ""}`}>
       <div className="media">
-        <div className="mcrumb">
-          <button className="backbtn" onClick={onClose}>
-            <Icon n="back" s={16} />
-            <span>Назад</span>
-          </button>
-          <div className="mstory">
-            <small>Історія</small>
-            <b>{m.story}</b>
+        {!inline && (
+          <div className="mcrumb">
+            <button className="backbtn" onClick={onClose}>
+              <Icon n="back" s={16} />
+              <span>Назад</span>
+            </button>
+            <div className="mstory">
+              <small>Історія</small>
+              <b>{m.story}</b>
+            </div>
           </div>
-        </div>
+        )}
         <div className="mgrid">
           <section className="mleft">
+            {!textOnly && (
+              <>
             <div
               className={`stage ${m.kind} ${play ? "playing" : ""}`}
               onClick={() => setPlay(!play)}
@@ -349,6 +357,8 @@ export default function Media({
                 </button>
               )}
             </div>
+              </>
+            )}
             <div className="mtitle">
               <div>
                 <h1>{m.title}</h1>
