@@ -18,6 +18,7 @@ import {
   storyCover,
   thumbUrl,
   frag,
+  genreOf,
   mat,
   fragStart,
   fragEnd,
@@ -42,12 +43,6 @@ const TYPE_LABEL: Record<string, string> = {
   video: "Відео",
   audio: "Аудіо",
   text: "Текст",
-}
-
-const GENRES = ["інтерв’ю", "стаття", "нарис", "есе", "щоденник", "лист"]
-const genreOf = (tags: string[]) => {
-  const g = tags.find((t) => GENRES.includes(t))
-  return g ? g[0].toUpperCase() + g.slice(1) : null
 }
 
 const TYPE_ICON: Record<string, IconName> = {
@@ -594,7 +589,17 @@ export function LibPanel(p: Props) {
     title = st.title
     body = (
       <div className="lib-detail">
-        <Media key={`${cur.id}:${cur.text}:${cur.t ?? 0}`} id={cur.id} t0={cur.t} e0={cur.e} inline textOnly={cur.text} onClose={back} />
+        <Media
+          key={`${cur.id}:${cur.text}:${cur.t ?? 0}`}
+          id={cur.id}
+          t0={cur.t}
+          e0={cur.e}
+          inline
+          textOnly={cur.text}
+          selected={p.storySel.includes(st.id)}
+          onToggleSelected={() => p.onToggleStory(st.id)}
+          onClose={back}
+        />
         {(() => {
           const all = storyMedia(st.id)
           const others = all.filter(

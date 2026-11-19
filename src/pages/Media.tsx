@@ -12,6 +12,8 @@ import {
   fragments,
   fragStart,
   fragEnd,
+  genreOf,
+  story,
   thumbUrl,
 } from "../data"
 import { fmt } from "../lib"
@@ -26,6 +28,8 @@ export default function Media({
   onClose,
   inline = false,
   textOnly = false,
+  selected,
+  onToggleSelected,
 }: {
   id: string
   t0?: number
@@ -33,6 +37,8 @@ export default function Media({
   onClose: () => void
   inline?: boolean
   textOnly?: boolean
+  selected?: boolean
+  onToggleSelected?: () => void
 }) {
   const { state } = useStore()
   const { data } = useMe()
@@ -372,29 +378,46 @@ export default function Media({
                     : m.title}
                 </h1>
                 <p>
-                  <span className={`kind ${textual ? "text" : m.kind}`}>
-                    <Icon n={textual ? "file" : (m.kind as "video" | "audio")} s={12} />
-                    {textual ? "Текст" : m.kind === "video" ? "Відео" : "Аудіо"}
-                  </span>
-                  <span className="open">Відкрита</span>
-                  {LANG[m.lang]} · {m.recorded}
+                  {m.kind === "text" && genreOf(story(m.storyId).tags) ? (
+                    <span className="lib-genre">{genreOf(story(m.storyId).tags)}</span>
+                  ) : (
+                    <span className={`kind ${textual ? "text" : m.kind}`}>
+                      <Icon n={textual ? "file" : (m.kind as "video" | "audio")} s={12} />
+                      {textual ? "Текст" : m.kind === "video" ? "Відео" : "Аудіо"}
+                    </span>
+                  )}
+                  {m.speaker} · {m.recorded}
                   {!textual && m.duration > 0 && ` · ${fmt(m.duration)}`}
+                  {m.kind === "text" && m.readMin ? ` · ${m.readMin} хв читання` : ""}
                 </p>
               </div>
-              <Button
-                variant={fav ? "primary" : "default"}
-                onClick={() => {
-                  a.toggleFav(m.storyId)
-                  toast(
-                    fav
-                      ? "Історію видалено з вибраного"
-                      : "Історію додано до вибраного",
-                  )
-                }}
-              >
-                <Icon n="star" s={14} fill={fav} />
-                {fav ? "Історія у вибраному" : "Додати історію"}
-              </Button>
+              <div className="mactions">
+                <Button
+                  size="sm"
+                  variant={fav ? "primary" : "default"}
+                  onClick={() => {
+                    a.toggleFav(m.storyId)
+                    toast(
+                      fav
+                        ? "Історію видалено з вибраного"
+                        : "Історію додано до вибраного",
+                    )
+                  }}
+                >
+                  <Icon n="star" s={14} fill={fav} />
+                  {fav ? "У вибраному" : "У вибране"}
+                </Button>
+                {onToggleSelected && (
+                  <Button
+                    size="sm"
+                    variant={selected ? "primary" : "default"}
+                    onClick={onToggleSelected}
+                  >
+                    <Icon n={selected ? "check" : "plus"} s={14} />
+                    {selected ? "У сценарії" : "У сценарій"}
+                  </Button>
+                )}
+              </div>
             </div>
           </section>
           <section className={`mright ${textual ? "is-text" : ""}`}>

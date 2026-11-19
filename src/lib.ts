@@ -86,7 +86,10 @@ export function search(query: string, status: Record<string, string>): Hit[] {
     .filter((w) => w.length >= 3 && !STOP.has(w))
   if (!words.length) return []
   const raw = fragments
-    .filter((f) => status[mat(f.mid).storyId] === "Відкрита")
+    .filter(
+      (f) =>
+        status[mat(f.mid).storyId] === "Відкрита" && mat(f.mid).kind !== "text",
+    )
     .map((f) => {
       const doc = docOf(f)
       let sc = 0
@@ -121,8 +124,11 @@ export function makeAnswer(query: string, hits: Hit[], prev?: string) {
 
 export function makeScript(prompt: string, ids: string[]) {
   const fr = ids.map(frag)
-  const total = fr.reduce((s, f) => s + fragEnd(f) - fragStart(f), 0)
-  const head = `ЧЕРНЕТКА СЦЕНАРІЮ\nНапрям: ${prompt}\nХронометраж джерел: ${fmt(total)} · фрагментів: ${fr.length}\n`
+  const total = fr.reduce(
+    (s, f) => (mat(f.mid).kind === "text" ? s : s + fragEnd(f) - fragStart(f)),
+    0,
+  )
+  const head = `СЦЕНАРІЙ\nНапрям: ${prompt}\n${total > 0 ? `Хронометраж джерел: ${fmt(total)} · ` : ""}Фрагментів: ${fr.length}\n`
   const intro = `\n[ВСТУП]\nГолос за кадром. ${prompt.replace(/\.$/, "")}. Історії, зібрані в архіві, показують це зсередини — словами людей, які це пережили.\n`
   const body = fr
     .map(
@@ -130,8 +136,14 @@ export function makeScript(prompt: string, ids: string[]) {
         `\n[СЦЕНА ${i + 1}] ${f.desc}\nНа екрані: ${
           mat(f.mid).kind === "video"
             ? "відеофрагмент"
-            : "аудіофрагмент із титрами"
-        } — «${mat(f.mid).title}», ${range(fragStart(f), fragEnd(f))}.\n${
+            : mat(f.mid).kind === "audio"
+              ? "аудіофрагмент із титрами"
+              : "текстова цитата"
+        } — «${mat(f.mid).title}»${
+          mat(f.mid).kind === "text"
+            ? ""
+            : `, ${range(fragStart(f), fragEnd(f))}`
+        }.\n${
           fragQuote(f) ? `${mat(f.mid).speaker}: «${fragQuote(f)}»` : ""
         }\nЗв’язка: ${
           i < fr.length - 1

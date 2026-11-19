@@ -35,3 +35,6 @@
 .mpanel.inline .mright.is-text .trans { max-height: none; overflow: visible; padding: 0; }
 .mpanel.inline .mright.is-text .tl { padding-left: 0; padding-right: 0; border-left: 0; }
 .mpanel.inline .mright.is-text .tl:hover { background: none; }
+
+.mpanel.inline .mactions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mpanel.inline .mtitle p { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
