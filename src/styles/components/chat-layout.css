@@ -416,9 +416,10 @@
 .mpanel.inline .mright.is-text { padding-inline: var(--space-4); }
 
 /* аудіо-герой: природна хвиля, внизу «плеєр» — кнопка, доріжка й час */
-.lib-wave { position: absolute; inset: var(--space-6) var(--space-5) 32%; display: flex; align-items: center; gap: var(--space-half); }
-.lib-wave i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 22%, transparent); }
-.lib-audio-bar { position: absolute; left: var(--space-5); right: var(--space-5); bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-3); }
-.lib-play-dot { flex: none; width: var(--control-lg); height: var(--control-lg); display: grid; place-items: center; border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-text-on-accent); padding-left: var(--space-half); }
-.lib-track { flex: 1; height: var(--space-1); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 18%, transparent); }
-.lib-time { flex: none; color: var(--color-text-muted); font: var(--type-mono); }
+
+/* аудіо-герой у стилі текстового: «сторінка» з хвилею, тане донизу; підписана кнопка «Слухати» */
+.lib-page.is-audio { gap: var(--space-3); }
+.lib-wave-mini { display: flex; align-items: center; gap: var(--space-half); height: var(--space-14); }
+.lib-wave-mini i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 24%, transparent); }
+.lib-page.is-audio i.trk { width: 100%; height: var(--space-1); background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.lib-hero.is-audio .lib-read-btn { top: auto; bottom: var(--space-5); transform: translateX(-50%); box-shadow: var(--shadow-md); }
