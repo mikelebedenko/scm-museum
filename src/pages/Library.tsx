@@ -169,7 +169,7 @@ export function FavoritesModal({
     [open, tagF, data.assign],
   )
   return (
-    <Modal wide title="Вибране" onClose={onClose}>
+    <Modal wide title="Вибрані історії" onClose={onClose}>
       <div className="filters flat">
         <TagFilter sel={tagF} toggle={toggle} />
         {tagF.map((t) => (
@@ -195,7 +195,7 @@ export function FavoritesModal({
         </div>
       )}
       {open.length === 0 && (
-        <Empty icon="star" title="Вибране порожнє">
+        <Empty icon="star" title="Вибраних історій ще немає">
           Додавайте цілі історії зірочкою у результатах пошуку або на сайті
           музею.
         </Empty>

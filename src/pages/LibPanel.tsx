@@ -521,7 +521,7 @@ export function LibPanel(p: Props) {
       </>
     )
   } else if (nav.v === "favs") {
-    title = "Вибране"
+    title = "Вибрані історії"
     body = <StoryRows ids={favIds} empty="Позначайте історії зірочкою — вони з’являться тут." />
   } else if (nav.v === "tags") {
     title = "Теги"
@@ -716,7 +716,7 @@ export function LibPanel(p: Props) {
     const items: { icon: IconName; label: string; run: () => void }[] = [
       { icon: "grid", label: "Усі історії", run: () => railGo({ v: "all" }) },
       { icon: "list", label: "Теми", run: () => railGo({ v: "topics" }) },
-      { icon: "star", label: "Вибране", run: () => railGo({ v: "favs" }) },
+      { icon: "star", label: "Вибрані історії", run: () => railGo({ v: "favs" }) },
       { icon: "tag", label: "Теги", run: () => railGo({ v: "tags" }) },
       { icon: "file", label: "Сценарії", run: p.onOpenScripts },
     ]
@@ -826,7 +826,7 @@ export function LibPanel(p: Props) {
                   <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
                   <hr className="lib-sep" />
                   <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
-                  <NavItem icon="star" label="Вибране" count={favIds.length} to={{ v: "favs" }} />
+                  <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
                   <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
                   <button onClick={p.onOpenScripts}>
                     <Icon n="file" s={24} />
