@@ -340,9 +340,9 @@
 .lib-rail [data-tip]:hover::after, .lib-rail [data-tip]:focus-visible::after { right: calc(100% + var(--space-2)); left: auto; bottom: auto; top: 50%; transform: translateY(-50%); }
 
 /* підпис блоку «Знайдені історії»: лічильник і запит */
-.lib-section .side-head .lib-count { margin-left: var(--space-3); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font: var(--fw-medium) var(--fs-sm) var(--font-sans); }
+.lib-section .side-head .lib-count { margin-left: 0; padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font: var(--fw-medium) var(--fs-sm) var(--font-sans); }
 .lib-found-q { margin: calc(var(--space-2) * -1) 0 0; padding: 0 var(--space-4); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-subtle); font-size: var(--fs-sm); }
 
 /* однакові шеврони аккордеонів: одразу після заголовка, трохи більші */
 .lib-section .side-head { justify-content: flex-start; width: auto; gap: var(--space-2); }
-.lib .side-head .acc-chev { color: var(--color-text-muted); margin-left: var(--space-1); }
+.lib .side-head .acc-chev { color: var(--color-text-muted); margin-left: 0; }
