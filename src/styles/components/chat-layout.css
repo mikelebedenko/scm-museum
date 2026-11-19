@@ -316,3 +316,7 @@
 
 /* підказки значків типів над розтягнутим посиланням картки */
 .found-meta .tipw { position: relative; z-index: 2; align-items: center; }
+
+/* картки у шторці вибраного: хрестик замість чекбокса */
+.lib-story.is-picked { padding-right: var(--space-10); }
+.lib-card-remove { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; }

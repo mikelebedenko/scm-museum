@@ -229,7 +229,7 @@ export function LibPanel(p: Props) {
     )
   }
 
-  const StoryCard = ({ id }: { id: string }) => {
+  const StoryCard = ({ id, picked = false }: { id: string; picked?: boolean }) => {
     const st = story(id)
     const cover = storyCover(id)
     const types = typesOf(id)
@@ -237,14 +237,23 @@ export function LibPanel(p: Props) {
     const sel = p.storySel.includes(id)
     // вигляд картки: за обраним типом, інакше за основним (відео → аудіо → текст)
     const kind: "video" | "audio" | "text" =
-      type !== "all" && types.has(type)
+      !picked && type !== "all" && types.has(type)
         ? type
         : types.has("video")
           ? "video"
           : types.has("audio")
             ? "audio"
             : "text"
-    const check = (
+    const check = picked ? (
+      <IconButton
+        className="lib-card-remove"
+        size="sm"
+        aria-label="Прибрати зі сценарію"
+        onClick={() => p.onToggleStory(id)}
+      >
+        <Icon n="close" s={16} />
+      </IconButton>
+    ) : (
       <Checkbox
         className="lib-thumb-sel"
         checked={sel}
@@ -252,13 +261,17 @@ export function LibPanel(p: Props) {
         title="Додати до сценарію"
       />
     )
+    const goStory = () => {
+      if (picked) setSheet(false)
+      openStory(id)
+    }
     return (
       <article
-        className={`lib-story is-${kind} ${sel ? "selected" : ""}`}
+        className={`lib-story is-${kind} ${sel && !picked ? "selected" : ""} ${picked ? "is-picked" : ""}`}
       >
         {kind === "text" ? null : (
           <div className="lib-thumb">
-            <button onClick={() => openStory(id)} aria-label={`Відкрити історію ${st.title}`}>
+            <button onClick={goStory} aria-label={`Відкрити історію ${st.title}`}>
               {kind === "video" ? (
                 <img
                   src={thumbUrl(cover.id, 320, 200)}
@@ -281,12 +294,18 @@ export function LibPanel(p: Props) {
           {kind === "text" ? (
             <div className="lib-story-head">
               {check}
-              <button className="lib-story-title" onClick={() => play(cover.id, true)}>
+              <button
+                className="lib-story-title"
+                onClick={() => {
+                  if (picked) setSheet(false)
+                  play(cover.id, true)
+                }}
+              >
                 {st.title}
               </button>
             </div>
           ) : (
-            <button className="lib-story-title" onClick={() => openStory(id)}>
+            <button className="lib-story-title" onClick={goStory}>
               {st.title}
             </button>
           )}
@@ -304,6 +323,63 @@ export function LibPanel(p: Props) {
             )}
           </span>
         </div>
+      </article>
+    )
+  }
+
+  const FragCard = ({ fid }: { fid: string }) => {
+    const f = frag(fid)
+    const m = mat(f.mid)
+    const kind = m.kind
+    const range = `${fmt(fragStart(f))} – ${fmt(fragEnd(f))}`
+    const open = () => {
+      setSheet(false)
+      setNav({ v: "play", id: m.id, text: false, t: fragStart(f), e: fragEnd(f), prev: nav })
+    }
+    return (
+      <article className={`lib-story is-${kind} is-picked`}>
+        {kind !== "text" && (
+          <div className="lib-thumb">
+            <button onClick={open} aria-label={`Відкрити фрагмент ${range}`}>
+              {kind === "video" ? (
+                <img
+                  src={thumbUrl(m.id, 320, 200)}
+                  alt=""
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.visibility = "hidden"
+                  }}
+                />
+              ) : (
+                <span className="lib-thumb-audio">
+                  <Icon n="audio" s={36} />
+                </span>
+              )}
+            </button>
+          </div>
+        )}
+        <div className="lib-story-body">
+          <button className="lib-story-title" onClick={open}>
+            {m.story}
+          </button>
+          <p>{f.desc}</p>
+          <span className="found-meta">
+            <Tip text={TYPE_LABEL[kind]}>
+              <Icon n={TYPE_ICON[kind]} s={14} />
+            </Tip>
+            <Tip text="Позначений фрагмент">
+              <span>{range}</span>
+            </Tip>
+          </span>
+        </div>
+        <IconButton
+          className="lib-card-remove"
+          size="sm"
+          aria-label="Прибрати фрагмент"
+          onClick={() => p.onToggleFrag(fid)}
+        >
+          <Icon n="close" s={16} />
+        </IconButton>
       </article>
     )
   }
@@ -548,45 +624,27 @@ export function LibPanel(p: Props) {
             </IconButton>
             <span>Для сценарію</span>
           </div>
-          <ul className="lib-picked">
-            {p.storySel.map((id) => {
-              const st = story(id)
-              const types = typesOf(id)
-              return (
-                <li key={id}>
-                  <button className="lib-picked-main" onClick={() => { setSheet(false); openStory(id) }}>
-                    <span className="lib-picked-title">{st.title}</span>
-                    <span className="found-meta">
-                      {[...types].map((t) => (
-                        <Icon key={t} n={TYPE_ICON[t]} s={14} />
-                      ))}
-                      Історія
-                    </span>
-                  </button>
-                  <IconButton aria-label="Прибрати зі сценарію" onClick={() => p.onToggleStory(id)}>
-                    <Icon n="close" s={18} />
-                  </IconButton>
-                </li>
-              )
-            })}
-            {fragRows.map((fid) => {
-              const f = frag(fid)
-              return (
-                <li key={fid}>
-                  <div className="lib-picked-main">
-                    <span className="lib-picked-title">{mat(f.mid).story}</span>
-                    <span className="found-meta">
-                      <Icon n="clock" s={14} />
-                      {fmt(fragStart(f))} – {fmt(fragEnd(f))} · фрагмент
-                    </span>
-                  </div>
-                  <IconButton aria-label="Прибрати фрагмент" onClick={() => p.onToggleFrag(fid)}>
-                    <Icon n="close" s={18} />
-                  </IconButton>
-                </li>
-              )
-            })}
-          </ul>
+          {p.storySel.length > 0 && (
+            <>
+              {fragRows.length > 0 && <h4 className="lib-subhead">Історії</h4>}
+              <div className="lib-cards">
+                {p.storySel.map((id) => (
+                  <StoryCard key={id} id={id} picked />
+                ))}
+              </div>
+            </>
+          )}
+          {fragRows.length > 0 && (
+            <>
+              {p.storySel.length > 0 && <hr className="lib-sep" />}
+              <h4 className="lib-subhead">Фрагменти</h4>
+              <div className="lib-cards">
+                {fragRows.map((fid) => (
+                  <FragCard key={fid} fid={fid} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div className="lib-scroll">
