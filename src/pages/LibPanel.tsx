@@ -629,14 +629,39 @@ export function LibPanel(p: Props) {
     body = <StoryRows ids={tagStories(nav.id)} empty="З цим тегом ще немає історій." />
   }
 
-  if (!p.open)
+  if (!p.open) {
+    const railGo = (to: Nav) => {
+      go(to)
+      p.onToggle()
+    }
+    const items: { icon: IconName; label: string; run: () => void }[] = [
+      { icon: "grid", label: "Усі історії", run: () => railGo({ v: "all" }) },
+      { icon: "list", label: "Теми", run: () => railGo({ v: "topics" }) },
+      { icon: "star", label: "Вибране", run: () => railGo({ v: "favs" }) },
+      { icon: "tag", label: "Теги", run: () => railGo({ v: "tags" }) },
+      { icon: "file", label: "Сценарії", run: p.onOpenScripts },
+    ]
     return (
       <aside className="lib-rail" aria-label="Бібліотека">
-        <IconButton aria-label="Показати бібліотеку" onClick={p.onToggle}>
-          <Icon n="panelR" s={20} />
-        </IconButton>
+        <Tip text="Показати бібліотеку">
+          <IconButton aria-label="Показати бібліотеку" onClick={p.onToggle}>
+            <Icon n="panelR" s={20} />
+          </IconButton>
+        </Tip>
+        <hr className="lib-rail-sep" />
+        {items.map((it, i) => (
+          <span key={it.label} className="lib-rail-item">
+            {i === 1 && <hr className="lib-rail-sep" />}
+            <Tip text={it.label}>
+              <IconButton aria-label={it.label} onClick={it.run}>
+                <Icon n={it.icon} s={22} />
+              </IconButton>
+            </Tip>
+          </span>
+        ))}
       </aside>
     )
+  }
   const collapseBtn = (
     <IconButton
       className="lib-collapse"

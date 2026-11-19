@@ -141,7 +141,7 @@
 /* згорнута права панель — вузька «рейка» з іконкою поза карткою, як зліва */
 .shell.lib-off { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--sidebar-rail-width); }
 .shell.side-rail.lib-off { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) var(--sidebar-rail-width); }
-.lib-rail { display: flex; justify-content: center; padding: var(--space-2) 0; }
+.lib-rail { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-2) 0; }
 
 /* теми як швидкі запити в чаті */
 .topic-list { display: grid; gap: var(--space-half); margin: 0 0 var(--space-2) var(--space-6); padding-left: var(--space-3); border-left: var(--border-width) solid var(--color-border); }
@@ -333,3 +333,8 @@
 .lib-title-btn { width: auto; gap: var(--space-2); }
 .lib-head .lib-collapse, .lib-crumb .lib-collapse { flex: none; }
 .lib-crumb .lib-collapse { margin-left: auto; }
+
+/* згорнута права панель: іконки розділів */
+.lib-rail .lib-rail-item { display: contents; }
+.lib-rail-sep { width: var(--control-md); height: var(--border-width); margin: var(--space-1) 0; border: 0; background: var(--color-border); }
+.lib-rail [data-tip]:hover::after, .lib-rail [data-tip]:focus-visible::after { right: calc(100% + var(--space-2)); left: auto; bottom: auto; top: 50%; transform: translateY(-50%); }

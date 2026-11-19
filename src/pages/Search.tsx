@@ -735,7 +735,7 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
     <Modal wide title="Збережені сценарії" onClose={onClose}>
       {data.scripts.length === 0 && (
         <Empty icon="file" title="Сценаріїв ще немає">
-          Оберіть фрагменти та натисніть «Сценарій».
+          Оберіть історії або фрагменти й натисніть «Згенерувати сценарій».
         </Empty>
       )}
       {data.scripts.map((sc) => (
