@@ -425,7 +425,7 @@ export default function Search() {
                     <div className="home-logo">
                       <Logo size={56} />
                     </div>
-                    <h1>Що ви шукаєте в архіві?</h1>
+                    <h1>Що шукаєте в архіві?</h1>
                     {!aiCan && (
                       <p className="locknote">
                         <Icon n="lock" s={13} /> Відповіді ШІ — з Розширеною роллю.
