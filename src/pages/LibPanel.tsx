@@ -177,7 +177,7 @@ export function LibPanel(p: Props) {
               >
                 <span>
                   {topic === "all"
-                    ? "Теми"
+                    ? "Усі теми"
                     : RUBRICS.find((r) => r.id === topic)?.title}
                 </span>
                 <span className={`acc-chev ${topicMenu ? "is-open" : ""}`}>
