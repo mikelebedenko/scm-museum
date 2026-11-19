@@ -12,3 +12,18 @@
 .mpanel.inline .mgrid { gap: var(--space-4); }
 .mpanel.inline .mtitle { flex-direction: column; align-items: stretch; gap: var(--space-3); }
 .mpanel.inline .mtitle h1 { font: var(--type-h3); }
+
+/* компактний плеєр у правій панелі */
+.mpanel.inline .tcbig { display: none; }
+.mpanel.inline .stream { padding: var(--space-1); }
+.mpanel.inline .stream-text { display: none; }
+.mpanel.inline .eq { inset: 36% 12% 30%; opacity: .7; }
+.mpanel.inline .cue { left: var(--space-3); right: var(--space-3); bottom: var(--space-2); padding: var(--space-1) var(--space-3); font-size: var(--fs-sm); line-height: var(--lh-snug); border-radius: var(--radius-md); }
+.mpanel.inline .pbar { padding: var(--space-3); gap: var(--space-2); }
+.mpanel.inline .prow { flex-wrap: nowrap; gap: var(--space-2); }
+.mpanel.inline .pl-grp, .mpanel.inline .pr-grp { gap: var(--space-1); }
+.mpanel.inline .skip { padding: 0 var(--space-2); }
+.mpanel.inline .pp { width: var(--control-md); height: var(--control-md); }
+.mpanel.inline .ptime { margin-left: var(--space-1); font-size: var(--fs-sm); white-space: nowrap; }
+.mpanel.inline .vol { display: none; }
+.mpanel.inline .pill { height: var(--control-sm); padding: 0 var(--space-2); font-size: var(--fs-sm); }

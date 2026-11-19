@@ -158,9 +158,11 @@ export default function Media({
                   <Icon n="video" s={54} />
                 </div>
               )}
-              <div className="stream">
+              <div className="stream" title="Потік зі сховища Замовника · копія не зберігається">
                 <i />
-                Потік зі сховища Замовника · копія не зберігається
+                <span className="stream-text">
+                  Потік зі сховища Замовника · копія не зберігається
+                </span>
               </div>
               <div className="tcbig">
                 {fmt(t)}
