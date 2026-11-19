@@ -479,16 +479,15 @@ export default function Search() {
         <div className="side-top">
           {side && <span className="side-title">Чати</span>}
           <IconButton
-            size="sm"
             aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
             onClick={() => setSide(!side)}
           >
-            <Icon n="panelL" s={16} />
+            <Icon n="panelL" s={20} />
           </IconButton>
         </div>
         <nav className="side-nav">
           <button title="Новий чат" onClick={newChat}>
-            <Icon n="plus" s={16} />
+            <Icon n="plus" s={20} />
             <span className="lbl">Новий чат</span>
           </button>
         </nav>
@@ -535,7 +534,7 @@ export default function Search() {
             aria-label="Показати бібліотеку"
             onClick={() => setLib(true)}
           >
-            <Icon n="panelR" />
+            <Icon n="panelR" s={20} />
           </IconButton>
         )}
         {view === "browse" ? (
@@ -594,11 +593,10 @@ export default function Search() {
           <div className="side-head">
             <span>Бібліотека</span>
             <IconButton
-              size="sm"
               aria-label="Сховати бібліотеку"
               onClick={() => setLib(false)}
             >
-              <Icon n="panelR" s={16} />
+              <Icon n="panelR" s={20} />
             </IconButton>
           </div>
           <nav className="side-nav">
@@ -606,21 +604,21 @@ export default function Search() {
               className={view === "browse" ? "on" : ""}
               onClick={() => setView(view === "browse" ? "chat" : "browse")}
             >
-              <Icon n="list" s={16} />
+              <Icon n="list" s={20} />
               <span className="lbl">Теми</span>
             </button>
             <button onClick={() => setFavsM(true)}>
-              <Icon n="star" s={16} />
+              <Icon n="star" s={20} />
               <span className="lbl">Обране</span>
               {data.favs.length > 0 && <small>{data.favs.length}</small>}
             </button>
             <button onClick={() => setScripts(true)}>
-              <Icon n="file" s={16} />
+              <Icon n="file" s={20} />
               <span className="lbl">Чернетки</span>
               {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
             </button>
             <button onClick={() => setTagsM(true)}>
-              <Icon n="tag" s={16} />
+              <Icon n="tag" s={20} />
               <span className="lbl">Теги</span>
             </button>
           </nav>
