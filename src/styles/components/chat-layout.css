@@ -117,7 +117,7 @@
 
 /* права панель «Бібліотека» */
 .shell { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--lib-width); }
-.shell.side-rail { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) var(--lib-width); }
+.shell.side-rail { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) minmax(0, 1fr); }
 .shell.lib-off { grid-template-columns: var(--sidebar-width) minmax(0, 1fr); }
 .shell.side-rail.lib-off { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
 .lib { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow: hidden auto; padding: var(--space-4); background: var(--panel-bg); border-radius: var(--panel-radius); align-self: start; }
