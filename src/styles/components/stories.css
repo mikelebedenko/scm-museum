@@ -7,7 +7,7 @@
 .viewmode-head button.on { background: var(--color-accent); color: var(--color-text-on-accent); box-shadow: var(--shadow-accent); }
 .rubric-tabs { display: flex; flex: 1 1 480px; min-width: 0; gap: var(--space-2); flex-wrap: wrap; }
 .rubric-tabs .fbtn { max-width: 100%; }
-.rubric-tabs .fbtn span { min-width: 18px; height: 18px; display: grid; place-items: center; flex: none; padding: 0 var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font-size: var(--fs-xs); }
+.rubric-tabs .fbtn span { min-width: 20px; height: 20px; display: grid; place-items: center; flex: none; padding: 0 var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font-size: var(--fs-xs); }
 .rubric-tabs .fbtn.on span { background: var(--color-accent); color: var(--color-text-on-accent); }
 .rubric-view { max-width: 1160px; margin: 0 auto; }
 .rubric-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-6); padding: var(--space-2) var(--space-half) var(--space-4); }
@@ -34,6 +34,6 @@
 .story-card-body { display: grid; gap: var(--card-gap); padding: var(--card-padding); }
 .story-card-body header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
 .story-card-body h3 { font: var(--type-h4); }
-.story-card-body > p { min-height: 39px; color: var(--color-text-muted); font-size: var(--fs-md); line-height: 1.55; }
+.story-card-body > p { min-height: 40px; color: var(--color-text-muted); font-size: var(--fs-md); line-height: 1.55; }
 .story-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-top: var(--space-3); border-top: var(--border-width) solid var(--color-border); }
 @media (max-width: 1250px) { .story-grid { grid-template-columns: 1fr; } }

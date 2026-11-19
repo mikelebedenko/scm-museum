@@ -1,8 +1,8 @@
 /* ---------- картка фрагмента: групи за рівнями важливості ---------- */
 .frag { grid-template-columns: 176px minmax(0, 1fr); background: var(--color-surface-2); }
 .fr-media { position: relative; padding: var(--space-4) 0 var(--space-4) var(--space-4); }
-.fr-media .thumb { width: 100%; height: 118px; margin: 0; }
-.thumb .pos { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--color-border-stronger); }
+.fr-media .thumb { width: 100%; height: 120px; margin: 0; }
+.thumb .pos { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--color-border-stronger); }
 .thumb .pos i { position: absolute; top: 0; bottom: 0; background: var(--color-accent); border-radius: 0; }
 .thumb .kb { bottom: var(--space-2); }
 .cb.on-thumb { position: absolute; top: var(--space-6); left: var(--space-6); z-index: var(--z-raised); }

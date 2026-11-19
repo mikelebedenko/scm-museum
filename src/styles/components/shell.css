@@ -18,7 +18,7 @@
 .meinfo { text-align: left; line-height: 1.15; } .meinfo b { display: block; font-size: var(--fs-md); } .meinfo small { color: var(--color-text-subtle); font-size: var(--fs-xs); }
 .page { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
 .pop { position: absolute; z-index: var(--z-popover); background: var(--popover-bg); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); min-width: var(--popover-min-width); }
-.menu { right: 0; top: calc(100% + var(--space-2)); width: 270px; padding: var(--space-2) 0; }
+.menu { right: 0; top: calc(100% + var(--space-2)); width: 272px; padding: var(--space-2) 0; }
 .menu button { width: 100%; display: flex; gap: var(--space-3); align-items: center; padding: var(--space-2) var(--space-4); font-size: var(--fs-md); text-align: left; color: var(--color-text-muted); }
 .menu button:hover { background: var(--color-surface-3); color: var(--color-text); } .menu .danger { color: var(--color-danger); }
 .mhead { padding: var(--space-2) var(--space-4) var(--space-3); border-bottom: var(--border-width) solid var(--color-border); margin-bottom: var(--space-1); } .mhead b { display: block; font-size: var(--fs-md); } .mhead small { color: var(--color-success); font-size: var(--fs-xs); }

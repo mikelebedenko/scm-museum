@@ -67,7 +67,7 @@
 
   /* Tabs / Table */
   --tab-padding-x: var(--space-4);
-  --tab-padding-y: var(--space-3);
+  --tab-height: var(--control-lg);
   --table-cell-padding-x: var(--space-4);
   --table-cell-padding-y: var(--space-3);
 

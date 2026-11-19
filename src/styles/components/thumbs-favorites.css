@@ -1,6 +1,6 @@
 /* ---------- превʼю, квадратні чекбокси, обране, теги ---------- */
 .cb span, .box { border-radius: var(--radius-xs); border-width: var(--border-width-thick); }
-.cb span { width: 18px; height: 18px; }
+.cb span { width: 16px; height: 16px; }
 .box { width: 16px; height: 16px; }
 .frag { grid-template-columns: 96px 164px 1fr; }
 .thumb { position: relative; margin: var(--space-3) 0; width: 148px; height: 100px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface-3); align-self: start; flex: none; }
