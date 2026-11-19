@@ -171,7 +171,6 @@ export default function Search() {
         <span className="grow" />
         <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію з обраних джерел"}>
           <Button
-            size="sm"
             disabled={!perms.has("script") || scriptIds.length === 0}
             onClick={() => setScript(true)}
           >
