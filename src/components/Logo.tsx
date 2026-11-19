@@ -36,7 +36,7 @@ export function Logo({ size = "var(--logo-size)" }: { size?: number | string }) 
       width={size}
       height={size}
       viewBox="0 0 78 77"
-      fill="var(--color-accent)"
+      fill="var(--logo-fill, var(--color-accent))"
       role="img"
       aria-label="SCM.Museum"
     >

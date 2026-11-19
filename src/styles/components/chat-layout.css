@@ -155,7 +155,7 @@
 .cmp textarea { min-height: var(--space-12); }
 .cmp-send { position: static; }
 .cmp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
-.home-logo { display: grid; place-items: center; }
+.home-logo { display: grid; place-items: center; --logo-fill: var(--color-text-subtle); }
 .home h1 { font-weight: var(--fw-regular); }
 .home .sugs2 { margin-inline: calc(-1 * var(--space-10)); gap: var(--space-2); }
 .home .sugs2 button { padding-block: var(--space-1); min-height: var(--control-md); }
