@@ -477,12 +477,13 @@ export default function Search() {
     <div className={`shell ${side ? "" : "side-rail"} ${lib ? "" : "lib-off"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
         <div className="side-top">
+          {side && <span className="side-title">Чати</span>}
           <IconButton
             size="sm"
             aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
             onClick={() => setSide(!side)}
           >
-            <Icon n="list" s={16} />
+            <Icon n="panelL" s={16} />
           </IconButton>
         </div>
         <nav className="side-nav">
@@ -534,7 +535,7 @@ export default function Search() {
             aria-label="Показати бібліотеку"
             onClick={() => setLib(true)}
           >
-            <Icon n="list" />
+            <Icon n="panelR" />
           </IconButton>
         )}
         {view === "browse" ? (
@@ -597,7 +598,7 @@ export default function Search() {
               aria-label="Сховати бібліотеку"
               onClick={() => setLib(false)}
             >
-              <Icon n="list" s={16} />
+              <Icon n="panelR" s={16} />
             </IconButton>
           </div>
           <nav className="side-nav">

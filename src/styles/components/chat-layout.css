@@ -133,3 +133,7 @@
 
 /* центральна область — теж картка, як бічні панелі */
 .main { background: var(--panel-bg); border-radius: var(--panel-radius); }
+
+.side-top { justify-content: space-between; align-items: center; }
+.side.is-rail .side-top { justify-content: center; }
+.side-title { font: var(--type-h4); }

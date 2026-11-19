@@ -9,6 +9,18 @@ const P: Record<string, ReactNode> = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  panelL: (
+    <>
+      <rect x="4" y="5" width="16" height="14" rx="3" />
+      <path d="M9.5 5v14" />
+    </>
+  ),
+  panelR: (
+    <>
+      <rect x="4" y="5" width="16" height="14" rx="3" />
+      <path d="M14.5 5v14" />
+    </>
+  ),
   chat: <path d="M4 5h16v11H9l-5 4Z" />,
   star: (
     <path d="m12 3.5 2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.8l6-.8Z" />
