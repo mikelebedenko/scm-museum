@@ -366,3 +366,6 @@
 .lib-sheet-sum { color: var(--color-text-subtle); font-size: var(--fs-md); }
 .sel-toggle { margin-left: calc(var(--space-2) * -1); padding: var(--space-1) var(--space-2); border-radius: var(--radius-md); }
 .sel-toggle:focus-visible { outline-offset: 0; }
+
+/* «+» у «Новий чат»: видимий край значка на одній вертикалі із заголовком і списком */
+.side:not(.is-rail) .side-nav button:first-child svg { margin-left: calc(var(--space-1) * -1); margin-right: var(--space-1); }
