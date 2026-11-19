@@ -277,7 +277,7 @@
 .lib-picked li:hover { background: var(--color-surface-3); }
 .lib-picked-main { flex: 1; min-width: 0; display: grid; gap: var(--space-half); text-align: left; }
 .lib-picked-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-base); font-weight: var(--fw-medium); color: var(--color-text); }
-.lib-all { margin: 0 0 0 var(--space-1); }
+.lib-all { margin: 0 0 var(--space-1); padding: var(--space-2) var(--space-4); }
 .lib-all em { font-style: normal; font-size: var(--fs-md); color: var(--color-text-muted); }
 .lib-all.cb { align-items: center; gap: var(--space-2); }
 .lib-menu button.has-desc { height: auto; min-height: var(--control-xl); padding-top: var(--space-3); padding-bottom: var(--space-3); align-items: flex-start; }
