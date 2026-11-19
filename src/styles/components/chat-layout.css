@@ -445,3 +445,12 @@
 
 /* картинка карточки — на одній лівій осі з текстом заголовків (16px від краю контейнера) */
 .lib .lib-story:not(.is-text) { padding-left: var(--space-4); }
+
+/* згорнуті панелі: значки стоять на тій самій висоті, що й у розгорнутих — без «підстрибування» */
+.side.is-rail { padding-top: var(--space-4); }
+.lib-head { min-height: var(--control-lg); }
+.lib-rail { padding-top: var(--space-5); }
+.lib-rail { gap: 0; }
+.lib-rail-item button { margin-block: var(--space-2); }
+.lib-rail > .lib-rail-sep { margin-block: calc(var(--space-1) + var(--space-half)); }
+.lib-rail-item .lib-rail-sep { margin-block: calc(var(--space-2) + var(--space-half)); }
