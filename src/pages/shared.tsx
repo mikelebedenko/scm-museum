@@ -1,3 +1,5 @@
+import { Button } from "../components/Button"
+import { Chip } from "../components/Chip"
 import { useState } from "react"
 import { useActions, useMe } from "../store"
 import { Icon, Popover } from "../ui"
@@ -30,15 +32,11 @@ export function TagPicker({
   }
   return (
     <span className="relative">
-      <button
-        className="chip add"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
+      <Chip tone="add" onClick={() => setOpen(!open)} aria-expanded={open}>
         <Icon n="tag" s={12} />
         {label && "Тег"}
         <Icon n="plus" s={11} />
-      </button>
+      </Chip>
       <Popover open={open} onClose={() => setOpen(false)} className="tagpop">
         <div className="pop-t">Мої теги</div>
         <div className="pop-list">
@@ -65,9 +63,9 @@ export function TagPicker({
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && create()}
           />
-          <button className="btn gold sm" onClick={create}>
+          <Button variant="primary" size="sm" onClick={create}>
             Додати
-          </button>
+          </Button>
         </div>
       </Popover>
     </span>
@@ -89,7 +87,7 @@ export function UserTagChips({
       {ids.map((id) => {
         const t = data.tags.find((x) => x.id === id)
         return t ? (
-          <span key={id} className="chip mine">
+          <Chip tone="mine" key={id}>
             {t.name}
             {removable && (
               <button
@@ -99,7 +97,7 @@ export function UserTagChips({
                 <Icon n="close" s={10} />
               </button>
             )}
-          </span>
+          </Chip>
         ) : null
       })}
     </>

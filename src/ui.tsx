@@ -1,3 +1,4 @@
+import { IconButton } from "./components/IconButton"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
 const P: Record<string, ReactNode> = {
@@ -171,7 +172,7 @@ export function Hint({ text }: { text: string }) {
     </span>
   )
 }
-export function Tip({ text, children }: { text: string children: ReactNode }) {
+export function Tip({ text, children }: { text: string; children: ReactNode }) {
   return (
     <span className="tipw" data-tip={text}>
       {children}
@@ -207,9 +208,9 @@ export function Modal({
       >
         <header>
           <h3>{title}</h3>
-          <button className="ib" onClick={onClose} aria-label="Закрити">
+          <IconButton onClick={onClose} aria-label="Закрити">
             <Icon n="close" />
-          </button>
+          </IconButton>
         </header>
         <div className="mbody">{children}</div>
         {foot && <footer>{foot}</footer>}
@@ -253,7 +254,7 @@ export function toast(msg: string) {
   dispatchEvent(new CustomEvent("kd-toast", { detail: msg }))
 }
 export function Toasts() {
-  const [items, setItems] = useState<{ id: number m: string }[]>([])
+  const [items, setItems] = useState<{ id: number; m: string }[]>([])
   useEffect(() => {
     const f = (e: Event) => {
       const id = Date.now() + Math.random()

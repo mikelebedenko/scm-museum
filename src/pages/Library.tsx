@@ -1,3 +1,6 @@
+import { Button } from "../components/Button"
+import { Chip } from "../components/Chip"
+import { IconButton } from "../components/IconButton"
 import { useMemo, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
 import { Icon, Modal, Empty, toast } from "../ui"
@@ -49,10 +52,10 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && add()}
         />
-        <button className="btn gold" onClick={add} disabled={!name.trim()}>
+        <Button variant="primary" onClick={add} disabled={!name.trim()}>
           <Icon n="plus" s={14} />
           Створити
-        </button>
+        </Button>
       </div>
       {data.tags.length === 0 && (
         <Empty icon="tag" title="Тегів ще немає">
@@ -73,12 +76,12 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
                     if (e.key === "Escape") setEdit(null)
                   }}
                 />
-                <button className="btn gold sm" onClick={() => save(t.id)}>
+                <Button variant="primary" size="sm" onClick={() => save(t.id)}>
                   Зберегти
-                </button>
-                <button className="btn sm" onClick={() => setEdit(null)}>
+                </Button>
+                <Button size="sm" onClick={() => setEdit(null)}>
                   Скасувати
-                </button>
+                </Button>
               </div>
             ) : (
               <div className="tr1">
@@ -87,8 +90,8 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
                   {t.name}
                 </b>
                 <small>{uses(t.id)} історій</small>
-                <button
-                  className="ib sm"
+                <IconButton
+                  size="sm"
                   aria-label="Перейменувати"
                   onClick={() => {
                     setEdit(t.id)
@@ -96,24 +99,25 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
                   }}
                 >
                   <Icon n="edit" s={14} />
-                </button>
-                <button
-                  className="ib sm"
+                </IconButton>
+                <IconButton
+                  size="sm"
                   aria-label="Видалити"
                   onClick={() => setDel(t.id)}
                 >
                   <Icon n="trash" s={14} />
-                </button>
+                </IconButton>
               </div>
             )}
             {del === t.id && (
               <div className="confirm">
                 <span>Видалити тег і зняти його з {uses(t.id)} історій?</span>
-                <button className="btn sm" onClick={() => setDel(null)}>
+                <Button size="sm" onClick={() => setDel(null)}>
                   Ні
-                </button>
-                <button
-                  className="btn danger sm"
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
                   onClick={() => {
                     a.deleteTag(t.id)
                     setDel(null)
@@ -121,7 +125,7 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
                   }}
                 >
                   Видалити
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -168,14 +172,14 @@ export function FavoritesModal({
       <div className="filters flat">
         <TagFilter sel={tagF} toggle={toggle} />
         {tagF.map((t) => (
-          <span key={t} className="chip on">
+          <Chip tone="selected" key={t}>
             {t.startsWith("my:")
               ? data.tags.find((x) => x.id === t.slice(3))?.name
               : t}
             <button onClick={() => toggle(t)}>
               <Icon n="close" s={10} />
             </button>
-          </span>
+          </Chip>
         ))}
         {tagF.length > 0 && (
           <button className="lnk" onClick={() => setTagF([])}>
@@ -235,16 +239,15 @@ export function FavoritesModal({
                 </p>
                 <div className="chips">
                   {s.tags.slice(0, 4).map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
+                    <Chip key={t}>{t}</Chip>
                   ))}
                   <UserTagChips storyId={s.id} removable />
                   <TagPicker storyId={s.id} />
                 </div>
               </div>
-              <button
-                className="ib fav on"
+              <IconButton
+                active
+                className="fav"
                 aria-label="Видалити з Обраного"
                 title="Видалити з Обраного"
                 onClick={() => {
@@ -253,7 +256,7 @@ export function FavoritesModal({
                 }}
               >
                 <Icon n="star" s={16} fill />
-              </button>
+              </IconButton>
             </div>
           )
         })}

@@ -1,3 +1,6 @@
+import { Button } from "../components/Button"
+import { Chip } from "../components/Chip"
+import { IconButton } from "../components/IconButton"
 import { useEffect, useRef, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
 import { Icon, Hint, Empty, Popover, toast } from "../ui"
@@ -93,9 +96,7 @@ export default function Media({
             «Відкрита». Матеріали недоступні в результатах, чатах, Обраному та
             за прямими посиланнями.
           </p>
-          <button className="btn" onClick={onClose}>
-            Закрити
-          </button>
+          <Button onClick={onClose}>Закрити</Button>
         </div>
       </div>
     )
@@ -249,14 +250,13 @@ export default function Media({
                   </span>
                 </div>
                 <div className="pr-grp">
-                  <button
-                    className="ib"
+                  <IconButton
                     onClick={() => setMuted(!muted)}
                     aria-label={muted ? "Увімкнути звук" : "Вимкнути звук"}
                     title="Звук"
                   >
                     <Icon n={muted || vol === 0 ? "mute" : "volume"} s={18} />
-                  </button>
+                  </IconButton>
                   <input
                     className="vol"
                     type="range"
@@ -359,8 +359,8 @@ export default function Media({
                   {LANG[m.lang]} · {m.recorded} · {fmt(m.duration)}
                 </p>
               </div>
-              <button
-                className={`btn ${fav ? "gold" : ""}`}
+              <Button
+                variant={fav ? "primary" : "default"}
                 onClick={() => {
                   a.toggleFav(m.storyId)
                   toast(
@@ -372,7 +372,7 @@ export default function Media({
               >
                 <Icon n="star" s={14} fill={fav} />
                 {fav ? "Історія в Обраному" : "Додати історію"}
-              </button>
+              </Button>
             </div>
           </section>
           <section className="mright">
@@ -437,9 +437,7 @@ export default function Media({
                 </h4>
                 <div className="chips">
                   {m.tags.map((x) => (
-                    <span key={x} className="chip">
-                      {x}
-                    </span>
+                    <Chip key={x}>{x}</Chip>
                   ))}
                 </div>
                 <h4>Мої теги</h4>

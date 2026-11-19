@@ -197,7 +197,7 @@ function seed(): State {
 }
 
 const KEY = "kd_state_v4"
-type Ctx = { state: State update: (fn: (s: State) => void) => void }
+type Ctx = { state: State; update: (fn: (s: State) => void) => void }
 const C = createContext<Ctx>(null as unknown as Ctx)
 
 export function StoreProvider({ children }: { children: ReactNode }) {

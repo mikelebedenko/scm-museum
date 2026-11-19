@@ -1,3 +1,6 @@
+import { Button } from "../components/Button"
+import { Chip } from "../components/Chip"
+import { IconButton } from "../components/IconButton"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
 import Media from "./Media"
@@ -40,7 +43,7 @@ export default function Search() {
   const [sel, setSel] = useState<string[]>([])
   const [storySel, setStorySel] = useState<string[]>([])
   const [script, setScript] = useState(false)
-  const [media, setMedia] = useState<{ id: string t: number e: number } | null>(
+  const [media, setMedia] = useState<{ id: string; t: number; e: number } | null>(
     null,
   )
   const [favOnly, setFavOnly] = useState(false)
@@ -195,23 +198,23 @@ export default function Search() {
                       </small>
                       {hq && snippet(c) && <em>…{snippet(c)}…</em>}
                     </button>
-                    <button
-                      className="ib sm"
+                    <IconButton
+                      size="sm"
                       onClick={() => setDel(c.id)}
                       aria-label="Видалити чат"
                     >
                       <Icon n="trash" s={14} />
-                    </button>
+                    </IconButton>
                   </div>
                 ))}
               </div>
             </Popover>
           </div>
           <Tip text="Створити новий пошуковий чат">
-            <button className="btn" onClick={newChat}>
+            <Button onClick={newChat}>
               <Icon n="plus" s={14} />
               Новий чат
-            </button>
+            </Button>
           </Tip>
         </div>
 
@@ -299,12 +302,9 @@ export default function Search() {
                   )}
                 </button>
                 {m.status === "error" && (
-                  <button
-                    className="btn sm"
-                    onClick={() => send(m.query ?? "", true)}
-                  >
+                  <Button size="sm" onClick={() => send(m.query ?? "", true)}>
                     Повторити запит
-                  </button>
+                  </Button>
                 )}
               </div>
             ),
@@ -339,14 +339,14 @@ export default function Search() {
             }}
           />
           <div className="crow">
-            <button
-              className="btn gold"
+            <Button
+              variant="primary"
               disabled={busy || !input.trim()}
               onClick={() => send(input)}
             >
               <Icon n="send" s={14} />
               Шукати
-            </button>
+            </Button>
           </div>
         </div>
       </section>
@@ -398,22 +398,22 @@ export default function Search() {
             )}
           </div>
           <Tip text="Мій список «Обране»">
-            <button className="btn" onClick={() => setFavsM(true)}>
+            <Button onClick={() => setFavsM(true)}>
               <Icon n="star" s={14} />
               Обране{data.favs.length ? ` · ${data.favs.length}` : ""}
-            </button>
+            </Button>
           </Tip>
           <Tip text="Створення, редагування та видалення власних тегів">
-            <button className="btn" onClick={() => setTagsM(true)}>
+            <Button onClick={() => setTagsM(true)}>
               <Icon n="tag" s={14} />
               Теги
-            </button>
+            </Button>
           </Tip>
           <Tip text="Збережені чернетки сценаріїв">
-            <button className="btn" onClick={() => setScripts(true)}>
+            <Button onClick={() => setScripts(true)}>
               <Icon n="file" s={14} />
               Чернетки{data.scripts.length ? ` · ${data.scripts.length}` : ""}
-            </button>
+            </Button>
           </Tip>
           <Tip
             text={
@@ -424,14 +424,14 @@ export default function Search() {
                   : "Створити текстову чернетку сценарію з обраних джерел"
             }
           >
-            <button
-              className="btn gold"
+            <Button
+              variant="primary"
               disabled={!perms.has("script") || scriptIds.length === 0}
               onClick={() => setScript(true)}
             >
               <Icon n="spark" s={14} />
               Згенерувати сценарій
-            </button>
+            </Button>
           </Tip>
         </div>
         <div className="filters">
@@ -503,14 +503,14 @@ export default function Search() {
         {view === "search" && tagF.length > 0 && (
           <div className="activetags">
             {tagF.map((t) => (
-              <span key={t} className="chip on">
+              <Chip tone="selected" key={t}>
                 {t.startsWith("my:")
                   ? data.tags.find((x) => x.id === t.slice(3))?.name
                   : t}
                 <button onClick={() => toggleTag(t)}>
                   <Icon n="close" s={10} />
                 </button>
-              </span>
+              </Chip>
             ))}
           </div>
         )}
@@ -681,8 +681,9 @@ export default function Search() {
                           </button>
                         </p>
                       </div>
-                      <button
-                        className={`ib fav ${fav ? "on" : ""}`}
+                      <IconButton
+                        className="fav"
+                        active={fav}
                         onClick={() => {
                           a.toggleFav(m.storyId)
                           toast(
@@ -703,7 +704,7 @@ export default function Search() {
                         }
                       >
                         <Icon n="star" s={18} fill={fav} />
-                      </button>
+                      </IconButton>
                     </header>
                     <p className="desc">{f.desc}</p>
                     <p className="quote">
@@ -711,21 +712,19 @@ export default function Search() {
                     </p>
                     <div className="chips">
                       {f.tags.map((t) => (
-                        <span key={t} className="chip">
-                          {t}
-                        </span>
+                        <Chip key={t}>{t}</Chip>
                       ))}
                       <UserTagChips storyId={m.storyId} />
                       <TagPicker storyId={m.storyId} />
                     </div>
                     <footer className="fr-foot">
-                      <button
-                        className="btn sm"
+                      <Button
+                        size="sm"
                         onClick={() => setMedia({ id: m.id, t: s, e })}
                       >
                         <Icon n="play" s={12} fill />
                         Відкрити з {fmt(s)}
-                      </button>
+                      </Button>
                       <div
                         className="fr-rate"
                         role="group"
@@ -786,11 +785,9 @@ export default function Search() {
           onClose={() => setDel(null)}
           foot={
             <>
-              <button className="btn" onClick={() => setDel(null)}>
-                Скасувати
-              </button>
-              <button
-                className="btn danger"
+              <Button onClick={() => setDel(null)}>Скасувати</Button>
+              <Button
+                variant="danger"
                 onClick={() => {
                   a.deleteChat(del)
                   setDel(null)
@@ -799,7 +796,7 @@ export default function Search() {
                 }}
               >
                 Видалити
-              </button>
+              </Button>
             </>
           }
         >
@@ -868,16 +865,15 @@ function BrowseStory({
         <p>{story.summary}</p>
         <div className="chips">
           {story.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="chip">
-              {tag}
-            </span>
+            <Chip key={tag}>{tag}</Chip>
           ))}
           <UserTagChips storyId={story.id} />
           <TagPicker storyId={story.id} />
         </div>
         <footer className="story-actions">
-          <button
-            className={`btn sm ${fav ? "gold" : ""}`}
+          <Button
+            size="sm"
+            variant={fav ? "primary" : "default"}
             onClick={() => {
               a.toggleFav(story.id)
               toast(
@@ -889,7 +885,7 @@ function BrowseStory({
           >
             <Icon n="star" s={14} fill={fav} />
             {fav ? "В Обраному" : "Додати в Обране"}
-          </button>
+          </Button>
           <button className="lnk" onClick={() => onOpen(cover.id)}>
             Переглянути історію
           </button>
@@ -899,7 +895,7 @@ function BrowseStory({
   )
 }
 
-function ScriptModal({ ids, onClose }: { ids: string[] onClose: () => void }) {
+function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
   const a = useActions()
   const [prompt, setPrompt] = useState("")
   const [out, setOut] = useState<string | null>(null)
@@ -920,8 +916,7 @@ function ScriptModal({ ids, onClose }: { ids: string[] onClose: () => void }) {
       foot={
         out ? (
           <>
-            <button
-              className="btn"
+            <Button
               onClick={() => {
                 navigator.clipboard?.writeText(out)
                 toast("Скопійовано")
@@ -929,24 +924,22 @@ function ScriptModal({ ids, onClose }: { ids: string[] onClose: () => void }) {
             >
               <Icon n="copy" s={14} />
               Копіювати
-            </button>
-            <button className="btn gold" onClick={onClose}>
+            </Button>
+            <Button variant="primary" onClick={onClose}>
               Готово
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button className="btn" onClick={onClose}>
-              Скасувати
-            </button>
-            <button
-              className="btn gold"
+            <Button onClick={onClose}>Скасувати</Button>
+            <Button
+              variant="primary"
               disabled={!prompt.trim() || busy}
               onClick={run}
             >
               <Icon n="spark" s={14} />
               {busy ? "Генерація…" : "Згенерувати"}
-            </button>
+            </Button>
           </>
         )
       }
@@ -1009,8 +1002,8 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
             <small>
               {dt(sc.created)} · {sc.sources.length} матеріалів
             </small>
-            <button
-              className="ib sm"
+            <IconButton
+              size="sm"
               aria-label="Копіювати"
               onClick={() => {
                 navigator.clipboard?.writeText(sc.body)
@@ -1018,9 +1011,9 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
               }}
             >
               <Icon n="copy" s={14} />
-            </button>
-            <button
-              className="ib sm"
+            </IconButton>
+            <IconButton
+              size="sm"
               aria-label="Видалити"
               onClick={() => {
                 a.deleteScript(sc.id)
@@ -1028,7 +1021,7 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
               }}
             >
               <Icon n="trash" s={14} />
-            </button>
+            </IconButton>
           </div>
           <p className="muted sm">Промпт: {sc.prompt}</p>
           {open === sc.id && <pre className="scriptout">{sc.body}</pre>}

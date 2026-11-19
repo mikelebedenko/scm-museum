@@ -81,3 +81,15 @@
 - сирі кольори: `#hex`, `rgb()/rgba()/hsl()`;
 - `px` у `padding`, `margin`, `gap`, `font-size`, `border-radius`, `z-index` (мають бути `--space-*`, `--fs-*`, `--radius-*`, `--z-*`).
 Висоти, ширини та негативні відступи не перевіряються. При порушеннях команда виходить з кодом 1 і друкує файл та рядок.
+
+## Компоненти (src/components)
+| Компонент | Props |
+|---|---|
+| `Button` | `variant`: default · primary · danger; `size`: md · sm; `wide` |
+| `IconButton` | `aria-label` (обов'язково), `size`: md · sm, `active` |
+| `Chip` | `tone`: default · mine · selected · add |
+
+Усі три — тонкі обгортки над класами `.btn` / `.ib` / `.chip`; розміри, радіуси й кольори беруться з Component Tokens. Нові кнопки пишемо через компоненти, а не `<button className="btn…">`.
+Показ усіх варіантів: `/#/tokens`.
+
+> Не запускайте `pnpm format` (oxfmt) на файлах з інлайновими типами: він прибирає `;` у `{ a: string; b: number }` і ламає синтаксис.
