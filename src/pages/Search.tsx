@@ -63,6 +63,7 @@ export default function Search() {
   const [view, setView] = useState<"chat" | "browse">("chat")
   const [side, setSide] = useState(true)
   const [lib, setLib] = useState(true)
+  const [topicsOpen, setTopicsOpen] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
@@ -147,6 +148,7 @@ export default function Search() {
     setStorySel([])
   }
   const lastAi = aiMsgs[aiMsgs.length - 1]
+  const lastQuery = lastAi?.query
   const empty = !chat || chat.msgs.length === 0
   const aiCan = perms.has("ai")
 
@@ -540,9 +542,17 @@ export default function Search() {
                     {composer}
                     {disclaimer}
                     <div className="sugs2">
-                      {SUGGESTIONS.slice(0, 4).map((s) => (
+                      {SUGGESTIONS.slice(0, 2).map((s) => (
                         <button key={s} onClick={() => send(s)}>
                           {s}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="sugs2 topics-row">
+                      <span>Або оберіть тему:</span>
+                      {RUBRICS.map((r) => (
+                        <button key={r.id} title={r.description} onClick={() => send(r.title)}>
+                          {r.title}
                         </button>
                       ))}
                     </div>
@@ -600,12 +610,30 @@ export default function Search() {
           </div>
           <nav className="side-nav">
             <button
-              className={view === "browse" ? "on" : ""}
-              onClick={() => setView(view === "browse" ? "chat" : "browse")}
+              className={topicsOpen ? "on" : ""}
+              aria-expanded={topicsOpen}
+              onClick={() => setTopicsOpen(!topicsOpen)}
             >
               <Icon n="list" s={20} />
               <span className="lbl">Теми</span>
+              <small>{RUBRICS.length}</small>
             </button>
+            {topicsOpen && (
+              <div className="topic-list">
+                {RUBRICS.map((r) => (
+                  <button
+                    key={r.id}
+                    title={r.description}
+                    className={lastQuery === r.title ? "on" : ""}
+                    onClick={() => send(r.title)}
+                    disabled={busy}
+                  >
+                    {r.title}
+                    <small>{r.storyIds.length}</small>
+                  </button>
+                ))}
+              </div>
+            )}
             <button onClick={() => setFavsM(true)}>
               <Icon n="star" s={20} />
               <span className="lbl">Обране</span>
