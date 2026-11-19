@@ -791,11 +791,91 @@ export function LibPanel(p: Props) {
   const showBar = !!p.selSummary
   return (
     <aside className="lib" aria-label="Бібліотека">
-      {sheet ? (
-        <div className="lib-sheet">
+      <div className="lib-main">
+        <div className="lib-scroll">
+            {nav.v === "menu" ? (
+              <>
+                <div className="lib-head">
+                  <button
+                    className="acc-head side-head lib-title-btn"
+                    aria-expanded={menuOpen}
+                    onClick={() => setMenuOpen(!menuOpen)}
+                  >
+                    <span>Бібліотека</span>
+                    <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
+                      <Icon n="down" s={22} />
+                    </span>
+                  </button>
+                  {collapseBtn}
+                </div>
+                {menuOpen && (
+                  <nav className="side-nav lib-menu lib-menu-main">
+                    <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
+                    <hr className="lib-sep" />
+                    <NavItem icon="list" label="Історії за темами" count={RUBRICS.length} to={{ v: "topics" }} />
+                    <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
+                    <NavItem icon="tag" label="Список тегів" to={{ v: "tags" }} />
+                    <button onClick={p.onOpenScripts}>
+                      <Icon n="file" s={24} />
+                      <span className="lbl">Згенеровані сценарії</span>
+                      {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+                    </button>
+                  </nav>
+                )}
+                {p.foundStories.length > 0 && (
+                  <div className="lib-section">
+                    <button
+                      className="acc-head side-head"
+                      aria-expanded={foundOpen}
+                      onClick={() => setFoundOpen(!foundOpen)}
+                    >
+                      <span>Знайдені історії в чаті</span>
+                      <small className="lib-count">{p.foundStories.length}</small>
+                      <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
+                        <Icon n="down" s={22} />
+                      </span>
+                    </button>
+                    {foundOpen && p.foundQuery && (
+                      <p className="lib-found-q">
+                        За запитом «{p.foundQuery}»
+                      </p>
+                    )}
+                    {foundOpen && (
+                      <div className="lib-cards">
+                        {p.foundStories.map((m) => (
+                          <StoryCard key={m.storyId} id={m.storyId} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="lib-crumb">
+                  <IconButton aria-label="Назад" onClick={back}>
+                    <Icon n="back" s={20} />
+                  </IconButton>
+                  <span>{title}</span>
+                  {collapseBtn}
+                </div>
+                <div className="lib-body">{body}</div>
+              </>
+            )}
+          </div>
+        {sheet && (
+          <>
+            <button className="lib-backdrop" aria-label="Закрити список" onClick={() => setSheet(false)} />
+        <div className="lib-sheet" role="dialog" aria-label="Для сценарію">
+          <span className="lib-sheet-handle" aria-hidden />
           <div className="lib-sheet-head">
-            <h3 className="lib-sheet-title">Для сценарію</h3>
-            <p className="lib-sheet-sum">{sheetSummary}</p>
+            <div>
+              <h3 className="lib-sheet-title">Для сценарію</h3>
+              <p className="lib-sheet-sum">{sheetSummary}</p>
+            </div>
+            <IconButton aria-label="Закрити" onClick={() => setSheet(false)}>
+              <Icon n="close" s={20} />
+            </IconButton>
           </div>
           {p.storySel.length > 0 && (
             <>
@@ -819,79 +899,9 @@ export function LibPanel(p: Props) {
             </>
           )}
         </div>
-      ) : (
-        <div className="lib-scroll">
-          {nav.v === "menu" ? (
-            <>
-              <div className="lib-head">
-                <button
-                  className="acc-head side-head lib-title-btn"
-                  aria-expanded={menuOpen}
-                  onClick={() => setMenuOpen(!menuOpen)}
-                >
-                  <span>Бібліотека</span>
-                  <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
-                    <Icon n="down" s={22} />
-                  </span>
-                </button>
-                {collapseBtn}
-              </div>
-              {menuOpen && (
-                <nav className="side-nav lib-menu lib-menu-main">
-                  <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
-                  <hr className="lib-sep" />
-                  <NavItem icon="list" label="Історії за темами" count={RUBRICS.length} to={{ v: "topics" }} />
-                  <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
-                  <NavItem icon="tag" label="Список тегів" to={{ v: "tags" }} />
-                  <button onClick={p.onOpenScripts}>
-                    <Icon n="file" s={24} />
-                    <span className="lbl">Згенеровані сценарії</span>
-                    {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-                  </button>
-                </nav>
-              )}
-              {p.foundStories.length > 0 && (
-                <div className="lib-section">
-                  <button
-                    className="acc-head side-head"
-                    aria-expanded={foundOpen}
-                    onClick={() => setFoundOpen(!foundOpen)}
-                  >
-                    <span>Знайдені історії в чаті</span>
-                    <small className="lib-count">{p.foundStories.length}</small>
-                    <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
-                      <Icon n="down" s={22} />
-                    </span>
-                  </button>
-                  {foundOpen && p.foundQuery && (
-                    <p className="lib-found-q">
-                      За запитом «{p.foundQuery}»
-                    </p>
-                  )}
-                  {foundOpen && (
-                    <div className="lib-cards">
-                      {p.foundStories.map((m) => (
-                        <StoryCard key={m.storyId} id={m.storyId} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
-          ) : (
-            <>
-              <div className="lib-crumb">
-                <IconButton aria-label="Назад" onClick={back}>
-                  <Icon n="back" s={20} />
-                </IconButton>
-                <span>{title}</span>
-                {collapseBtn}
-              </div>
-              <div className="lib-body">{body}</div>
-            </>
-          )}
-        </div>
-      )}
+          </>
+        )}
+      </div>
       {showBar && (
         <div className="lib-bar">
           <div className="sel-row">

@@ -426,3 +426,14 @@
 .lib-wave-mini i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 24%, transparent); }
 .lib-page.is-audio i.trk { width: 100%; height: var(--space-1); background: color-mix(in srgb, var(--color-text) 14%, transparent); }
 .lib-hero.is-audio .lib-read-btn { top: auto; bottom: var(--space-5); transform: translateX(-50%); box-shadow: var(--shadow-md); }
+
+/* шторка «Для сценарію» — накладка поверх бібліотеки з затемненням; повертається кліком по фону, ×, Esc або рядком «Вибрано» */
+.lib-main { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.lib-backdrop { position: absolute; inset: 0; z-index: 3; background: color-mix(in srgb, var(--color-bg) 72%, transparent); cursor: default; animation: sheet-fade var(--duration-base) ease-out; }
+.lib .lib-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; flex: none; max-height: 72%; overflow: hidden auto; padding: var(--space-2) var(--space-4) var(--space-4); border-radius: var(--radius-xl) var(--radius-xl) 0 0; background: var(--panel-bg); border-top: var(--border-width) solid var(--color-border-strong); box-shadow: var(--shadow-md); animation: sheet-up var(--duration-base) ease-out; }
+.lib-sheet-handle { justify-self: center; width: var(--space-10); height: var(--space-1); border-radius: var(--radius-pill); background: var(--color-border-strong); }
+.lib-sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-1) 0 var(--space-4); }
+@keyframes sheet-up { from { transform: translateY(var(--space-6)); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+.lib-sheet .lib-subhead { padding-inline: var(--space-4); }
+.lib-sheet-head { padding-right: var(--space-2); }
