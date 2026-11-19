@@ -16,12 +16,12 @@
 .frag:hover { border-color: var(--card-border-hover); }
 .mpanel { border-radius: var(--radius-xl); background: var(--color-surface-1); }
 .modal, .pop { border-radius: var(--modal-radius); } .toast { border-radius: var(--toast-radius); }
-.q { font: var(--type-h4); padding: var(--space-3) var(--space-4); background: var(--color-surface-2); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px; align-self: flex-start; max-width: 92%; } .q .mark { display: none; }
+.q { font: var(--type-h4); padding: var(--space-3) var(--space-4); background: var(--color-surface-2); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-xs); align-self: flex-start; max-width: 92%; } .q .mark { display: none; }
 .intro h2 { font-size: var(--fs-2xl); } .sugs button { border-radius: var(--radius-pill); }
 .ib { border-radius: var(--icon-button-radius); }
 .bar, .track { border-radius: var(--radius-pill); } .bar i { border-radius: var(--radius-pill); }
 .sugs button { border: 0; border-radius: var(--radius-lg); padding: var(--space-3) var(--space-4); } .sugs button:hover { background: var(--color-surface-3); }
-.ans { margin-left: 0; border-left: 0; border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px; border: var(--border-width) solid transparent; } .ans.cur { border-color: var(--color-accent-border); }
+.ans { margin-left: 0; border-left: 0; border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-xs); border: var(--border-width) solid transparent; } .ans.cur { border-color: var(--color-accent-border); }
 .tc { background: var(--color-surface-3); border-right: 0; }
 .filters select { height: var(--control-md); padding: 0 var(--space-4); border-radius: var(--radius-pill); border: var(--border-width) solid var(--color-border-strong); background: var(--color-surface-2); color: var(--color-text-muted); font-size: var(--fs-md); }
 select { border-radius: var(--select-radius); border: var(--border-width) solid var(--field-border); background: var(--select-bg); padding: 0 var(--space-3); }

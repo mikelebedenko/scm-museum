@@ -75,3 +75,9 @@
 - `src/styles/tokens/` — токени; `src/styles/base.css` — reset і утиліти; `src/styles/components/*.css` — стилі за областями (shell, ui, search, media, player-*, fragment-card, stories…).
 - Файли `auth.css`, `personal.css`, `admin.css` (+ частини `shell.css`/`ui.css`) зараз не використовуються в UI (екрани входу, обраного, аналітики, адмінки) — залишені як заготовка.
 - У ряді файлів пізніші правила перекривають ранні (наприклад, кнопки та картки). Об'єднання дублікатів — окреме завдання.
+
+## Перевірка
+`pnpm lint:tokens` (скрипт `scripts/check-tokens.mjs`) шукає в `index.css`, `base.css` і `components/*.css`:
+- сирі кольори: `#hex`, `rgb()/rgba()/hsl()`;
+- `px` у `padding`, `margin`, `gap`, `font-size`, `border-radius`, `z-index` (мають бути `--space-*`, `--fs-*`, `--radius-*`, `--z-*`).
+Висоти, ширини та негативні відступи не перевіряються. При порушеннях команда виходить з кодом 1 і друкує файл та рядок.
