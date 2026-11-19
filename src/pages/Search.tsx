@@ -730,7 +730,7 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
         <>
           <div className="okmsg">
             <Icon n="check" />
-            Сценарій збережено. Знайти його можна в «Сценарії» у бібліотеці.
+            Сценарій збережено. Знайти його можна в розділі «Згенеровані сценарії» у бібліотеці.
           </div>
           <pre className="scriptout">{out}</pre>
         </>
@@ -758,9 +758,9 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
     }
   }
   return (
-    <Modal wide title="Збережені сценарії" onClose={onClose}>
+    <Modal wide title="Згенеровані сценарії" onClose={onClose}>
       {data.scripts.length === 0 && (
-        <Empty icon="file" title="Сценаріїв ще немає">
+        <Empty icon="file" title="Згенерованих сценаріїв ще немає">
           Оберіть історії або фрагменти й натисніть «Згенерувати сценарій».
         </Empty>
       )}

@@ -718,7 +718,7 @@ export function LibPanel(p: Props) {
       { icon: "list", label: "Теми", run: () => railGo({ v: "topics" }) },
       { icon: "star", label: "Вибрані історії", run: () => railGo({ v: "favs" }) },
       { icon: "tag", label: "Теги", run: () => railGo({ v: "tags" }) },
-      { icon: "file", label: "Сценарії", run: p.onOpenScripts },
+      { icon: "file", label: "Згенеровані сценарії", run: p.onOpenScripts },
     ]
     return (
       <aside className="lib-rail" aria-label="Бібліотека">
@@ -830,7 +830,7 @@ export function LibPanel(p: Props) {
                   <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
                   <button onClick={p.onOpenScripts}>
                     <Icon n="file" s={24} />
-                    <span className="lbl">Сценарії</span>
+                    <span className="lbl">Згенеровані сценарії</span>
                     {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
                   </button>
                 </nav>
