@@ -11,7 +11,7 @@
 .mpanel.inline .media { padding: 0; }
 .mpanel.inline .mgrid { gap: var(--space-4); }
 .mpanel.inline .mtitle { flex-direction: column; align-items: stretch; gap: var(--space-3); }
-.mpanel.inline .mtitle h1 { font: var(--type-h3); }
+.mpanel.inline .mtitle h1 { font: var(--type-h2); }
 
 /* компактний плеєр у правій панелі */
 .mpanel.inline .tcbig { display: none; }
@@ -38,3 +38,7 @@
 
 .mpanel.inline .mactions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .mpanel.inline .mtitle p { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+/* текстовий режим: розділювач між шапкою та текстом */
+.mpanel.inline .mtitle.is-text { padding-bottom: var(--space-4); border-bottom: var(--border-width) solid var(--color-border); }
+.mpanel.inline .mright.is-text { margin-top: var(--space-1); }

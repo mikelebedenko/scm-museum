@@ -370,7 +370,7 @@ export default function Media({
             </div>
               </>
             )}
-            <div className="mtitle">
+            <div className={`mtitle ${textual ? "is-text" : ""}`}>
               <div>
                 <h1>
                   {textual && m.kind !== "text"
