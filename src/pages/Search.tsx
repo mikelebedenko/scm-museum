@@ -153,46 +153,6 @@ export default function Search() {
   const empty = !chat || chat.msgs.length === 0
   const aiCan = perms.has("ai")
 
-  const filterControls = (
-
-        <>
-          <Segmented
-            value={type}
-            onChange={setType}
-            options={[
-              { value: "all", label: "Усі" },
-              { value: "video", label: "Відео" },
-              { value: "audio", label: "Аудіо" },
-            ]}
-          />
-          <LangFilter
-            sel={lang}
-            toggle={(l) =>
-              setLang((x) =>
-                x.includes(l) ? x.filter((y) => y !== l) : [...x, l],
-              )
-            }
-          />
-          <TagFilter sel={tagF} toggle={toggleTag} />
-          <FilterButton active={favOnly} onClick={() => setFavOnly(!favOnly)} aria-pressed={favOnly}>
-            <Icon n="star" s={13} fill={favOnly} />
-            Обране
-          </FilterButton>
-          {filtersOn && (
-            <LinkButton
-              onClick={() => {
-                setType("all")
-                setLang([])
-                setTagF([])
-                setFavOnly(false)
-              }}
-            >
-              Скинути
-            </LinkButton>
-          )}
-        </>
-  )
-
   const composer = (
     <div className="cmp">
       <textarea
@@ -209,15 +169,6 @@ export default function Search() {
         }}
       />
       <div className="cmp-bar">
-        <FilterButton
-          active={filtersOn || filtersOpen}
-          aria-expanded={filtersOpen}
-          onClick={() => setFiltersOpen(!filtersOpen)}
-        >
-          <Icon n="filter" s={13} />
-          Фільтри
-        </FilterButton>
-        {filtersOpen && filterControls}
         <span className="grow" />
         <IconButton
           className="cmp-send"
@@ -547,8 +498,6 @@ export default function Search() {
                       <Logo size={56} />
                     </div>
                     <h1>Що ви шукаєте в архіві?</h1>
-                    {composer}
-                    {disclaimer}
                     {!aiCan && (
                       <p className="locknote">
                         <Icon n="lock" s={13} /> Відповіді ШІ — з Розширеною роллю.
@@ -560,15 +509,13 @@ export default function Search() {
                 )}
               </div>
             </div>
-            {!empty && (
-              <div className="chat-dock">
-                <div className="chat-col">
-                  {!lib && selBar}
-                  {composer}
-                  {disclaimer}
-                </div>
+            <div className="chat-dock">
+              <div className="chat-col">
+                {!lib && selBar}
+                {composer}
+                {disclaimer}
               </div>
-            )}
+            </div>
           </>
         )}
         {media && (
