@@ -534,12 +534,6 @@ export default function Search() {
         <aside className="lib" aria-label="Бібліотека">
           <div className="side-head">
             <span>Бібліотека</span>
-            <IconButton
-              aria-label="Сховати бібліотеку"
-              onClick={() => setLib(false)}
-            >
-              <Icon n="panelR" s={20} />
-            </IconButton>
           </div>
           <nav className="side-nav">
             <button
