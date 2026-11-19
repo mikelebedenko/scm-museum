@@ -857,7 +857,7 @@ export function LibPanel(p: Props) {
                     aria-expanded={foundOpen}
                     onClick={() => setFoundOpen(!foundOpen)}
                   >
-                    <span>Знайдені історії</span>
+                    <span>Знайдені історії в чаті</span>
                     <small className="lib-count">{p.foundStories.length}</small>
                     <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
                       <Icon n="down" s={22} />
