@@ -61,7 +61,7 @@ export default function Search() {
   const active: Msg | undefined =
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
   const [view, setView] = useState<"chat" | "browse">("chat")
-  const [side, setSide] = useState(false)
+  const [side, setSide] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
@@ -473,20 +473,28 @@ export default function Search() {
   return (
     <div className={`shell ${side ? "" : "side-rail"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
-        <div className="side-top">
-          <IconButton
-            aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
-            onClick={() => setSide(!side)}
-          >
-            <Icon n="list" />
-          </IconButton>
-          {side && (
+        {side ? (
+          <>
+            <div className="side-head">
+              <span>Історія чатів</span>
+              <IconButton
+                size="sm"
+                aria-label="Згорнути меню"
+                onClick={() => setSide(false)}
+              >
+                <Icon n="list" s={16} />
+              </IconButton>
+            </div>
             <Button className="side-new" onClick={newChat}>
               <Icon n="plus" s={14} />
               Новий чат
             </Button>
-          )}
-        </div>
+          </>
+        ) : (
+          <IconButton aria-label="Розгорнути меню" onClick={() => setSide(true)}>
+            <Icon n="list" />
+          </IconButton>
+        )}
         {!side && (
           <IconButton aria-label="Новий чат" title="Новий чат" onClick={newChat}>
             <Icon n="plus" />
