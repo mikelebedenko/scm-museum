@@ -365,3 +365,17 @@
 .hit-actions { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .hit-score { padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
 .lib-story-body p.hit-quote { -webkit-line-clamp: 5; }
+
+/* текстова картка матеріалу: значок ліворуч, текст вирівняний */
+.lib-story.is-mat-text { grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: var(--space-3); }
+.lib-kind-ico-lg { width: var(--control-md); height: var(--control-md); border-radius: var(--radius-md); background: var(--color-surface-3); }
+.lib-story.is-mat-text .lib-story-body { padding-top: var(--space-half); }
+
+/* мітки типу й жанру — одна форма */
+.lib-meta .kind, .mtitle p .kind { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-muted); font-size: var(--fs-xs); font-weight: var(--fw-medium); letter-spacing: var(--ls-normal); text-transform: none; }
+.lib-meta .kind.video, .lib-meta .kind.audio, .lib-meta .kind.text, .mtitle p .kind.video, .mtitle p .kind.audio, .mtitle p .kind.text { color: var(--color-text-muted); }
+
+/* текстова історія: герой як у аудіо, цитата й «Читати далі» */
+.lib-hero.is-text .lib-thumb-audio { width: 100%; height: 100%; display: block; }
+.lib-quote-wrap { display: grid; gap: var(--space-2); justify-items: start; }
+.lib-quote { padding-left: var(--space-3); border-left: var(--border-width-thick) solid var(--color-border-strong); color: var(--color-text-muted); font-style: italic; line-height: var(--lh-relaxed); }

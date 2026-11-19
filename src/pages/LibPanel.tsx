@@ -416,8 +416,8 @@ export function LibPanel(p: Props) {
       ? "Повний текст розмови з поділом за мовцями"
       : `${m.speaker} · ${m.recorded}`
     return (
-      <article className={`lib-story is-${kind} ${current ? "selected" : ""}`}>
-        {kind !== "text" && (
+      <article className={`lib-story is-${kind} ${kind === "text" ? "is-mat-text" : ""} ${current ? "selected" : ""}`}>
+        {kind !== "text" ? (
           <div className="lib-thumb">
             <button onClick={onOpen} aria-label={`Відкрити ${heading}`}>
               {kind === "video" ? (
@@ -436,33 +436,35 @@ export function LibPanel(p: Props) {
               )}
             </button>
           </div>
+        ) : (
+          <span className="lib-kind-ico lib-kind-ico-lg">
+            <Icon n="file" s={22} />
+          </span>
         )}
         <div className="lib-story-body">
-          {kind === "text" ? (
-            <div className="lib-story-head">
-              <span className="lib-kind-ico">
-                <Icon n="file" s={18} />
-              </span>
-              <button className="lib-story-title" onClick={onOpen}>
-                {heading}
-              </button>
-            </div>
-          ) : (
-            <button className="lib-story-title" onClick={onOpen}>
-              {heading}
-            </button>
-          )}
+          <button className="lib-story-title" onClick={onOpen}>
+            {heading}
+          </button>
           <p>{desc}</p>
-          <span className="found-meta">
-            <Tip text={TYPE_LABEL[kind]}>
-              <Icon n={TYPE_ICON[kind]} s={14} />
-            </Tip>
-            {!asText && m.duration > 0 && (
-              <Tip text="Тривалість">
-                <span>{fmt(m.duration)}</span>
-              </Tip>
-            )}
-          </span>
+          {(kind !== "text" || (!asText && m.readMin)) && (
+            <span className="found-meta">
+              {kind !== "text" && (
+                <Tip text={TYPE_LABEL[kind]}>
+                  <Icon n={TYPE_ICON[kind]} s={14} />
+                </Tip>
+              )}
+              {kind !== "text" && m.duration > 0 && (
+                <Tip text="Тривалість">
+                  <span>{fmt(m.duration)}</span>
+                </Tip>
+              )}
+              {kind === "text" && !asText && m.readMin ? (
+                <Tip text="Час читання">
+                  <span>{m.readMin} хв читання</span>
+                </Tip>
+              ) : null}
+            </span>
+          )}
         </div>
       </article>
     )
@@ -565,13 +567,10 @@ export function LibPanel(p: Props) {
           </button>
         )}
         {cover.kind === "text" && (
-          <div className="lib-excerpt">
-            <p>{cover.segments[0]?.uk}</p>
-            <Button variant="primary" size="sm" onClick={() => play(cover.id, true)}>
-              <Icon n="file" s={14} />
-              Читати
-            </Button>
-          </div>
+          <button className="lib-hero is-text" onClick={() => play(cover.id, true)} aria-label="Читати">
+            <span className="lib-thumb-audio" />
+            <span className="lib-hero-play"><Icon n="file" s={20} /></span>
+          </button>
         )}
         <div className="lib-detail-head">
           <h3>{st.title}</h3>
@@ -591,8 +590,16 @@ export function LibPanel(p: Props) {
         </div>
         <p className="lib-hint">{st.summary}</p>
         <div className="chips">
-          {st.tags.map((t) => <Chip key={t}>{t}</Chip>)}
+          {st.tags
+            .filter((t) => !genre || t.toLowerCase() !== genre.toLowerCase())
+            .map((t) => <Chip key={t}>{t}</Chip>)}
         </div>
+        {cover.kind === "text" && cover.segments[0] && (
+          <div className="lib-quote-wrap">
+            <p className="lib-quote">«{cover.segments[0].uk}»</p>
+            <LinkButton onClick={() => play(cover.id, true)}>Читати далі</LinkButton>
+          </div>
+        )}
         <div className="lib-actions">
           <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
