@@ -5,7 +5,7 @@ import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
-import { Icon, Popover, type IconName } from "../ui"
+import { Icon, Popover, Tip, type IconName } from "../ui"
 import Media from "./Media"
 import { Chip } from "../components/Chip"
 import { useActions, useMe, useStore } from "../store"
@@ -37,6 +37,12 @@ type Nav =
   | { v: "play"; id: string; text: boolean; t?: number; e?: number; prev: Nav }
 
 type TypeFilter = "all" | "video" | "audio" | "text"
+
+const TYPE_LABEL: Record<string, string> = {
+  video: "Відео",
+  audio: "Аудіо",
+  text: "Текст",
+}
 
 const TYPE_ICON: Record<string, IconName> = {
   video: "video",
@@ -287,9 +293,15 @@ export function LibPanel(p: Props) {
           <p>{st.summary}</p>
           <span className="found-meta">
             {[...types].map((t) => (
-              <Icon key={t} n={TYPE_ICON[t]} s={14} />
+              <Tip key={t} text={TYPE_LABEL[t]}>
+                <Icon n={TYPE_ICON[t]} s={14} />
+              </Tip>
             ))}
-            {dur > 0 && fmt(dur)}
+            {dur > 0 && (
+              <Tip text="Загальна тривалість">
+                <span>{fmt(dur)}</span>
+              </Tip>
+            )}
           </span>
         </div>
       </article>
@@ -351,8 +363,14 @@ export function LibPanel(p: Props) {
           )}
           <p>{desc}</p>
           <span className="found-meta">
-            <Icon n={TYPE_ICON[kind]} s={14} />
-            {!asText && m.duration > 0 && fmt(m.duration)}
+            <Tip text={TYPE_LABEL[kind]}>
+              <Icon n={TYPE_ICON[kind]} s={14} />
+            </Tip>
+            {!asText && m.duration > 0 && (
+              <Tip text="Тривалість">
+                <span>{fmt(m.duration)}</span>
+              </Tip>
+            )}
           </span>
         </div>
       </article>
