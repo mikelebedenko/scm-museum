@@ -253,7 +253,7 @@
 
 /* різний вигляд карток за типом: відео — прев’ю, аудіо — іконка, текст — без зображення */
 .lib-thumb-audio { width: 100%; height: 100%; display: grid; place-items: center; color: var(--color-accent); background: radial-gradient(ellipse at 30% 20%, var(--p-warm-800), var(--color-surface-sunken) 70%); }
-.lib-story.is-text { grid-template-columns: auto minmax(0, 1fr); align-items: start; padding: var(--space-3); }
+.lib-story.is-text { grid-template-columns: minmax(0, 1fr); padding: var(--space-3) var(--space-4); }
 .lib-story-check { padding-top: var(--space-half); }
 .lib-story-check .lib-thumb-sel { position: relative; background: none; padding: 0; }
 
@@ -286,3 +286,6 @@
 .lib-menu button.has-desc small { align-self: center; }
 .lib-menu .lbl { display: grid; gap: var(--space-half); text-align: left; }
 .lib-desc { color: var(--color-text-subtle); font-size: var(--fs-sm); font-weight: var(--fw-regular); line-height: var(--lh-snug); }
+.lib-story-head { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.lib-story-head .lib-thumb-sel { position: relative; top: auto; left: auto; flex: none; padding: 0; background: none; }
+.lib-story-head .lib-story-title { flex: 1; min-width: 0; }

@@ -249,9 +249,7 @@ export function LibPanel(p: Props) {
       <article
         className={`lib-story is-${kind} ${sel ? "selected" : ""}`}
       >
-        {kind === "text" ? (
-          <div className="lib-story-check">{check}</div>
-        ) : (
+        {kind === "text" ? null : (
           <div className="lib-thumb">
             <button onClick={() => openStory(id)} aria-label={`Відкрити історію ${st.title}`}>
               {kind === "video" ? (
@@ -273,12 +271,18 @@ export function LibPanel(p: Props) {
           </div>
         )}
         <div className="lib-story-body">
-          <button
-            className="lib-story-title"
-            onClick={() => (kind === "text" ? play(cover.id, true) : openStory(id))}
-          >
-            {st.title}
-          </button>
+          {kind === "text" ? (
+            <div className="lib-story-head">
+              {check}
+              <button className="lib-story-title" onClick={() => play(cover.id, true)}>
+                {st.title}
+              </button>
+            </div>
+          ) : (
+            <button className="lib-story-title" onClick={() => openStory(id)}>
+              {st.title}
+            </button>
+          )}
           <p>{st.summary}</p>
           <span className="found-meta">
             {[...types].map((t) => (
