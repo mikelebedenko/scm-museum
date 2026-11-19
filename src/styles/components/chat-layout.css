@@ -237,5 +237,5 @@
 .lib-menu button { height: var(--control-xl); gap: var(--space-4); padding: 0 var(--space-4); font-size: var(--fs-lg); }
 .lib-menu button .lbl { flex: 1; }
 .lib-menu button small { margin-left: auto; min-width: var(--space-6); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font-size: var(--fs-sm); text-align: center; }
-.lib-menu button:first-child { color: var(--color-text); font-weight: var(--fw-medium); }
+.lib-menu-main button:first-child { color: var(--color-text); font-weight: var(--fw-medium); }
 .lib-sep { height: var(--border-width); margin: var(--space-2) var(--space-3); border: 0; background: var(--color-border); }

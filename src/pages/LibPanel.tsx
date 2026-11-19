@@ -222,14 +222,11 @@ export function LibPanel(p: Props) {
   } else if (nav.v === "topics") {
     title = "Теми"
     body = (
-      <nav className="side-nav">
+      <nav className="side-nav lib-menu">
         {RUBRICS.map((r) => (
-          <button key={r.id} title={r.description} onClick={() => go({ v: "topic", id: r.id })}>
+          <button key={r.id} onClick={() => go({ v: "topic", id: r.id })}>
             <span className="lbl">{r.title}</span>
             <small>{r.storyIds.filter(isOpen).length}</small>
-            <span className="nav-go">
-              <Icon n="down" s={16} />
-            </span>
           </button>
         ))}
       </nav>
@@ -255,15 +252,12 @@ export function LibPanel(p: Props) {
         {data.tags.length === 0 ? (
           <p className="lib-hint">Тегів ще немає.</p>
         ) : (
-          <nav className="side-nav">
+          <nav className="side-nav lib-menu">
             {data.tags.map((t) => (
               <button key={t.id} onClick={() => go({ v: "tag", id: t.id })}>
-                <Icon n="tag" s={20} />
+                <Icon n="tag" s={24} />
                 <span className="lbl">{t.name}</span>
                 <small>{tagCount(t.id)}</small>
-                <span className="nav-go">
-                  <Icon n="down" s={16} />
-                </span>
               </button>
             ))}
           </nav>
@@ -380,7 +374,7 @@ export function LibPanel(p: Props) {
             </span>
           </button>
           {menuOpen && (
-            <nav className="side-nav lib-menu">
+            <nav className="side-nav lib-menu lib-menu-main">
               <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
               <hr className="lib-sep" />
               <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
