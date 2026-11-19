@@ -182,8 +182,8 @@
 .found-item:hover .found-title { text-decoration: underline; text-underline-offset: 3px; }
 
 /* drill-in навігація бібліотеки (як у файловій системі) */
-.lib-crumb { display: flex; align-items: center; gap: var(--space-2); font: var(--type-h4); }
-.lib-body { display: grid; gap: var(--space-3); align-content: start; }
+.lib-crumb { display: flex; align-items: center; gap: var(--space-1); margin-left: calc(var(--space-2) * -1); font: var(--type-h4); }
+.lib-body { display: grid; gap: var(--space-3); align-content: start; margin-top: var(--space-1); }
 .lib-types { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .nav-go { margin-left: auto; display: inline-grid; place-items: center; color: var(--color-text-subtle); transform: rotate(-90deg); }
 .side-nav button small + .nav-go { margin-left: var(--space-2); }
@@ -217,3 +217,10 @@
 /* панель вибору для сценарію — завжди внизу, прокрутка йде під неї */
 .lib-sticky { position: sticky; bottom: calc(var(--space-4) * -1); z-index: var(--z-raised); display: grid; gap: var(--space-3); margin: auto calc(var(--space-4) * -1) calc(var(--space-4) * -1); padding: var(--space-3) var(--space-4) var(--space-4); background: var(--panel-bg); border-top: var(--border-width) solid var(--color-border); }
 .lib-sticky .btn { width: 100%; }
+
+/* фільтри списку історій */
+.lib-seg { display: flex; width: 100%; }
+.lib-seg button { flex: 1; justify-content: center; }
+.lib-topics { display: flex; gap: var(--space-2); margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); overflow-x: auto; scrollbar-width: none; }
+.lib-topics::-webkit-scrollbar { display: none; }
+.lib-topics .fbtn { flex: none; height: var(--control-sm); padding: 0 var(--space-3); font-size: var(--fs-sm); border-radius: var(--radius-pill); white-space: nowrap; }

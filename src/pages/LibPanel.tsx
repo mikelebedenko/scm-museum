@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Button } from "../components/Button"
 import { Checkbox } from "../components/Checkbox"
+import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
@@ -113,22 +114,20 @@ export function LibPanel(p: Props) {
     )
     return (
       <>
-        <div className="lib-types">
-          {(
-            [
-              ["all", "Усі"],
-              ["video", "Відео"],
-              ["audio", "Аудіо"],
-              ["text", "Текст"],
-            ] as const
-          ).map(([k, l]) => (
-            <FilterButton key={k} active={type === k} onClick={() => setType(k)}>
-              {l}
-            </FilterButton>
-          ))}
-        </div>
+        <Segmented
+          className="lib-seg"
+          aria-label="Тип матеріалів"
+          value={type}
+          onChange={setType}
+          options={[
+            { value: "all", label: "Усі" },
+            { value: "video", label: "Відео" },
+            { value: "audio", label: "Аудіо" },
+            { value: "text", label: "Текст" },
+          ]}
+        />
         {topics && (
-          <div className="lib-types">
+          <div className="lib-topics">
             <FilterButton active={topic === "all"} onClick={() => setTopic("all")}>
               Усі теми
             </FilterButton>
