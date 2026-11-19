@@ -560,7 +560,7 @@ export function LibPanel(p: Props) {
         <div className="lib-actions">
           <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
-            {fav ? "У вибраному" : "У вибране"}
+            {fav ? "У вибраному" : "Додати до вибраного"}
           </Button>
         </div>
         {(() => {

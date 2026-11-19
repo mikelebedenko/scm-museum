@@ -405,7 +405,7 @@ export default function Media({
                   }}
                 >
                   <Icon n="star" s={14} fill={fav} />
-                  {fav ? "У вибраному" : "У вибране"}
+                  {fav ? "У вибраному" : "Додати до вибраного"}
                 </Button>
                 {onToggleSelected && (
                   <Button
@@ -414,7 +414,7 @@ export default function Media({
                     onClick={onToggleSelected}
                   >
                     <Icon n={selected ? "check" : "plus"} s={14} />
-                    {selected ? "У сценарії" : "У сценарій"}
+                    {selected ? "У сценарії" : "Додати до сценарію"}
                   </Button>
                 )}
               </div>

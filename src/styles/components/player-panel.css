@@ -42,3 +42,5 @@
 /* текстовий режим: розділювач між шапкою та текстом */
 .mpanel.inline .mtitle.is-text { padding-bottom: var(--space-4); border-bottom: var(--border-width) solid var(--color-border); }
 .mpanel.inline .mright.is-text { margin-top: var(--space-1); }
+
+.mpanel.inline .mtitle { margin-top: 0; }
