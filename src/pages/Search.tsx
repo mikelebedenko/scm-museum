@@ -1,3 +1,4 @@
+import { Logo } from "../components/Logo"
 import { Segmented } from "../components/Segmented"
 import { Checkbox } from "../components/Checkbox"
 import { FilterButton } from "../components/FilterButton"
@@ -152,73 +153,8 @@ export default function Search() {
   const empty = !chat || chat.msgs.length === 0
   const aiCan = perms.has("ai")
 
-  const composer = (
-    <div className="cmp">
-      <textarea
-        ref={taRef}
-        value={input}
-        placeholder="Запитайте про історії архіву…"
-        rows={1}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault()
-            send(input)
-          }
-        }}
-      />
-      <IconButton
-        className="cmp-send"
-        aria-label="Шукати"
-        disabled={busy || !input.trim()}
-        onClick={() => send(input)}
-      >
-        <Icon n="send" s={18} />
-      </IconButton>
-    </div>
-  )
+  const filterControls = (
 
-  const disclaimer = (
-    <p className="disclaimer">
-      ШІ може помилятися. Перевіряйте відповіді за першоджерелами.
-    </p>
-  )
-
-  const selBar = scriptIds.length > 0 && (
-    <div className="sel-bar" role="status">
-      <span>
-        До сценарію:{" "}
-        {[
-          storySel.length ? `${storySel.length} іст.` : "",
-          picked.length ? `${picked.length} фрагм.` : "",
-        ]
-          .filter(Boolean)
-          .join(" · ")}
-      </span>
-      <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію"}>
-        <Button
-          size="sm"
-          variant="primary"
-          disabled={!perms.has("script")}
-          onClick={() => setScript(true)}
-        >
-          <Icon n="spark" s={14} />
-          Згенерувати сценарій
-        </Button>
-      </Tip>
-      <IconButton size="sm" aria-label="Скасувати вибір" onClick={clearSel}>
-        <Icon n="close" s={14} />
-      </IconButton>
-    </div>
-  )
-
-  const filtersBar = (
-    <div className="filters2">
-      <FilterButton active={filtersOn} onClick={() => setFiltersOpen(!filtersOpen)}>
-        <Icon n="filter" s={13} />
-        Фільтри
-      </FilterButton>
-      {filtersOpen && (
         <>
           <Segmented
             value={type}
@@ -255,7 +191,77 @@ export default function Search() {
             </LinkButton>
           )}
         </>
-      )}
+  )
+
+  const composer = (
+    <div className="cmp">
+      <textarea
+        ref={taRef}
+        value={input}
+        placeholder="Запитайте про історії архіву…"
+        rows={2}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault()
+            send(input)
+          }
+        }}
+      />
+      <div className="cmp-bar">
+        <FilterButton
+          active={filtersOn || filtersOpen}
+          aria-expanded={filtersOpen}
+          onClick={() => setFiltersOpen(!filtersOpen)}
+        >
+          <Icon n="filter" s={13} />
+          Фільтри
+        </FilterButton>
+        {filtersOpen && filterControls}
+        <span className="grow" />
+        <IconButton
+          className="cmp-send"
+          aria-label="Шукати"
+          disabled={busy || !input.trim()}
+          onClick={() => send(input)}
+        >
+          <Icon n="send" s={18} />
+        </IconButton>
+      </div>
+    </div>
+  )
+
+  const disclaimer = (
+    <p className="disclaimer">
+      ШІ може помилятися. Перевіряйте відповіді за першоджерелами.
+    </p>
+  )
+
+  const selBar = scriptIds.length > 0 && (
+    <div className="sel-bar" role="status">
+      <span>
+        До сценарію:{" "}
+        {[
+          storySel.length ? `${storySel.length} іст.` : "",
+          picked.length ? `${picked.length} фрагм.` : "",
+        ]
+          .filter(Boolean)
+          .join(" · ")}
+      </span>
+      <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію"}>
+        <Button
+          size="sm"
+          variant="primary"
+          disabled={!perms.has("script")}
+          onClick={() => setScript(true)}
+        >
+          <Icon n="spark" s={14} />
+          Згенерувати сценарій
+        </Button>
+      </Tip>
+      <IconButton size="sm" aria-label="Скасувати вибір" onClick={clearSel}>
+        <Icon n="close" s={14} />
+      </IconButton>
     </div>
   )
 
@@ -394,7 +400,6 @@ export default function Search() {
                     <Icon n="lock" s={13} /> Відповідь ШІ — з Розширеною роллю
                   </p>
                 )}
-                {m.id === lastAi?.id && filtersBar}
                 {hid > 0 && (
                   <div className="banner">
                     <Icon n="lock" s={14} />
@@ -538,6 +543,9 @@ export default function Search() {
               <div className="chat-col">
                 {empty ? (
                   <div className="home">
+                    <div className="home-logo">
+                      <Logo size={56} />
+                    </div>
                     <h1>Що ви шукаєте в архіві?</h1>
                     {composer}
                     {disclaimer}

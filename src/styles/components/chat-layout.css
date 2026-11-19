@@ -149,3 +149,13 @@
 .topic-list button:hover:not(:disabled) { background: var(--color-surface-3); color: var(--color-text); }
 .topic-list button.on { color: var(--color-accent); background: var(--color-accent-subtle); }
 .topic-list small { margin-left: auto; font-size: var(--fs-xs); color: var(--color-text-subtle); }
+
+/* поле запиту з панеллю інструментів — як у референсі */
+.cmp { padding: var(--space-4) var(--space-4) var(--space-3); border-radius: var(--radius-xl); }
+.cmp textarea { min-height: var(--space-12); }
+.cmp-send { position: static; }
+.cmp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
+.home-logo { display: grid; place-items: center; }
+.home h1 { font-weight: var(--fw-regular); }
+.home .sugs2 { margin-inline: calc(-1 * var(--space-10)); gap: var(--space-2); }
+.home .sugs2 button { padding-block: var(--space-1); min-height: var(--control-md); }
