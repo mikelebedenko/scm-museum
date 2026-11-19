@@ -462,3 +462,7 @@
 /* чат: зведення «N фрагментів з M історій» і назва матеріалу під заголовком карточки */
 .hits-sum { margin: 0 0 var(--space-3); color: var(--color-text-subtle); font-size: var(--fs-md); }
 .hit-mat { color: var(--color-text-subtle); font-size: var(--fs-sm); line-height: var(--lh-snug); }
+
+/* картки бібліотеки: однаковий відступ з усіх боків (картинка лишається на осі заголовків) */
+.lib .lib-story { padding: var(--space-4); }
+.lib .lib-story.is-picked { padding-right: var(--space-10); }
