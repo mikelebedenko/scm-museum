@@ -563,18 +563,26 @@ export function LibPanel(p: Props) {
           <button className="lib-hero is-audio" onClick={() => play(cover.id)} aria-label="Відтворити">
             <span className="lib-thumb-audio" />
             <span className="lib-wave" aria-hidden>
-              {Array.from({ length: 34 }).map((_, i) => (
-                <i key={i} style={{ height: `${14 + ((i * 37) % 70)}%` }} />
-              ))}
+              {Array.from({ length: 49 }).map((_, i) => {
+                const mid = Math.abs(i - 24)
+                if (mid < 3) return <i key={i} className="gap" />
+                const env = Math.sin((Math.PI * (i + 0.5)) / 49)
+                const noise = 0.55 + 0.45 * (((i * 53) % 7) / 6)
+                return (
+                  <i key={i} style={{ height: `${Math.round(10 + 78 * env * noise)}%` }} />
+                )
+              })}
             </span>
+            <span className="lib-hero-time">{fmt(cover.duration)}</span>
             <span className="lib-hero-play is-accent"><Icon n="play" s={20} fill /></span>
           </button>
         )}
         {cover.kind === "text" && (
           <button className="lib-hero is-text" onClick={() => play(cover.id, true)} aria-label="Читати">
             <span className="lib-thumb-audio" />
-            <span className="lib-lines" aria-hidden>
-              <i /><i /><i /><i /><i />
+            <span className="lib-page" aria-hidden>
+              <i className="t" />
+              <i /><i /><i /><i /><i /><i />
             </span>
             <span className="lib-read-btn">
               <Icon n="file" s={16} />
