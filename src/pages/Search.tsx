@@ -448,6 +448,7 @@ export default function Search() {
 
       <LibPanel
         foundStories={foundStories}
+        foundQuery={lastQuery ?? ""}
         storySel={storySel}
         selSummary={
           scriptIds.length > 0

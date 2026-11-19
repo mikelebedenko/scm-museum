@@ -338,3 +338,7 @@
 .lib-rail .lib-rail-item { display: contents; }
 .lib-rail-sep { width: var(--control-md); height: var(--border-width); margin: var(--space-1) 0; border: 0; background: var(--color-border); }
 .lib-rail [data-tip]:hover::after, .lib-rail [data-tip]:focus-visible::after { right: calc(100% + var(--space-2)); left: auto; bottom: auto; top: 50%; transform: translateY(-50%); }
+
+/* підпис блоку «Знайдені історії»: лічильник і запит */
+.lib-section .side-head .lib-count { margin-left: var(--space-3); margin-right: auto; padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font: var(--fw-medium) var(--fs-sm) var(--font-sans); }
+.lib-found-q { margin: calc(var(--space-2) * -1) 0 0; padding: 0 var(--space-4); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-subtle); font-size: var(--fs-sm); }

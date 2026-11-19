@@ -53,6 +53,7 @@ const TYPE_ICON: Record<string, IconName> = {
 
 type Props = {
   foundStories: Material[]
+  foundQuery: string
   storySel: string[]
   selSummary: string
   canScript: boolean
@@ -749,10 +750,16 @@ export function LibPanel(p: Props) {
                     onClick={() => setFoundOpen(!foundOpen)}
                   >
                     <span>Знайдені історії</span>
+                    <small className="lib-count">{p.foundStories.length}</small>
                     <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
                       <Icon n="down" s={18} />
                     </span>
                   </button>
+                  {foundOpen && p.foundQuery && (
+                    <p className="lib-found-q">
+                      За запитом «{p.foundQuery}»
+                    </p>
+                  )}
                   {foundOpen && (
                     <div className="lib-cards">
                       {p.foundStories.map((m) => (
