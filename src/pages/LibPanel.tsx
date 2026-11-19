@@ -403,27 +403,11 @@ export function LibPanel(p: Props) {
                 </span>
               </button>
               {foundOpen && (
-                <ul className="found-list">
+                <div className="lib-cards">
                   {p.foundStories.map((m) => (
-                    <li key={m.storyId}>
-                      <Checkbox
-                        checked={p.storySel.includes(m.storyId)}
-                        onChange={() => p.onToggleStory(m.storyId)}
-                        title="Додати до сценарію"
-                      />
-                      <button
-                        className="found-item"
-                        onClick={() => openStory(m.storyId)}
-                      >
-                        <span className="found-title">{m.story}</span>
-                        <span className="found-meta">
-                          <Icon n={m.kind === "video" ? "video" : "audio"} s={14} />
-                          {fmt(m.duration)}
-                        </span>
-                      </button>
-                    </li>
+                    <StoryCard key={m.storyId} id={m.storyId} />
                   ))}
-                </ul>
+                </div>
               )}
             </div>
           )}
