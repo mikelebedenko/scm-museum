@@ -442,3 +442,6 @@
 .lib .lib-sheet { display: grid; gap: var(--space-3); align-content: start; }
 .lib-sheet-handle { display: block; justify-self: center; }
 .lib-sheet-head { align-items: center; }
+
+/* картинка карточки — на одній лівій осі з текстом заголовків (16px від краю контейнера) */
+.lib .lib-story:not(.is-text) { padding-left: var(--space-4); }
