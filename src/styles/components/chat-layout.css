@@ -418,11 +418,10 @@
 /* аудіо-герой: природна хвиля, внизу «плеєр» — кнопка, доріжка й час */
 
 
-/* аудіо-герой: звукові «кола» навколо великої кнопки, підпис із тривалістю */
-.lib-ripples i { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); border-radius: var(--radius-full); border: var(--border-width) solid color-mix(in srgb, var(--color-accent) 40%, transparent); }
-.lib-ripples i:nth-child(1) { width: calc(var(--space-20) * 1.6); height: calc(var(--space-20) * 1.6); border-color: color-mix(in srgb, var(--color-accent) 42%, transparent); }
-.lib-ripples i:nth-child(2) { width: calc(var(--space-20) * 2.5); height: calc(var(--space-20) * 2.5); border-color: color-mix(in srgb, var(--color-accent) 24%, transparent); }
-.lib-ripples i:nth-child(3) { width: calc(var(--space-20) * 3.5); height: calc(var(--space-20) * 3.5); border-color: color-mix(in srgb, var(--color-accent) 12%, transparent); }
-.lib-play-big { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); width: calc(var(--space-12) * 1.5); height: calc(var(--space-12) * 1.5); display: grid; place-items: center; padding-left: var(--space-1); border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-text-on-accent); box-shadow: 0 0 0 var(--space-3) color-mix(in srgb, var(--color-accent) 18%, transparent); transition: transform var(--duration-base); }
-.lib-hero.is-audio:hover .lib-play-big { transform: translate(-50%, -50%) scale(1.06); }
-.lib-audio-label { position: absolute; left: 50%; bottom: var(--space-4); transform: translateX(-50%); color: var(--color-text-muted); font: var(--type-mono); white-space: nowrap; }
+
+/* аудіо-герой — той самий шаблон, що й текстовий: «сторінка» всередині та кнопка внизу */
+.lib-page.is-audio { gap: var(--space-4); }
+.lib-wave-mini { display: flex; align-items: center; gap: var(--space-half); height: var(--space-14); }
+.lib-wave-mini i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 24%, transparent); }
+.lib-page.is-audio i.trk { width: 100%; height: var(--space-1); background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.lib-hero.is-audio .lib-read-btn { top: auto; bottom: var(--space-5); transform: translateX(-50%); box-shadow: var(--shadow-md); }

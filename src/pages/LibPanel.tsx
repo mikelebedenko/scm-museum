@@ -562,13 +562,21 @@ export function LibPanel(p: Props) {
         {cover.kind === "audio" && (
           <button className="lib-hero is-audio" onClick={() => play(cover.id)} aria-label="Слухати">
             <span className="lib-thumb-audio" />
-            <span className="lib-ripples" aria-hidden>
-              <i /><i /><i />
+            <span className="lib-page is-audio" aria-hidden>
+              <i className="t" />
+              <span className="lib-wave-mini">
+                {Array.from({ length: 36 }).map((_, i) => {
+                  const rnd = Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 1
+                  const mod = 0.65 + 0.35 * Math.sin(i / 7)
+                  return <i key={i} style={{ height: `${Math.round(18 + 76 * rnd * mod)}%` }} />
+                })}
+              </span>
+              <i className="trk" />
             </span>
-            <span className="lib-play-big">
-              <Icon n="play" s={28} fill />
+            <span className="lib-read-btn">
+              <Icon n="play" s={14} fill />
+              Слухати
             </span>
-            <span className="lib-audio-label">Слухати · {fmt(cover.duration)}</span>
           </button>
         )}
         {cover.kind === "text" && (
