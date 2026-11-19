@@ -450,10 +450,6 @@ export default function Media({
                     <span>{s.uk}</span>
                   </button>
                 ))}
-                <p className="muted sm pad">
-                  Показано транскрипцію, підготовлену для користувацького
-                  доступу (деперсоніфіковану).
-                </p>
               </div>
             ) : (
               <div className="info">
