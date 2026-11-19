@@ -9,6 +9,7 @@ import { IconButton } from "../components/IconButton"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
 import Media from "./Media"
+import { LibPanel } from "./LibPanel"
 import { Icon, Popover, Modal, Empty, toast, Tip } from "../ui"
 import {
   SUGGESTIONS,
@@ -57,27 +58,19 @@ export default function Search() {
   const [favOnly, setFavOnly] = useState(false)
   const [scripts, setScripts] = useState(false)
   const [tagsM, setTagsM] = useState(false)
-  const [favsM, setFavsM] = useState(false)
   const status = state.settings.storyStatus
 
   const aiMsgs = chat?.msgs.filter((m) => m.role === "ai") ?? []
   const active: Msg | undefined =
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
-  const [view, setView] = useState<"chat" | "browse">("chat")
   const [side, setSide] = useState(true)
-  const [topicsOpen, setTopicsOpen] = useState(false)
-  const [libOpen, setLibOpen] = useState(true)
-  const [foundOpen, setFoundOpen] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [rubric, setRubric] = useState("all")
-  const [bType, setBType] = useState<"all" | "video" | "audio" | "text">("all")
   useEffect(() => {
     userRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
   }, [chat?.msgs.length, busy])
 
   const taRef = useRef<HTMLTextAreaElement>(null)
   const newChat = () => {
-    setView("chat")
     // порожній чат не дублюємо: просто переводимо фокус на поле запиту
     if (chat && chat.msgs.length === 0)
       toast("Поточний чат порожній — введіть запит")
@@ -92,7 +85,6 @@ export default function Search() {
   const send = (text: string, force = false) => {
     if (!text.trim() || busy) return
     setBusy(true)
-    setView("chat")
     setInput("")
     setPick(null)
     a.sendQuery(text.trim(), chat?.id ?? null, force, () => setBusy(false))
@@ -126,20 +118,6 @@ export default function Search() {
     setSel((x) => (x.includes(id) ? x.filter((y) => y !== id) : [...x, id]))
   const toggleTag = (t: string) =>
     setTagF((x) => (x.includes(t) ? x.filter((y) => y !== t) : [...x, t]))
-  const storyTypes = (id: string) => {
-    const t = new Set<string>(storyMedia(id).map((m) => m.kind))
-    if (story(id).hasText) t.add("text")
-    return t
-  }
-  const openStories = stories.filter((s) => status[s.id] === "Відкрита")
-  const browseStories = stories.filter(
-    (s) =>
-      status[s.id] === "Відкрита" &&
-      (bType === "all" || storyTypes(s.id).has(bType)) &&
-      (rubric === "all" ||
-        RUBRICS.find((item) => item.id === rubric)?.storyIds.includes(s.id)),
-  )
-
   const histChats = data.chats.filter(
     (c) =>
       !hq.trim() ||
@@ -373,62 +351,6 @@ export default function Search() {
     </div>
   )
 
-  const browse = (
-    <div className="chat-scroll">
-      <div className="browse">
-        <LinkButton onClick={() => setView("chat")}>
-          <Icon n="back" s={14} /> До чату
-        </LinkButton>
-        <div className="rubric-tabs">
-          {(
-            [
-              ["all", "Усі типи"],
-              ["video", "Відео"],
-              ["audio", "Аудіо"],
-              ["text", "Текст"],
-            ] as const
-          ).map(([k, l]) => (
-            <FilterButton key={k} active={bType === k} onClick={() => setBType(k)}>
-              {l}
-            </FilterButton>
-          ))}
-        </div>
-        <div className="rubric-tabs">
-          <FilterButton active={rubric === "all"} onClick={() => setRubric("all")}>
-            Усі історії
-          </FilterButton>
-          {RUBRICS.map((item) => (
-            <FilterButton
-              key={item.id}
-              active={rubric === item.id}
-              onClick={() => setRubric(item.id)}
-            >
-              {item.title}
-              <span>{item.storyIds.length}</span>
-            </FilterButton>
-          ))}
-        </div>
-        <div className="story-grid">
-          {browseStories.map((s) => (
-            <BrowseStory
-              key={s.id}
-              story={s}
-              selected={storySel.includes(s.id)}
-              onToggle={() =>
-                setStorySel((current) =>
-                  current.includes(s.id)
-                    ? current.filter((id) => id !== s.id)
-                    : [...current, s.id],
-                )
-              }
-              onOpen={(id) => setMedia({ id, t: 0, e: 0 })}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-
   const visibleChats = data.chats.filter(
     (c) => c.msgs.length > 0,
   )
@@ -461,15 +383,14 @@ export default function Search() {
               {visibleChats.map((c) => (
                 <li
                   key={c.id}
-                  className={c.id === data.active && view === "chat" ? "on" : ""}
+                  className={c.id === data.active ? "on" : ""}
                 >
                   <button
                     className="side-chat"
                     onClick={() => {
                       a.setActive(c.id)
                       setPick(null)
-                      setView("chat")
-                    }}
+                                      }}
                   >
                     {c.title}
                   </button>
@@ -488,9 +409,7 @@ export default function Search() {
       </aside>
 
       <main className="main" aria-label="Пошуковий чат">
-        {view === "browse" ? (
-          browse
-        ) : (
+        {(
           <>
             <div className="chat-scroll">
               <div className="chat-col">
@@ -529,134 +448,30 @@ export default function Search() {
         )}
       </main>
 
-      {(
-        <aside className="lib" aria-label="Бібліотека">
-          <button
-            className="acc-head side-head"
-            aria-expanded={libOpen}
-            onClick={() => setLibOpen(!libOpen)}
-          >
-            <span>Бібліотека</span>
-            <span className={`acc-chev ${libOpen ? "is-open" : ""}`}>
-              <Icon n="down" s={18} />
-            </span>
-          </button>
-          {libOpen && <nav className="side-nav">
-            <button
-              className={view === "browse" ? "on" : ""}
-              onClick={() => setView("browse")}
-            >
-              <Icon n="video" s={20} />
-              <span className="lbl">Усі матеріали</span>
-              <small>{openStories.length}</small>
-            </button>
-            <button
-              className={topicsOpen ? "on" : ""}
-              aria-expanded={topicsOpen}
-              onClick={() => setTopicsOpen(!topicsOpen)}
-            >
-              <Icon n="list" s={20} />
-              <span className="lbl">Теми</span>
-              <small>{RUBRICS.length}</small>
-            </button>
-            {topicsOpen && (
-              <div className="topic-list">
-                {RUBRICS.map((r) => (
-                  <button
-                    key={r.id}
-                    title={r.description}
-                    className={lastQuery === r.title ? "on" : ""}
-                    onClick={() => send(r.title)}
-                    disabled={busy}
-                  >
-                    {r.title}
-                    <small>{r.storyIds.length}</small>
-                  </button>
-                ))}
-              </div>
-            )}
-            <button onClick={() => setFavsM(true)}>
-              <Icon n="star" s={20} />
-              <span className="lbl">Обране</span>
-              {data.favs.length > 0 && <small>{data.favs.length}</small>}
-            </button>
-            <button onClick={() => setTagsM(true)}>
-              <Icon n="tag" s={20} />
-              <span className="lbl">Теги</span>
-            </button>
-          </nav>}
-          {foundStories.length > 0 && (
-            <div className="lib-section">
-              <button
-                className="acc-head side-label"
-                aria-expanded={foundOpen}
-                onClick={() => setFoundOpen(!foundOpen)}
-              >
-                <span>Знайдені матеріали</span>
-                <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
-                  <Icon n="down" s={18} />
-                </span>
-              </button>
-              {foundOpen && <ul className="found-list">
-                {foundStories.map((m) => (
-                  <li key={m.storyId}>
-                    <Checkbox
-                      checked={storySel.includes(m.storyId)}
-                      onChange={() => toggleStory(m.storyId)}
-                      title="Додати до сценарію"
-                    />
-                    <button
-                      className="found-item"
-                      onClick={() => setMedia({ id: m.id, t: 0, e: 0 })}
-                    >
-                      <span className="found-title">{m.story}</span>
-                      <span className="found-meta">
-                        <Icon n={m.kind === "video" ? "video" : "audio"} s={14} />
-                        {fmt(m.duration)}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>}
-            </div>
-          )}
-          {scriptIds.length > 0 && (
-            <div className="lib-section">
-              <div className="sel-row">
-                <span>
-                  Вибрано:{" "}
-                  {[
-                    storySel.length ? `${storySel.length} іст.` : "",
-                    picked.length ? `${picked.length} фрагм.` : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </span>
-                <LinkButton onClick={clearSel}>Скасувати</LinkButton>
-              </div>
-              <Button
-                variant="primary"
-                disabled={!perms.has("script")}
-                onClick={() => setScript(true)}
-              >
-                <Icon n="spark" s={14} />
-                Згенерувати сценарій
-              </Button>
-            </div>
-          )}
-        </aside>
-      )}
+      <LibPanel
+        foundStories={foundStories}
+        storySel={storySel}
+        selSummary={
+          scriptIds.length > 0
+            ? [
+                storySel.length ? `${storySel.length} іст.` : "",
+                picked.length ? `${picked.length} фрагм.` : "",
+              ]
+                .filter(Boolean)
+                .join(" · ")
+            : ""
+        }
+        canScript={perms.has("script")}
+        busy={busy}
+        onToggleStory={toggleStory}
+        onOpenMedia={(id) => setMedia({ id, t: 0, e: 0 })}
+        onClear={clearSel}
+        onGenerate={() => setScript(true)}
+        onAsk={send}
+        onManageTags={() => setTagsM(true)}
+      />
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
-      {favsM && (
-        <FavoritesModal
-          onClose={() => setFavsM(false)}
-          onOpen={(id) => {
-            setFavsM(false)
-            setMedia({ id, t: 0, e: 0 })
-          }}
-        />
-      )}
       {scripts && <ScriptsModal onClose={() => setScripts(false)} />}
       {del && (
         <Modal
