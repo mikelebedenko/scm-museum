@@ -470,7 +470,7 @@ export default function Search() {
                     aria-label="Видалити чат"
                     onClick={() => setDel(c.id)}
                   >
-                    <Icon n="trash" s={14} />
+                    <Icon n="trash" s={18} />
                   </IconButton>
                 </li>
               ))}
@@ -872,7 +872,7 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
                 toast("Сценарій видалено")
               }}
             >
-              <Icon n="trash" s={14} />
+              <Icon n="trash" s={18} />
             </IconButton>
           </div>
           <p className="muted sm">Промпт: {sc.prompt}</p>
