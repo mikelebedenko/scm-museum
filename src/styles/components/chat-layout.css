@@ -239,3 +239,8 @@
 .lib-menu button small { margin-left: auto; min-width: var(--space-6); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font-size: var(--fs-sm); text-align: center; }
 .lib-menu-main button:first-child { color: var(--color-text); font-weight: var(--fw-medium); }
 .lib-sep { height: var(--border-width); margin: var(--space-2) var(--space-3); border: 0; background: var(--color-border); }
+
+/* заголовок бібліотеки крупніший і вирівняний з рядками меню */
+.lib .side-head { font: var(--type-h2); padding: var(--space-2) var(--space-4); }
+.lib .side-head .acc-chev { color: var(--color-text-subtle); }
+.lib-crumb { font: var(--type-h3); }
