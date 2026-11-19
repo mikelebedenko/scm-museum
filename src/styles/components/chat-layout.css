@@ -454,3 +454,7 @@
 .lib-rail-item button { margin-block: var(--space-2); }
 .lib-rail > .lib-rail-sep { margin-block: calc(var(--space-1) + var(--space-half)); }
 .lib-rail-item .lib-rail-sep { margin-block: calc(var(--space-2) + var(--space-half)); }
+
+/* шапки панелей однакової висоти: заголовок не «стрибає» між екранами і між лівою та правою панеллю */
+.lib-crumb { min-height: var(--control-lg); }
+.side-top { min-height: var(--control-lg); }
