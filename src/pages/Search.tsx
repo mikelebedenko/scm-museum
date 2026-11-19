@@ -181,34 +181,6 @@ export default function Search() {
     </div>
   )
 
-  const selBar = scriptIds.length > 0 && (
-    <div className="sel-bar" role="status">
-      <span>
-        До сценарію:{" "}
-        {[
-          storySel.length ? `${storySel.length} іст.` : "",
-          picked.length ? `${picked.length} фрагм.` : "",
-        ]
-          .filter(Boolean)
-          .join(" · ")}
-      </span>
-      <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію"}>
-        <Button
-          size="sm"
-          variant="primary"
-          disabled={!perms.has("script")}
-          onClick={() => setScript(true)}
-        >
-          <Icon n="spark" s={14} />
-          Згенерувати сценарій
-        </Button>
-      </Tip>
-      <IconButton size="sm" aria-label="Скасувати вибір" onClick={clearSel}>
-        <Icon n="close" s={14} />
-      </IconButton>
-    </div>
-  )
-
   const renderHit = (m: Msg, h: { fid: string; score: number }) => {
     const f = frag(h.fid)
     const mm = mat(f.mid)
