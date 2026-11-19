@@ -10,7 +10,10 @@ function Shell() {
       <header className="top">
         <div className="brand">
           <Logo />
-          <span className="brand-name">SCM.Museum</span>
+          <span className="brand-text">
+            <span className="brand-name">SCM.Museum</span>
+            <span className="brand-sub">Кабінет дослідника</span>
+          </span>
         </div>
       </header>
       <main className="page">
