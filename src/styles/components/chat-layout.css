@@ -322,3 +322,8 @@
 .lib-card-remove { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; }
 
 .lib-genre { padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-accent-subtle); color: var(--color-accent); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
+
+/* кнопка тем має фіксовану ширину — рядок фільтрів не «стрибає» */
+.lib-topic-btn { flex: none; width: 148px; max-width: none; justify-content: space-between; }
+.lib-topic-btn > span:first-child { flex: 1; min-width: 0; text-align: left; }
+.lib-filters .relative { flex: none; }
