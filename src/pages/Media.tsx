@@ -14,6 +14,7 @@ import {
   fragEnd,
   genreOf,
   story,
+  storyMedia,
   thumbUrl,
 } from "../data"
 import { fmt } from "../lib"
@@ -114,6 +115,12 @@ export default function Media({
     )
   const fav = data.favs.includes(m.storyId)
   const textual = textOnly || m.kind === "text"
+  const eyebrow =
+    textual && m.kind !== "text"
+      ? "Текст і транскрипція"
+      : storyMedia(m.storyId).length > 1
+        ? m.title
+        : null
   const seg = idx >= 0 ? m.segments[idx] : null
   const frs = fragments.filter((f) => f.mid === m.id)
 
@@ -372,12 +379,8 @@ export default function Media({
             )}
             <div className={`mtitle ${textual ? "is-text" : ""}`}>
               <div>
-                {inline && <div className="meyebrow">{m.story}</div>}
-                <h1>
-                  {textual && m.kind !== "text"
-                    ? `${m.story}: текст і транскрипція`
-                    : m.title}
-                </h1>
+                {inline && eyebrow && <div className="meyebrow">{eyebrow}</div>}
+                <h1>{inline ? m.story : m.title}</h1>
                 <p>
                   {m.kind === "text" && genreOf(story(m.storyId).tags) ? (
                     <span className="lib-genre">{genreOf(story(m.storyId).tags)}</span>
