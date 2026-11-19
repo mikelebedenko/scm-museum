@@ -463,7 +463,9 @@ export default function Search() {
           ))}
         </div>
       </div>
-      {scriptIds.length > 0 && <div className="chat-dock">{selBar}</div>}
+      {!lib && scriptIds.length > 0 && (
+        <div className="chat-dock">{selBar}</div>
+      )}
     </div>
   )
 
@@ -567,7 +569,7 @@ export default function Search() {
             {!empty && (
               <div className="chat-dock">
                 <div className="chat-col">
-                  {selBar}
+                  {!lib && selBar}
                   {composer}
                   {disclaimer}
                 </div>
@@ -621,6 +623,38 @@ export default function Search() {
               <span className="lbl">Теги</span>
             </button>
           </nav>
+          <div className="lib-section">
+            <div className="side-label">Сценарій</div>
+            <p className="lib-hint">
+              {scriptIds.length > 0
+                ? [
+                    storySel.length ? `${storySel.length} іст.` : "",
+                    picked.length ? `${picked.length} фрагм.` : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")
+                : "Оберіть історії або фрагменти — вони з’являться тут."}
+            </p>
+            <Tip
+              text={
+                !perms.has("script")
+                  ? "Потрібна Розширена роль"
+                  : "Створити чернетку сценарію з обраних джерел"
+              }
+            >
+              <Button
+                variant="primary"
+                disabled={!perms.has("script") || scriptIds.length === 0}
+                onClick={() => setScript(true)}
+              >
+                <Icon n="spark" s={14} />
+                Згенерувати сценарій
+              </Button>
+            </Tip>
+            {scriptIds.length > 0 && (
+              <LinkButton onClick={clearSel}>Скасувати вибір</LinkButton>
+            )}
+          </div>
         </aside>
       )}
 
