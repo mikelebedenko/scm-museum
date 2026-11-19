@@ -563,12 +563,17 @@ export function LibPanel(p: Props) {
           <button className="lib-hero is-audio" onClick={() => play(cover.id)} aria-label="Слухати">
             <span className="lib-thumb-audio" />
             <span className="lib-page is-audio" aria-hidden>
-              <i className="t" />
               <span className="lib-wave-mini">
-                {Array.from({ length: 36 }).map((_, i) => {
+                {Array.from({ length: 40 }).map((_, i) => {
                   const rnd = Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 1
-                  const mod = 0.65 + 0.35 * Math.sin(i / 7)
-                  return <i key={i} style={{ height: `${Math.round(18 + 76 * rnd * mod)}%` }} />
+                  const mod = 0.8 + 0.2 * Math.sin(i / 5)
+                  return (
+                    <i
+                      key={i}
+                      className={i < 8 ? "on" : undefined}
+                      style={{ height: `${Math.round(20 + 70 * rnd * mod)}%` }}
+                    />
+                  )
                 })}
               </span>
               <i className="trk" />

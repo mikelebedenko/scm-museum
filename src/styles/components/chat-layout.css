@@ -420,7 +420,8 @@
 
 
 /* аудіо-герой — той самий шаблон, що й текстовий: «сторінка» всередині та кнопка внизу */
-.lib-page.is-audio { gap: var(--space-4); }
+.lib-page.is-audio { gap: var(--space-4); align-content: center; padding-top: 0; padding-bottom: var(--space-14); -webkit-mask-image: linear-gradient(to bottom, black 72%, transparent); mask-image: linear-gradient(to bottom, black 72%, transparent); }
+.lib-wave-mini i.on { background: color-mix(in srgb, var(--color-accent) 75%, transparent); }
 .lib-wave-mini { display: flex; align-items: center; gap: var(--space-half); height: var(--space-14); }
 .lib-wave-mini i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 24%, transparent); }
 .lib-page.is-audio i.trk { width: 100%; height: var(--space-1); background: color-mix(in srgb, var(--color-text) 14%, transparent); }
