@@ -9,7 +9,7 @@
   --control-lg: 44px;
 
   /* логотип */
-  --logo-size: var(--space-10);
+  --logo-size: var(--control-lg);
 
   /* іконки */
   --icon-sm: 16px;
