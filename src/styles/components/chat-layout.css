@@ -213,3 +213,7 @@
 .lib-hero-play svg { position: relative; }
 .lib-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .found-item.is-current .found-title { color: var(--color-accent); }
+
+/* панель вибору для сценарію — завжди внизу, прокрутка йде під неї */
+.lib-sticky { position: sticky; bottom: calc(var(--space-4) * -1); z-index: var(--z-raised); display: grid; gap: var(--space-3); margin: auto calc(var(--space-4) * -1) calc(var(--space-4) * -1); padding: var(--space-3) var(--space-4) var(--space-4); background: var(--panel-bg); border-top: var(--border-width) solid var(--color-border); }
+.lib-sticky .btn { width: 100%; }

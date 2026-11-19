@@ -441,7 +441,7 @@ export function LibPanel(p: Props) {
         </>
       )}
       {p.selSummary && (
-        <div className="lib-section">
+        <div className="lib-sticky">
           <div className="sel-row">
             <span>Вибрано: {p.selSummary}</span>
             <LinkButton onClick={p.onClear}>Скасувати</LinkButton>
