@@ -182,12 +182,6 @@ export default function Search() {
     </div>
   )
 
-  const disclaimer = (
-    <p className="disclaimer">
-      ШІ може помилятися. Перевіряйте відповіді за першоджерелами.
-    </p>
-  )
-
   const selBar = scriptIds.length > 0 && (
     <div className="sel-bar" role="status">
       <span>
@@ -513,7 +507,6 @@ export default function Search() {
               <div className="chat-col">
                 {!lib && selBar}
                 {composer}
-                {disclaimer}
               </div>
             </div>
           </>
