@@ -392,11 +392,6 @@
 .lib-tag:hover { border-color: var(--color-accent); color: var(--color-accent); }
 
 /* аудіо-герой: симетрична хвиля з «вікном» під кнопку, тривалість унизу */
-.lib-wave { position: absolute; inset: 22% var(--space-6); display: flex; align-items: center; gap: var(--space-half); }
-.lib-wave i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-accent) 45%, transparent); }
-.lib-wave i.gap { background: none; }
-.lib-hero.is-audio .lib-hero-play::before { box-shadow: 0 0 0 var(--space-3) color-mix(in srgb, var(--color-accent) 22%, transparent); }
-.lib-hero-time { position: absolute; right: var(--space-4); bottom: var(--space-3); color: var(--color-text-muted); font: var(--type-mono); }
 
 /* текстовий герой: «сторінка» з блідими рядками, що тане донизу; кнопка внизу */
 .lib-page { position: absolute; top: 14%; bottom: 0; left: 50%; transform: translateX(-50%); width: 58%; display: grid; align-content: start; gap: var(--space-3); padding: var(--space-5) var(--space-5) 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--color-surface-3); -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent); mask-image: linear-gradient(to bottom, black 45%, transparent); }
@@ -419,3 +414,11 @@
 .lib-detail > .lib-detail-head, .lib-detail > .lib-actions, .lib-detail > .lib-hint, .lib-detail > .chips, .lib-detail > .lib-quote-wrap, .lib-detail > .lib-subhead { padding-inline: var(--space-4); }
 .mpanel.inline .mtitle { padding-inline: var(--space-4); }
 .mpanel.inline .mright.is-text { padding-inline: var(--space-4); }
+
+/* аудіо-герой: природна хвиля, внизу «плеєр» — кнопка, доріжка й час */
+.lib-wave { position: absolute; inset: var(--space-6) var(--space-5) 32%; display: flex; align-items: center; gap: var(--space-half); }
+.lib-wave i { flex: 1; min-width: 0; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 22%, transparent); }
+.lib-audio-bar { position: absolute; left: var(--space-5); right: var(--space-5); bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-3); }
+.lib-play-dot { flex: none; width: var(--control-lg); height: var(--control-lg); display: grid; place-items: center; border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-text-on-accent); padding-left: var(--space-half); }
+.lib-track { flex: 1; height: var(--space-1); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-text) 18%, transparent); }
+.lib-time { flex: none; color: var(--color-text-muted); font: var(--type-mono); }
