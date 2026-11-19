@@ -413,7 +413,7 @@ export function LibPanel(p: Props) {
           {p.foundStories.length > 0 && (
             <div className="lib-section">
               <button
-                className="acc-head side-label"
+                className="acc-head side-head"
                 aria-expanded={foundOpen}
                 onClick={() => setFoundOpen(!foundOpen)}
               >

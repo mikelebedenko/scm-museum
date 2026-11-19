@@ -94,6 +94,11 @@ function seed(): State {
     st5: "Відкрита",
     st6: "Відкрита",
     st7: "Закрита",
+    st8: "Відкрита",
+    st9: "Відкрита",
+    st10: "Відкрита",
+    st11: "Відкрита",
+    st12: "Відкрита",
   }
   const data: Record<string, UserData> = {}
   users.forEach((u) => (data[u.id] = emptyData()))
