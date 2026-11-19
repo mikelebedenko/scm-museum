@@ -1,6 +1,5 @@
 /**
- * Логотип SCM.Museum: три вкладені арки — вхід до музею/архіву
- * і водночас хвилі звуку (усна історія). Кольори — з токенів.
+ * Логотип SCM.Museum: фасад музею (фронтон і колони). Кольори — з токенів.
  */
 export function Logo({ size = "var(--logo-size)" }: { size?: number | string }) {
   return (
@@ -14,14 +13,16 @@ export function Logo({ size = "var(--logo-size)" }: { size?: number | string }) 
     >
       <circle cx="20" cy="20" r="20" fill="var(--color-accent)" />
       <g
-        fill="none"
+        fill="var(--color-text-on-accent)"
         stroke="var(--color-text-on-accent)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
       >
-        <path d="M10 29V20a10 10 0 0 1 20 0v9" />
-        <path d="M14 29V20a6 6 0 0 1 12 0v9" />
-        <path d="M18 29V20a2 2 0 0 1 4 0v9" />
+        <path d="M20 9.5 30.5 15.5H9.5Z" />
+        <rect x="12" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
+        <rect x="18.25" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
+        <rect x="24.5" y="18.5" width="3.5" height="8" rx="0.5" stroke="none" />
+        <rect x="9.5" y="28.5" width="21" height="2.5" rx="0.5" stroke="none" />
       </g>
     </svg>
   )
