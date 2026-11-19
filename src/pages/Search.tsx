@@ -513,7 +513,7 @@ export default function Search() {
             onClick={() => setLibOpen(!libOpen)}
           >
             <span>Бібліотека</span>
-            <span className={`acc-chev ${libOpen ? "open" : ""}`}>
+            <span className={`acc-chev ${libOpen ? "is-open" : ""}`}>
               <Icon n="down" s={18} />
             </span>
           </button>
@@ -566,7 +566,7 @@ export default function Search() {
                 onClick={() => setFoundOpen(!foundOpen)}
               >
                 <span>Знайдені матеріали</span>
-                <span className={`acc-chev ${foundOpen ? "open" : ""}`}>
+                <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
                   <Icon n="down" s={18} />
                 </span>
               </button>
@@ -592,6 +592,20 @@ export default function Search() {
                 ))}
               </ul>}
               {scriptIds.length > 0 && (
+                <div className="sel-row">
+                  <span>
+                    Вибрано:{" "}
+                    {[
+                      storySel.length ? `${storySel.length} іст.` : "",
+                      picked.length ? `${picked.length} фрагм.` : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                  <LinkButton onClick={clearSel}>Скасувати</LinkButton>
+                </div>
+              )}
+              {scriptIds.length > 0 && (
                 <Button
                   variant="primary"
                   disabled={!perms.has("script")}
@@ -603,22 +617,6 @@ export default function Search() {
               )}
             </div>
           )}
-          <div className="lib-section">
-            <div className="side-label">Сценарій</div>
-            <p className="lib-hint">
-              {scriptIds.length > 0
-                ? [
-                    storySel.length ? `${storySel.length} іст.` : "",
-                    picked.length ? `${picked.length} фрагм.` : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")
-                : "Оберіть історії або фрагменти — вони з’являться тут."}
-            </p>
-            {scriptIds.length > 0 && (
-              <LinkButton onClick={clearSel}>Скасувати вибір</LinkButton>
-            )}
-          </div>
         </aside>
       )}
 

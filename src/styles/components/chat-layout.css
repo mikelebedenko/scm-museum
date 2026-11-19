@@ -172,6 +172,7 @@
 /* акордеони правої панелі */
 .acc-head { display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; cursor: pointer; }
 .acc-chev { display: inline-grid; place-items: center; color: var(--color-text-subtle); transition: transform var(--duration-base); }
-.acc-chev.open { transform: rotate(180deg); }
+.acc-chev.is-open { transform: rotate(180deg); }
 .acc-head:hover .acc-chev { color: var(--color-text); }
 .acc-head:focus-visible { outline-offset: -2px; border-radius: var(--radius-md); }
+.sel-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-2); color: var(--color-text-muted); font-size: var(--fs-md); }
