@@ -64,6 +64,8 @@ export default function Search() {
   const [view, setView] = useState<"chat" | "browse">("chat")
   const [side, setSide] = useState(true)
   const [topicsOpen, setTopicsOpen] = useState(false)
+  const [libOpen, setLibOpen] = useState(true)
+  const [foundOpen, setFoundOpen] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
@@ -512,10 +514,17 @@ export default function Search() {
 
       {(
         <aside className="lib" aria-label="Бібліотека">
-          <div className="side-head">
+          <button
+            className="acc-head side-head"
+            aria-expanded={libOpen}
+            onClick={() => setLibOpen(!libOpen)}
+          >
             <span>Бібліотека</span>
-          </div>
-          <nav className="side-nav">
+            <span className={`acc-chev ${libOpen ? "open" : ""}`}>
+              <Icon n="down" s={18} />
+            </span>
+          </button>
+          {libOpen && <nav className="side-nav">
             <button
               className={topicsOpen ? "on" : ""}
               aria-expanded={topicsOpen}
@@ -555,11 +564,20 @@ export default function Search() {
               <Icon n="tag" s={20} />
               <span className="lbl">Теги</span>
             </button>
-          </nav>
+          </nav>}
           {foundStories.length > 0 && (
             <div className="lib-section">
-              <div className="side-label">Знайдені матеріали</div>
-              <ul className="found-list">
+              <button
+                className="acc-head side-label"
+                aria-expanded={foundOpen}
+                onClick={() => setFoundOpen(!foundOpen)}
+              >
+                <span>Знайдені матеріали</span>
+                <span className={`acc-chev ${foundOpen ? "open" : ""}`}>
+                  <Icon n="down" s={18} />
+                </span>
+              </button>
+              {foundOpen && <ul className="found-list">
                 {foundStories.map((m) => (
                   <li key={m.storyId}>
                     <Checkbox
@@ -579,7 +597,7 @@ export default function Search() {
                     </button>
                   </li>
                 ))}
-              </ul>
+              </ul>}
             </div>
           )}
           <div className="lib-section">

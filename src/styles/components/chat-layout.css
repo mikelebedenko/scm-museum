@@ -168,3 +168,9 @@
 .found-item:hover { color: var(--color-text); }
 .found-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .found-meta { flex: none; display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-subtle); font-size: var(--fs-sm); }
+
+/* акордеони правої панелі */
+.acc-head { display: flex; align-items: center; justify-content: space-between; width: 100%; text-align: left; cursor: pointer; }
+.acc-chev { display: inline-grid; place-items: center; color: var(--color-text-subtle); transition: transform var(--duration-base); }
+.acc-chev.open { transform: rotate(180deg); }
+.acc-head:hover .acc-chev { color: var(--color-text); }
