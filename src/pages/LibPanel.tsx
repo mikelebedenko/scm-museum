@@ -866,11 +866,11 @@ export function LibPanel(p: Props) {
         {sheet && (
           <>
             <button className="lib-backdrop" aria-label="Закрити список" onClick={() => setSheet(false)} />
-        <div className="lib-sheet" role="dialog" aria-label="Для сценарію">
+        <div className="lib-sheet" role="dialog" aria-label="Джерела для сценарію">
           <span className="lib-sheet-handle" aria-hidden />
           <div className="lib-sheet-head">
             <div>
-              <h3 className="lib-sheet-title">Для сценарію</h3>
+              <h3 className="lib-sheet-title">Джерела для сценарію</h3>
               <p className="lib-sheet-sum">{sheetSummary}</p>
             </div>
             <IconButton size="sm" aria-label="Закрити" onClick={() => setSheet(false)}>
