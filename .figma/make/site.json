@@ -1,0 +1,10 @@
+{
+  "description": "A research workspace for exploring audio and video archives with semantic search, timestamped clips, saved collections, and AI-assisted script drafts.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
