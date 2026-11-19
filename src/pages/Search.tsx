@@ -169,15 +169,13 @@ export default function Search() {
       />
       <div className="cmp-bar">
         <span className="grow" />
-        <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію з обраних джерел"}>
-          <Button
+        <Button
             disabled={!perms.has("script") || scriptIds.length === 0}
             onClick={() => setScript(true)}
           >
             <Icon n="spark" s={14} />
             Згенерувати сценарій
           </Button>
-        </Tip>
         <IconButton
           className="cmp-send"
           aria-label="Шукати"
