@@ -137,3 +137,8 @@
 .side-top { justify-content: space-between; align-items: center; }
 .side.is-rail .side-top { justify-content: center; }
 .side-title { font: var(--type-h4); }
+
+/* згорнута права панель — вузька «рейка» з іконкою поза карткою, як зліва */
+.shell.lib-off { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--sidebar-rail-width); }
+.shell.side-rail.lib-off { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr) var(--sidebar-rail-width); }
+.lib-rail { display: flex; justify-content: center; padding: var(--space-2) 0; }

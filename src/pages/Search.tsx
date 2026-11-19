@@ -528,15 +528,6 @@ export default function Search() {
       </aside>
 
       <main className="main" aria-label="Пошуковий чат">
-        {!lib && (
-          <IconButton
-            className="main-lib"
-            aria-label="Показати бібліотеку"
-            onClick={() => setLib(true)}
-          >
-            <Icon n="panelR" s={20} />
-          </IconButton>
-        )}
         {view === "browse" ? (
           browse
         ) : (
@@ -587,6 +578,14 @@ export default function Search() {
           />
         )}
       </main>
+
+      {!lib && (
+        <aside className="lib-rail" aria-label="Бібліотека">
+          <IconButton aria-label="Показати бібліотеку" onClick={() => setLib(true)}>
+            <Icon n="panelR" s={20} />
+          </IconButton>
+        </aside>
+      )}
 
       {lib && (
         <aside className="lib" aria-label="Бібліотека">
