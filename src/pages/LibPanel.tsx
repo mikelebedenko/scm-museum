@@ -295,6 +295,69 @@ export function LibPanel(p: Props) {
     )
   }
 
+  const MatCard = ({
+    m,
+    asText = false,
+    current = false,
+    onOpen,
+  }: {
+    m: Material
+    asText?: boolean
+    current?: boolean
+    onOpen: () => void
+  }) => {
+    const kind: "video" | "audio" | "text" = asText ? "text" : m.kind
+    const heading = asText ? "Текст і транскрипція" : m.title
+    const desc = asText
+      ? "Повний текст розмови з поділом за мовцями"
+      : `${m.speaker} · ${m.recorded}`
+    return (
+      <article className={`lib-story is-${kind} ${current ? "selected" : ""}`}>
+        {kind !== "text" && (
+          <div className="lib-thumb">
+            <button onClick={onOpen} aria-label={`Відкрити ${heading}`}>
+              {kind === "video" ? (
+                <img
+                  src={thumbUrl(m.id, 320, 200)}
+                  alt=""
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.visibility = "hidden"
+                  }}
+                />
+              ) : (
+                <span className="lib-thumb-audio">
+                  <Icon n="audio" s={36} />
+                </span>
+              )}
+            </button>
+          </div>
+        )}
+        <div className="lib-story-body">
+          {kind === "text" ? (
+            <div className="lib-story-head">
+              <span className="lib-kind-ico">
+                <Icon n="file" s={18} />
+              </span>
+              <button className="lib-story-title" onClick={onOpen}>
+                {heading}
+              </button>
+            </div>
+          ) : (
+            <button className="lib-story-title" onClick={onOpen}>
+              {heading}
+            </button>
+          )}
+          <p>{desc}</p>
+          <span className="found-meta">
+            <Icon n={TYPE_ICON[kind]} s={14} />
+            {!asText && m.duration > 0 && fmt(m.duration)}
+          </span>
+        </div>
+      </article>
+    )
+  }
+
   const NavItem = ({
     icon,
     label,
@@ -396,28 +459,25 @@ export function LibPanel(p: Props) {
             {fav ? "У вибраному" : "У вибране"}
           </Button>
         </div>
-        <div className="side-label">Матеріали історії</div>
-        <ul className="found-list">
-          {media.map((m) => (
-            <li key={m.id}>
-              <button className="found-item" onClick={() => play(m.id)}>
-                <span className="found-title">{m.title}</span>
-                <span className="found-meta">
-                  <Icon n={TYPE_ICON[m.kind]} s={14} />
-                  {m.duration > 0 && fmt(m.duration)}
-                </span>
-              </button>
-            </li>
-          ))}
-          {st.hasText && !media.every((m) => m.kind === "text") && (
-            <li>
-              <button className="found-item" onClick={() => play(media[0].id, true)}>
-                <span className="found-title">Текст і транскрипція</span>
-                <span className="found-meta"><Icon n="file" s={14} /></span>
-              </button>
-            </li>
-          )}
-        </ul>
+        {(() => {
+          const extra = cover.kind === "text" ? media : media.slice(1)
+          const showTr = st.hasText && !media.every((m) => m.kind === "text")
+          if (extra.length === 0 && !showTr) return null
+          return (
+            <>
+              <hr className="lib-sep" />
+              <h4 className="lib-subhead">Додаткові матеріали</h4>
+              <div className="lib-cards">
+                {extra.map((m) => (
+                  <MatCard key={m.id} m={m} onOpen={() => play(m.id)} />
+                ))}
+                {showTr && (
+                  <MatCard m={media[0]} asText onOpen={() => play(media[0].id, true)} />
+                )}
+              </div>
+            </>
+          )
+        })()}
       </div>
     )
   } else if (nav.v === "play") {
@@ -427,34 +487,32 @@ export function LibPanel(p: Props) {
     body = (
       <div className="lib-detail">
         <Media key={`${cur.id}:${cur.text}:${cur.t ?? 0}`} id={cur.id} t0={cur.t} e0={cur.e} inline textOnly={cur.text} onClose={back} />
-        <div className="side-label">Матеріали історії</div>
-        <ul className="found-list">
-          {storyMedia(st.id).map((m) => (
-            <li key={m.id}>
-              <button
-                className={`found-item ${!cur.text && m.id === cur.id ? "is-current" : ""}`}
-                onClick={() => setNav({ ...cur, id: m.id, text: false })}
-              >
-                <span className="found-title">{m.title}</span>
-                <span className="found-meta">
-                  <Icon n={TYPE_ICON[m.kind]} s={14} />
-                  {m.duration > 0 && fmt(m.duration)}
-                </span>
-              </button>
-            </li>
-          ))}
-          {st.hasText && !storyMedia(st.id).every((m) => m.kind === "text") && (
-            <li>
-              <button
-                className={`found-item ${cur.text ? "is-current" : ""}`}
-                onClick={() => setNav({ ...cur, text: true })}
-              >
-                <span className="found-title">Текст і транскрипція</span>
-                <span className="found-meta"><Icon n="file" s={14} /></span>
-              </button>
-            </li>
-          )}
-        </ul>
+        {(() => {
+          const all = storyMedia(st.id)
+          const others = all.filter(
+            (m) => m.id !== cur.id || (cur.text && m.kind !== "text"),
+          )
+          const showTr = st.hasText && !cur.text && !all.every((m) => m.kind === "text")
+          if (others.length === 0 && !showTr) return null
+          return (
+            <>
+              <hr className="lib-sep" />
+              <h4 className="lib-subhead">Додаткові матеріали</h4>
+              <div className="lib-cards">
+                {others.map((m) => (
+                  <MatCard
+                    key={m.id}
+                    m={m}
+                    onOpen={() => setNav({ ...cur, id: m.id, text: false })}
+                  />
+                ))}
+                {showTr && (
+                  <MatCard m={all[0]} asText onOpen={() => setNav({ ...cur, text: true })} />
+                )}
+              </div>
+            </>
+          )
+        })()}
       </div>
     )
   } else if (nav.v === "tag") {

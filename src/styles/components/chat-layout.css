@@ -302,3 +302,8 @@
 .lib-story-head .lib-thumb-sel { z-index: 2; }
 .lib-story-title:hover { text-decoration: none; }
 .lib-story:hover .lib-story-title { text-decoration: underline; text-underline-offset: 3px; }
+
+/* додаткові матеріали історії */
+.lib-subhead { font: var(--type-h3); color: var(--color-text); }
+.lib-detail > .lib-sep { margin: var(--space-2) 0; }
+.lib-kind-ico { flex: none; display: inline-grid; place-items: center; color: var(--color-text-subtle); }
