@@ -211,7 +211,7 @@
 .lib-hero-play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-on-media); }
 .lib-hero-play::before { content: ""; position: absolute; width: var(--control-lg, 48px); height: var(--control-lg, 48px); border-radius: var(--radius-full); background: var(--color-overlay-strong); }
 .lib-hero-play svg { position: relative; }
-.lib-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.lib-actions { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-3); }
 .found-item.is-current .found-title { color: var(--color-accent); }
 
 

@@ -436,7 +436,6 @@ export function LibPanel(p: Props) {
     const cover = storyCover(nav.id)
     const media = storyMedia(nav.id)
     const fav = data.favs.includes(nav.id)
-    const sel = p.storySel.includes(nav.id)
     title = "Історія"
     body = (
       <div className="lib-detail">
@@ -452,9 +451,6 @@ export function LibPanel(p: Props) {
           {st.tags.map((t) => <Chip key={t}>{t}</Chip>)}
         </div>
         <div className="lib-actions">
-          <Checkbox checked={sel} onChange={() => p.onToggleStory(nav.id)}>
-            <em>До сценарію</em>
-          </Checkbox>
           <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
             {fav ? "У вибраному" : "У вибране"}
