@@ -320,3 +320,5 @@
 /* картки у шторці вибраного: хрестик замість чекбокса */
 .lib-story.is-picked { padding-right: var(--space-10); }
 .lib-card-remove { position: absolute; top: var(--space-2); right: var(--space-2); z-index: 2; }
+
+.lib-genre { padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-accent-subtle); color: var(--color-accent); font-size: var(--fs-xs); font-weight: var(--fw-medium); }

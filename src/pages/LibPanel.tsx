@@ -44,6 +44,12 @@ const TYPE_LABEL: Record<string, string> = {
   text: "Текст",
 }
 
+const GENRES = ["інтерв’ю", "стаття", "нарис", "есе", "щоденник", "лист"]
+const genreOf = (tags: string[]) => {
+  const g = tags.find((t) => GENRES.includes(t))
+  return g ? g[0].toUpperCase() + g.slice(1) : null
+}
+
 const TYPE_ICON: Record<string, IconName> = {
   video: "video",
   audio: "audio",
@@ -140,7 +146,7 @@ export function LibPanel(p: Props) {
   }) => {
     const shown = ids.filter(
       (id) =>
-        (type === "all" || typesOf(id).has(type)) &&
+        (type === "all" || storyMedia(id).some((m) => m.kind === type)) &&
         (topic === "all" ||
           RUBRICS.find((r) => r.id === topic)?.storyIds.includes(id)),
     )
@@ -234,6 +240,7 @@ export function LibPanel(p: Props) {
     const cover = storyCover(id)
     const types = typesOf(id)
     const dur = storyMedia(id).reduce((a, m) => a + m.duration, 0)
+    const read = storyMedia(id).reduce((a, m) => a + (m.readMin ?? 0), 0)
     const sel = p.storySel.includes(id)
     // вигляд картки: за обраним типом, інакше за основним (відео → аудіо → текст)
     const kind: "video" | "audio" | "text" =
@@ -311,6 +318,9 @@ export function LibPanel(p: Props) {
           )}
           <p>{st.summary}</p>
           <span className="found-meta">
+            {kind === "text" && genreOf(st.tags) && (
+              <span className="lib-genre">{genreOf(st.tags)}</span>
+            )}
             {[...types].map((t) => (
               <Tip key={t} text={TYPE_LABEL[t]}>
                 <Icon n={TYPE_ICON[t]} s={14} />
@@ -319,6 +329,11 @@ export function LibPanel(p: Props) {
             {dur > 0 && (
               <Tip text="Загальна тривалість">
                 <span>{fmt(dur)}</span>
+              </Tip>
+            )}
+            {dur === 0 && read > 0 && (
+              <Tip text="Час читання">
+                <span>{read} хв</span>
               </Tip>
             )}
           </span>
