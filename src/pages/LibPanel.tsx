@@ -587,7 +587,7 @@ export function LibPanel(p: Props) {
   } else if (nav.v === "play") {
     const cur = nav
     const st = story(storyOf(cur.id))
-    title = st.title
+    title = "Історія"
     body = (
       <div className="lib-detail">
         <Media

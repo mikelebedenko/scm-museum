@@ -372,6 +372,7 @@ export default function Media({
             )}
             <div className={`mtitle ${textual ? "is-text" : ""}`}>
               <div>
+                {inline && <div className="meyebrow">{m.story}</div>}
                 <h1>
                   {textual && m.kind !== "text"
                     ? `${m.story}: текст і транскрипція`

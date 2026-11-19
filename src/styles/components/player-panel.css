@@ -36,7 +36,8 @@
 .mpanel.inline .mright.is-text .tl { padding-left: 0; padding-right: 0; border-left: 0; }
 .mpanel.inline .mright.is-text .tl:hover { background: none; }
 
-.mpanel.inline .mactions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.mpanel.inline .mactions { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-2); }
+.mpanel.inline .mactions .btn { width: 100%; min-width: 0; padding: 0 var(--space-2); font-size: var(--fs-md); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mpanel.inline .mtitle p { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 
 /* текстовий режим: розділювач між шапкою та текстом */
@@ -44,3 +45,6 @@
 .mpanel.inline .mright.is-text { margin-top: var(--space-1); }
 
 .mpanel.inline .mtitle { margin-top: 0; }
+
+.mpanel.inline .mtitle h1 { text-wrap: balance; }
+.mpanel.inline .meyebrow { margin-bottom: var(--space-1); color: var(--color-text-subtle); font: var(--type-caption); }
