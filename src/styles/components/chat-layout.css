@@ -408,3 +408,14 @@
 .lib-page i:nth-child(6) { width: 88%; }
 .lib-page i:nth-child(7) { width: 94%; }
 .lib-hero.is-text .lib-read-btn { top: auto; bottom: var(--space-5); transform: translateX(-50%); box-shadow: var(--shadow-md); }
+
+/* єдина сітка бібліотеки: ліва вісь (значки, заголовки, стрілка «назад») і права (лічильники, кнопка згортання) */
+.lib-crumb { margin-left: 0; padding: 0 var(--space-2); }
+.lib-head { padding-right: var(--space-2); }
+.lib-sep { margin: var(--space-2) 0; }
+.lib-sheet-head { padding: 0 var(--space-4); }
+
+/* екран історії: текст на тій самій осі (16px), що й рядки списків; герої та картки — на всю ширину */
+.lib-detail > .lib-detail-head, .lib-detail > .lib-actions, .lib-detail > .lib-hint, .lib-detail > .chips, .lib-detail > .lib-quote-wrap, .lib-detail > .lib-subhead { padding-inline: var(--space-4); }
+.mpanel.inline .mtitle { padding-inline: var(--space-4); }
+.mpanel.inline .mright.is-text { padding-inline: var(--space-4); }
