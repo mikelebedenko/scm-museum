@@ -173,6 +173,13 @@ export default function Search() {
       />
       <div className="cmp-bar">
         <span className="grow" />
+        <Button
+          disabled={!perms.has("script") || scriptIds.length === 0}
+          onClick={() => setScript(true)}
+        >
+          <Icon n="spark" s={14} />
+          Згенерувати сценарій
+        </Button>
         <IconButton
           className="cmp-send"
           aria-label="Шукати"

@@ -18,7 +18,7 @@ import type {
 } from "./types"
 import { permsOf } from "./types"
 import { uid, now, search, makeAnswer, makeScript } from "./lib"
-import { mat, frag, story } from "./data"
+import { mat, frag, story, stories } from "./data"
 
 export const TERMS_V = "2.0 від 01.09.2025"
 const emptyData = (): UserData => ({
@@ -99,6 +99,15 @@ function seed(): State {
     st10: "Відкрита",
     st11: "Відкрита",
     st12: "Відкрита",
+    st13: "Відкрита",
+    st14: "Відкрита",
+    st15: "Відкрита",
+    st16: "Відкрита",
+    st17: "Відкрита",
+    st18: "Відкрита",
+    st19: "Відкрита",
+    st20: "Відкрита",
+    st21: "Відкрита",
   }
   const data: Record<string, UserData> = {}
   users.forEach((u) => (data[u.id] = emptyData()))
@@ -231,6 +240,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
               )
           })
           d.assign = assign
+        })
+        // Нові історії з каталогу за замовчуванням відкриті (не втрачаємо збережений стан).
+        const st = saved.settings.storyStatus
+        stories.forEach((x) => {
+          if (!(x.id in st)) st[x.id] = "Відкрита"
         })
         return saved
       }
