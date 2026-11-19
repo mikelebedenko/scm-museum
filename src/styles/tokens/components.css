@@ -80,6 +80,6 @@
   --composer-radius: var(--radius-pill);
   --composer-padding: var(--space-6);
   --msg-user-bg: var(--color-surface-3);
-  --hit-thumb-width: 200px;
+  --hit-thumb-width: 160px;
   --hit-gap: var(--space-4);
 }
