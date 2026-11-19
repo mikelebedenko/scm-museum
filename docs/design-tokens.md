@@ -1,0 +1,57 @@
+# Design tokens — SCM.Museum
+
+Єдине джерело: [`src/styles/tokens.css`](../src/styles/tokens.css). Живий довідник: `/#/tokens`.
+Правило: у `index.css` і компонентах — **тільки `var(--token)`**, без hex/rgba/px «з голови».
+
+## Три рівні
+1. **Примітиви** `--p-*` — сирі значення (палітра). Напряму в компонентах не використовуються.
+2. **Семантичні** `--color-*`, `--type-*`, `--space-*`… — те, що вживаємо у стилях.
+3. **Компоненти** — класи в `index.css`, які читають семантичні токени.
+Тема/ребрендинг = зміна примітивів і посилань у секції «Кольори».
+
+## Кольори
+| Група | Токени |
+|---|---|
+| Поверхні | `bg`, `surface-1…4`, `surface-sunken` |
+| Текст | `text`, `text-muted`, `text-subtle`, `text-on-accent`, `text-on-media` |
+| Межі | `border`, `border-strong`, `border-stronger` |
+| Акцент | `accent`, `accent-hover`, `accent-wash/-subtle/-muted/-border` |
+| Статуси | `success`, `danger`, `warning` (+ `-bg`, `-border`, `-text`), `info` |
+| Медіа | `media-video`, `media-audio` |
+| Накладки | `scrim`, `overlay`, `overlay-strong` |
+
+Прозорі варіанти акценту й статусів рахуються через `color-mix` від базового кольору — змінюєте один токен, змінюються всі.
+
+## Типографіка
+Шрифт: Montserrat (`--font-sans`), моно — `--font-mono`.
+Шкала: `--fs-xs 11 · sm 12 · md 13 · base 14 · lg 16 · xl 18 · 2xl 22 · 3xl 28 · 4xl 36`.
+Ваги: `--fw-regular 400 · medium 500 · semibold 600 · bold 700`. Інтерліньяж: `--lh-none/tight/snug/normal/relaxed`. Трекінг: `--ls-normal/wide/wider`.
+
+Ролі (використовувати як `font: var(--type-…)`):
+
+| Роль | Розмір | Де |
+|---|---|---|
+| `display` | 36 | hero на екрані входу |
+| `h1` | 28 | назва сторінки/матеріалу |
+| `h2` | 22 | заголовок розділу |
+| `h3` | 18 | заголовок колонки/модалки |
+| `h4` | 16 | заголовок картки |
+| `body-lg/body/body-sm` | 16/14/13 | основний текст |
+| `caption` | 12 | підписи, метадані |
+| `label` | 13 semibold | кнопки, поля |
+| `overline` | 11 | eyebrow (+ `uppercase`, `--ls-wider`) |
+| `mono` | 12 | таймкоди, цифри |
+
+## Відступи, форма, розміри
+- Відступи — крок 4px: `--space-half 2 · 1 4 · 2 8 · 3 12 · 4 16 · 5 20 · 6 24 · 8 32 · 10 40 · 12 48 · 14 56 · 20 80`.
+- Радіуси: `xs 4 · sm 8 · md 12 · lg 16 · xl 20 · pill · full`.
+- Межі: `--border-width 1px`, `--border-width-thick 2px`.
+- Тіні/кільця: `--shadow-md`, `--shadow-accent`, `--shadow-inset`, `--ring-accent`, `--ring-focus`, `--focus-outline`.
+- Висота контролів: `--control-xs 24 · sm 28 · md 36 · lg 44`. Іконки: `--icon-sm/md/lg`.
+- Лейаут: `--header-height`, `--sidebar-width`, `--container-sm/md/lg`, `--app-min-width/height`.
+- Шари: `--z-raised/panel/popover/tooltip/modal/toast`. Рух: `--duration-fast/base/slow`, `--ease`.
+
+## Що ще не токенізовано
+- Розміри декоративних елементів (іконки-крапки, прогрес-бари, thumbnail) та ширини колонок сітки — лишилися числами в `index.css`.
+- Динамічна геометрія у `style={{}}` (позиції на таймлайні) — це дані, не стиль.
+- Брейкпоінти (`@media (max-width: 1250px)`) — CSS-змінні в медіазапитах не працюють; винести можна окремо.

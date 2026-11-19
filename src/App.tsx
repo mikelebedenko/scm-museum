@@ -1,6 +1,7 @@
 import { StoreProvider } from "./store"
 import { Toasts } from "./ui"
 import Search from "./pages/Search"
+import Tokens from "./pages/Tokens"
 
 function Shell() {
   return (
@@ -15,7 +16,7 @@ function Shell() {
         </div>
       </header>
       <main className="page">
-        <Search />
+        {location.hash === "#/tokens" ? <Tokens /> : <Search />}
       </main>
     </div>
   )
