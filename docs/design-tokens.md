@@ -98,3 +98,6 @@
 Показ усіх варіантів: `/#/tokens`.
 
 > Не запускайте `pnpm format` (oxfmt) на файлах з інлайновими типами: він прибирає `;` у `{ a: string; b: number }` і ламає синтаксис.
+
+## Автоперевірки (CI)
+`.github/workflows/ci.yml` на кожен push у `main` і кожен pull request запускає: `pnpm typecheck`, `pnpm lint:tokens`, `pnpm build`. Локально все разом: `pnpm check`.

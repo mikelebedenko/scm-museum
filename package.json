@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "oxfmt",
-    "lint:tokens": "node scripts/check-tokens.mjs"
+    "lint:tokens": "node scripts/check-tokens.mjs",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm lint:tokens && pnpm build"
   },
   "dependencies": {
     "react": "^19.0.0",
