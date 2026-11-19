@@ -186,35 +186,60 @@ export function LibPanel(p: Props) {
   const StoryCard = ({ id }: { id: string }) => {
     const st = story(id)
     const cover = storyCover(id)
+    const types = typesOf(id)
     const dur = storyMedia(id).reduce((a, m) => a + m.duration, 0)
     const sel = p.storySel.includes(id)
+    // вигляд картки: за обраним типом, інакше за основним (відео → аудіо → текст)
+    const kind: "video" | "audio" | "text" =
+      type !== "all" && types.has(type)
+        ? type
+        : types.has("video")
+          ? "video"
+          : types.has("audio")
+            ? "audio"
+            : "text"
+    const check = (
+      <Checkbox
+        className="lib-thumb-sel"
+        checked={sel}
+        onChange={() => p.onToggleStory(id)}
+        title="Додати до сценарію"
+      />
+    )
     return (
-      <article className={`lib-story ${sel ? "selected" : ""}`}>
-        <div className="lib-thumb">
-          <button onClick={() => openStory(id)} aria-label={`Відкрити історію ${st.title}`}>
-            <img
-              src={thumbUrl(cover.id, 320, 200)}
-              alt=""
-              loading="lazy"
-              onError={(e) => {
-                e.currentTarget.style.visibility = "hidden"
-              }}
-            />
-          </button>
-          <Checkbox
-            className="lib-thumb-sel"
-            checked={sel}
-            onChange={() => p.onToggleStory(id)}
-            title="Додати до сценарію"
-          />
-        </div>
+      <article
+        className={`lib-story is-${kind} ${sel ? "selected" : ""}`}
+      >
+        {kind === "text" ? (
+          <div className="lib-story-check">{check}</div>
+        ) : (
+          <div className="lib-thumb">
+            <button onClick={() => openStory(id)} aria-label={`Відкрити історію ${st.title}`}>
+              {kind === "video" ? (
+                <img
+                  src={thumbUrl(cover.id, 320, 200)}
+                  alt=""
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.visibility = "hidden"
+                  }}
+                />
+              ) : (
+                <span className="lib-thumb-audio">
+                  <Icon n="audio" s={36} />
+                </span>
+              )}
+            </button>
+            {check}
+          </div>
+        )}
         <div className="lib-story-body">
           <button className="lib-story-title" onClick={() => openStory(id)}>
             {st.title}
           </button>
           <p>{st.summary}</p>
           <span className="found-meta">
-            {[...typesOf(id)].map((t) => (
+            {[...types].map((t) => (
               <Icon key={t} n={TYPE_ICON[t]} s={14} />
             ))}
             {dur > 0 && fmt(dur)}
