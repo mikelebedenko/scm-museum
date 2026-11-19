@@ -5,7 +5,7 @@ import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
-import { Icon, type IconName } from "../ui"
+import { Icon, Popover, type IconName } from "../ui"
 import Media from "./Media"
 import { Chip } from "../components/Chip"
 import { useActions, useMe, useStore } from "../store"
@@ -63,6 +63,7 @@ export function LibPanel(p: Props) {
   const [foundOpen, setFoundOpen] = useState(true)
   const [type, setType] = useState<TypeFilter>("all")
   const [topic, setTopic] = useState("all")
+  const [topicMenu, setTopicMenu] = useState(false)
 
   const isOpen = (id: string) => status[id] === "Відкрита"
   const allIds = stories.filter((s) => isOpen(s.id)).map((s) => s.id)
@@ -114,34 +115,61 @@ export function LibPanel(p: Props) {
     )
     return (
       <>
-        <Segmented
-          className="lib-seg"
-          aria-label="Тип матеріалів"
-          value={type}
-          onChange={setType}
-          options={[
-            { value: "all", label: "Усі" },
-            { value: "video", label: "Відео" },
-            { value: "audio", label: "Аудіо" },
-            { value: "text", label: "Текст" },
-          ]}
-        />
-        {topics && (
-          <div className="lib-topics">
-            <FilterButton active={topic === "all"} onClick={() => setTopic("all")}>
-              Усі теми
-            </FilterButton>
-            {RUBRICS.map((r) => (
+        <div className="lib-filters">
+          <Segmented
+            className="lib-seg"
+            aria-label="Тип матеріалів"
+            value={type}
+            onChange={setType}
+            options={[
+              { value: "all", label: "Усі" },
+              { value: "video", label: "Відео" },
+              { value: "audio", label: "Аудіо" },
+              { value: "text", label: "Текст" },
+            ]}
+          />
+          {topics && (
+            <span className="relative">
               <FilterButton
-                key={r.id}
-                active={topic === r.id}
-                onClick={() => setTopic(r.id)}
+                className="lib-topic-btn"
+                active={topic !== "all"}
+                aria-expanded={topicMenu}
+                onClick={() => setTopicMenu(!topicMenu)}
               >
-                {r.title}
+                <span>
+                  {topic === "all"
+                    ? "Теми"
+                    : RUBRICS.find((r) => r.id === topic)?.title}
+                </span>
+                <Icon n="down" s={14} />
               </FilterButton>
-            ))}
-          </div>
-        )}
+              <Popover
+                open={topicMenu}
+                onClose={() => setTopicMenu(false)}
+                className="topicpop"
+              >
+                <div className="pop-t">Тема</div>
+                <div className="pop-list">
+                  {[{ id: "all", title: "Усі теми" }, ...RUBRICS].map((r) => (
+                    <button
+                      key={r.id}
+                      className={topic === r.id ? "on" : ""}
+                      onClick={() => {
+                        setTopic(r.id)
+                        setTopicMenu(false)
+                      }}
+                    >
+                      <span className="box">
+                        {topic === r.id && <Icon n="check" s={11} />}
+                      </span>
+                      {r.title}
+                    </button>
+                  ))}
+                </div>
+              </Popover>
+            </span>
+          )}
+        </div>
         {shown.length === 0 ? (
           <p className="lib-hint">{empty}</p>
         ) : (

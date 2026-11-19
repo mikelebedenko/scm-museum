@@ -244,3 +244,11 @@
 .lib .side-head { font: var(--type-h2); padding: var(--space-2) var(--space-4); }
 .lib .side-head .acc-chev { color: var(--color-text-subtle); }
 .lib-crumb { font: var(--type-h3); }
+
+/* тип + тема в одному ряду */
+.lib-filters { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.lib-filters .lib-seg { width: auto; flex: 1; min-width: 0; }
+.lib-filters .lib-seg button { padding: 0 var(--space-2); }
+.lib-topic-btn { height: var(--control-md); max-width: 168px; border-radius: var(--radius-pill); }
+.lib-topic-btn span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topicpop { right: 0; left: auto; width: 240px; }
