@@ -468,6 +468,7 @@ export default function Search() {
         onGenerate={() => setScript(true)}
         onAsk={send}
         onManageTags={() => setTagsM(true)}
+        onOpenScripts={() => setScripts(true)}
       />
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
@@ -591,8 +592,15 @@ function BrowseStory({
   )
 }
 
+const PRESETS = [
+  "Короткий огляд історій",
+  "Документальний нарис",
+  "Тези для статті",
+]
+
 function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
   const a = useActions()
+  const titles = Array.from(new Set(ids.map((id) => mat(frag(id).mid).story)))
   const [prompt, setPrompt] = useState("")
   const [out, setOut] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -607,7 +615,7 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
   return (
     <Modal
       wide
-      title="Чернетка сценарію"
+      title="Новий сценарій"
       onClose={onClose}
       foot={
         out ? (
@@ -634,7 +642,7 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
               onClick={run}
             >
               <Icon n="spark" s={14} />
-              {busy ? "Генерація…" : "Згенерувати"}
+              {busy ? "Генерація…" : "Згенерувати сценарій"}
             </Button>
           </>
         )
@@ -642,31 +650,51 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
     >
       {!out ? (
         <>
-          <p className="sub">
-            Джерела: <b>{ids.length}</b> фрагм.{" "}
-            {ids.length === 0 && "— оберіть фрагменти у результатах."}
-          </p>
+          <section className="sc-sources">
+            <div className="sc-label">Джерела</div>
+            {ids.length === 0 ? (
+              <p className="sub">Оберіть історії або фрагменти — вони з’являться тут.</p>
+            ) : (
+              <>
+                <div className="chips">
+                  {titles.map((t) => (
+                    <Chip key={t}>{t}</Chip>
+                  ))}
+                </div>
+                <p className="sc-count">
+                  {titles.length} іст. · {ids.length} фрагм.
+                </p>
+              </>
+            )}
+          </section>
           <label className="fld">
-            <span>Тема, акценти та напрям висвітлення (промпт)</span>
+            <span className="sc-label">Про що сценарій</span>
             <textarea
               rows={5}
               value={prompt}
               autoFocus
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Напр.: Зосередься на взаємодопомозі незнайомих людей під час евакуації; тон — стриманий, документальний."
+              placeholder="Тема, акценти й тон. Напр.: взаємодопомога незнайомих людей під час евакуації, стримано й документально."
             />
           </label>
-          <div className="demo local">
-            Генерація виконується локально в інфраструктурі Замовника. Чернетка
-            збережеться автоматично.
+          <div className="chips sc-presets">
+            {PRESETS.map((x) => (
+              <Chip key={x} onClick={() => setPrompt(x)}>
+                {x}
+              </Chip>
+            ))}
           </div>
+          <p className="sc-note">
+            <Icon n="lock" s={14} />
+            Генерація виконується локально в інфраструктурі Замовника. Сценарій
+            збережеться автоматично.
+          </p>
         </>
       ) : (
         <>
           <div className="okmsg">
             <Icon n="check" />
-            Збережено автоматично; чернетку можна переглянути кнопкою
-            «Сценарії».
+            Сценарій збережено. Знайти його можна в «Сценарії» у бібліотеці.
           </div>
           <pre className="scriptout">{out}</pre>
         </>

@@ -259,3 +259,11 @@
 .lib-story.is-text { grid-template-columns: auto minmax(0, 1fr); align-items: start; padding: var(--space-3); }
 .lib-story-check { padding-top: var(--space-half); }
 .lib-story-check .lib-thumb-sel { position: static; background: none; padding: 0; }
+
+/* модалка сценарію */
+.sc-sources { display: grid; gap: var(--space-2); margin-bottom: var(--space-4); }
+.sc-label { font: var(--type-label); color: var(--color-text); }
+.fld > span.sc-label { margin-bottom: var(--space-2); font-size: var(--fs-md); color: var(--color-text); }
+.sc-count { color: var(--color-text-subtle); font-size: var(--fs-sm); }
+.sc-presets { margin: calc(var(--space-1) * -1) 0 var(--space-4); }
+.sc-note { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-subtle); font-size: var(--fs-sm); }

@@ -51,6 +51,7 @@ type Props = {
   onGenerate: () => void
   onAsk: (q: string) => void
   onManageTags: () => void
+  onOpenScripts: () => void
 }
 
 export function LibPanel(p: Props) {
@@ -433,6 +434,11 @@ export function LibPanel(p: Props) {
               <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
               <NavItem icon="star" label="Вибране" count={favIds.length} to={{ v: "favs" }} />
               <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
+              <button onClick={p.onOpenScripts}>
+                <Icon n="file" s={24} />
+                <span className="lbl">Сценарії</span>
+                {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+              </button>
             </nav>
           )}
           {p.foundStories.length > 0 && (
