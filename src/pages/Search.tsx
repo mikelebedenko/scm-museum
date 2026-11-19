@@ -467,40 +467,26 @@ export default function Search() {
   )
 
   const visibleChats = data.chats.filter(
-    (c) => c.msgs.length > 0 || c.id === data.active,
+    (c) => c.msgs.length > 0,
   )
 
   return (
     <div className={`shell ${side ? "" : "side-rail"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
-        {side ? (
-          <>
-            <div className="side-head">
-              <span>Історія чатів</span>
-              <IconButton
-                size="sm"
-                aria-label="Згорнути меню"
-                onClick={() => setSide(false)}
-              >
-                <Icon n="list" s={16} />
-              </IconButton>
-            </div>
-            <Button className="side-new" onClick={newChat}>
-              <Icon n="plus" s={14} />
-              Новий чат
-            </Button>
-          </>
-        ) : (
-          <IconButton aria-label="Розгорнути меню" onClick={() => setSide(true)}>
-            <Icon n="list" />
+        <div className="side-top">
+          <IconButton
+            size="sm"
+            aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
+            onClick={() => setSide(!side)}
+          >
+            <Icon n="list" s={16} />
           </IconButton>
-        )}
-        {!side && (
-          <IconButton aria-label="Новий чат" title="Новий чат" onClick={newChat}>
-            <Icon n="plus" />
-          </IconButton>
-        )}
+        </div>
         <nav className="side-nav">
+          <button title="Новий чат" onClick={newChat}>
+            <Icon n="plus" s={16} />
+            <span className="lbl">Новий чат</span>
+          </button>
           <button
             title="Теми"
             className={view === "browse" ? "on" : ""}
@@ -526,7 +512,7 @@ export default function Search() {
         </nav>
         {side && (
           <>
-            <div className="side-label">Чати</div>
+            <div className="side-label">Нещодавні</div>
             <ul className="side-chats">
               {visibleChats.length === 0 && (
                 <li className="muted">Поки порожньо</li>
