@@ -247,7 +247,6 @@
 .fld > span.sc-label { margin-bottom: var(--space-2); font-size: var(--fs-md); color: var(--color-text); }
 .sc-count { color: var(--color-text-subtle); font-size: var(--fs-sm); }
 .sc-presets { margin: calc(var(--space-1) * -1) 0 var(--space-4); }
-.sc-note { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-subtle); font-size: var(--fs-sm); }
 
 /* структура панелі: прокрутка + нижня панель вибору + шторка */
 .lib { padding: 0; gap: 0; overflow: hidden; }
@@ -466,3 +465,10 @@
 /* картки бібліотеки: однаковий відступ з усіх боків (картинка лишається на осі заголовків) */
 .lib .lib-story { padding: var(--space-4); }
 .lib .lib-story.is-picked { padding-right: var(--space-10); }
+
+/* модалка сценарію: підписи з поясненням праворуч, пресети-перемикачі */
+.sc-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.fld > span.sc-row { display: flex; margin-bottom: var(--space-2); }
+.fld > span.sc-row .sc-label { font: var(--type-label); color: var(--color-text); }
+.sc-presets { margin-bottom: 0; }
+.sc-presets .chip { cursor: pointer; }

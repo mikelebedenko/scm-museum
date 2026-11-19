@@ -664,10 +664,10 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
   const [out, setOut] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const run = () => {
-    if (!prompt.trim()) return
+    if (ids.length === 0) return
     setBusy(true)
     setTimeout(() => {
-      setOut(a.genScript(prompt.trim(), ids).body)
+      setOut(a.genScript(prompt.trim() || PRESETS[0], ids).body)
       setBusy(false)
     }, 900)
   }
@@ -697,7 +697,7 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
             <Button onClick={onClose}>Скасувати</Button>
             <Button
               variant="primary"
-              disabled={!prompt.trim() || busy}
+              disabled={ids.length === 0 || busy}
               onClick={run}
             >
               <Icon n="spark" s={14} />
@@ -710,26 +710,32 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
       {!out ? (
         <>
           <section className="sc-sources">
-            <div className="sc-label">Джерела</div>
+            <div className="sc-row">
+              <div className="sc-label">Джерела</div>
+              {ids.length > 0 && (
+                <span className="sc-count">
+                  {titles.length} іст. · {ids.length} фрагм.
+                </span>
+              )}
+            </div>
             {ids.length === 0 ? (
               <p className="sub">Оберіть історії або фрагменти — вони з’являться тут.</p>
             ) : (
-              <>
-                <div className="chips">
-                  {titles.map((t) => (
-                    <Chip key={t}>{t}</Chip>
-                  ))}
-                </div>
-                <p className="sc-count">
-                  {titles.length} іст. · {ids.length} фрагм.
-                </p>
-              </>
+              <div className="chips">
+                {titles.slice(0, 6).map((t) => (
+                  <Chip key={t}>{t}</Chip>
+                ))}
+                {titles.length > 6 && <Chip>+{titles.length - 6} ще</Chip>}
+              </div>
             )}
           </section>
           <label className="fld">
-            <span className="sc-label">Про що сценарій</span>
+            <span className="sc-row">
+              <span className="sc-label">Про що сценарій</span>
+              <span className="sc-count">необов’язково</span>
+            </span>
             <textarea
-              rows={5}
+              rows={4}
               value={prompt}
               autoFocus
               onChange={(e) => setPrompt(e.target.value)}
@@ -738,16 +744,16 @@ function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
           </label>
           <div className="chips sc-presets">
             {PRESETS.map((x) => (
-              <Chip key={x} onClick={() => setPrompt(x)}>
+              <button
+                key={x}
+                type="button"
+                className={`chip ${prompt === x ? "on" : ""}`}
+                onClick={() => setPrompt(prompt === x ? "" : x)}
+              >
                 {x}
-              </Chip>
+              </button>
             ))}
           </div>
-          <p className="sc-note">
-            <Icon n="lock" s={14} />
-            Генерація виконується локально в інфраструктурі Замовника. Сценарій
-            збережеться автоматично.
-          </p>
         </>
       ) : (
         <>
