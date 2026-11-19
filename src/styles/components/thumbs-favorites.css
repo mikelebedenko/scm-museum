@@ -1,0 +1,23 @@
+/* ---------- превʼю, квадратні чекбокси, обране, теги ---------- */
+.cb span, .box { border-radius: var(--radius-xs); border-width: var(--border-width-thick); }
+.cb span { width: 18px; height: 18px; }
+.box { width: 16px; height: 16px; }
+.frag { grid-template-columns: 96px 164px 1fr; }
+.thumb { position: relative; margin: var(--space-3) 0; width: 148px; height: 100px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface-3); align-self: start; flex: none; }
+.thumb img, .stage .poster { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb img { transition: transform var(--duration-slow); } .thumb:hover img { transform: scale(1.05); }
+.thumb .pl { position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-on-accent); }
+.thumb .pl::before { content: ''; position: absolute; width: var(--control-md); height: var(--control-md); border-radius: var(--radius-full); background: var(--color-accent); opacity: .92; }
+.thumb .pl svg { position: relative; margin-left: var(--space-half); }
+.thumb .kb { position: absolute; right: var(--space-2); bottom: var(--space-2); display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-overlay-strong); font: var(--fw-medium) var(--fs-xs) var(--font-mono); color: var(--color-text-on-media); }
+.thumb.sm { width: 120px; height: 80px; margin: 0; }
+.thumb.sm .pl::before { width: var(--control-sm); height: var(--control-sm); }
+.stage .poster { position: absolute; inset: 0; opacity: .5; }
+.stage > *:not(.poster) { z-index: var(--z-raised); } .stage .vid { position: relative; }
+.favlist { display: grid; gap: var(--space-3); }
+.favrow { display: grid; grid-template-columns: 120px 1fr auto; gap: var(--space-4); align-items: start; padding: var(--space-3); border-radius: var(--radius-lg); background: var(--color-surface-1); }
+.favrow h3 { font: var(--fw-semibold) var(--fs-base)/var(--lh-snug) var(--font-sans); margin-bottom: var(--space-1); } .favrow .chips { margin-top: var(--space-2); }
+.filters.flat { padding: 0 0 var(--space-3); border: 0; }
+.confirm { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-md); color: var(--color-text-muted); } .confirm span { flex: 1; }
+.tlist .trow { background: var(--color-surface-1); border-color: transparent; border-radius: var(--radius-lg); }
+.crow { justify-content: flex-end; }

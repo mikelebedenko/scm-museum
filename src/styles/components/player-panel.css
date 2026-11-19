@@ -1,0 +1,7 @@
+/* ---------- панель плеєра поверх результатів, збережені сценарії ---------- */
+.mpanel { position: absolute; inset: 0; z-index: var(--z-panel); background: var(--color-bg); overflow: auto; }
+.mpanel .media { max-width: none; margin: 0; } .mpanel .mright { position: static; max-height: none; }
+.hlink { text-align: left; color: inherit; font: inherit; } .hlink:hover { color: var(--color-accent); }
+.scr { padding: var(--space-3) 0; border-bottom: var(--border-width) solid var(--color-border); } .scr-h { display: flex; align-items: center; gap: var(--space-3); } .scr-h .hlink { flex: 1; } .scr-h small { color: var(--color-text-subtle); font-size: var(--fs-sm); }
+.colhead .btn { white-space: nowrap; }
+.mpanel .trans { max-height: 340px; position: relative; }

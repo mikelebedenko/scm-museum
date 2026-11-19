@@ -1,0 +1,26 @@
+/* ---------- панель керування плеєром ---------- */
+.pbar { margin-top: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-3); background: var(--color-surface-2); border-radius: var(--radius-lg); display: grid; gap: var(--space-3); }
+.scrub { position: relative; height: 20px; display: flex; align-items: center; cursor: pointer; outline: 0; }
+.scrub:focus-visible .knob { box-shadow: var(--ring-focus); }
+.rail { position: relative; width: 100%; height: 6px; border-radius: var(--radius-pill); background: var(--color-track); overflow: hidden; transition: height var(--duration-fast); }
+.scrub:hover .rail { height: 8px; }
+.rail .mk { position: absolute; top: 0; bottom: 0; background: var(--color-track-hover); border-radius: 0; }
+.rail .hit { position: absolute; top: 0; bottom: 0; background: var(--color-accent-border); border: 0; border-radius: 0; }
+.rail .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--color-accent); border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
+.scrub .knob { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: var(--radius-full); background: var(--color-text-on-media); border: 0; box-shadow: 0 0 0 3px var(--color-accent); transition: transform var(--duration-fast); pointer-events: none; } .scrub:hover .knob { transform: scale(1.15); }
+.prow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.pl-grp, .pr-grp { display: flex; align-items: center; gap: var(--space-2); }
+.pp { width: var(--control-lg); height: var(--control-lg); display: grid; place-items: center; border: 0; border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-text-on-accent); transition: var(--duration-base); } .pp:hover { background: var(--color-accent-hover); color: var(--color-text-on-accent); transform: scale(1.05); }
+.skip { display: inline-flex; align-items: center; gap: var(--space-1); height: var(--control-md); padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--color-text-muted); font: var(--fw-semibold) var(--fs-sm) var(--font-mono); } .skip:hover { background: var(--color-surface-3); color: var(--color-text); }
+.skip:last-of-type svg { transform: scaleX(-1); }
+.ptime { margin-left: var(--space-2); font: var(--fw-medium) var(--fs-md) var(--font-mono); color: var(--color-text-subtle); } .ptime b { color: var(--color-text); font-weight: var(--fw-semibold); }
+.vol { -webkit-appearance: none; appearance: none; width: 96px; height: 4px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--v), var(--color-border-strong) var(--v)); outline: 0; cursor: pointer; }
+.vol::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: var(--radius-full); background: var(--color-text-on-media); border: 0; }
+.vol::-moz-range-thumb { width: 12px; height: 12px; border-radius: var(--radius-full); background: var(--color-text-on-media); border: 0; }
+.vol:focus-visible { box-shadow: var(--ring-focus); }
+.pill { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-md); padding: 0 var(--space-3); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text); font: var(--fw-semibold) var(--fs-md) var(--font-mono); transition: var(--duration-base); } .pill:hover { background: var(--color-surface-4); }
+.pill.on { background: var(--color-accent-subtle); color: var(--color-accent); }
+.submenu { top: auto; bottom: calc(100% + var(--space-2)); right: 0; left: auto; width: 190px; padding: var(--space-2); }
+.hitchip { display: inline-flex; align-items: center; gap: var(--space-2); justify-self: start; height: var(--control-sm); padding: 0 var(--space-2) 0 var(--space-3); border-radius: var(--radius-pill); background: var(--color-accent-subtle); color: var(--color-accent); font: var(--fw-medium) var(--fs-sm) var(--font-mono); }
+.hitchip i { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--color-accent); }
+.hitchip span { margin-left: var(--space-1); padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-text-on-accent); font: var(--fw-semibold) var(--fs-xs) var(--font-sans); } .hitchip:hover span { background: var(--color-accent-hover); }
