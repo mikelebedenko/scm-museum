@@ -7,6 +7,7 @@
   --control-sm: 28px;
   --control-md: 36px;
   --control-lg: 44px;
+  --control-xl: 48px;
 
   /* логотип */
   --logo-size: var(--control-md);

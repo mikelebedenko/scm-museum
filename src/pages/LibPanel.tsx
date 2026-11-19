@@ -208,12 +208,9 @@ export function LibPanel(p: Props) {
     to: Nav
   }) => (
     <button onClick={() => go(to)}>
-      <Icon n={icon} s={20} />
+      <Icon n={icon} s={24} />
       <span className="lbl">{label}</span>
       {count !== undefined && count > 0 && <small>{count}</small>}
-      <span className="nav-go">
-        <Icon n="down" s={16} />
-      </span>
     </button>
   )
 
@@ -383,8 +380,9 @@ export function LibPanel(p: Props) {
             </span>
           </button>
           {menuOpen && (
-            <nav className="side-nav">
-              <NavItem icon="video" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
+            <nav className="side-nav lib-menu">
+              <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
+              <hr className="lib-sep" />
               <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
               <NavItem icon="star" label="Обране" count={favIds.length} to={{ v: "favs" }} />
               <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
