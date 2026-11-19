@@ -61,7 +61,7 @@ export default function Search() {
   const active: Msg | undefined =
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
   const [view, setView] = useState<"chat" | "browse">("chat")
-  const [side, setSide] = useState(true)
+  const [side, setSide] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
@@ -155,7 +155,7 @@ export default function Search() {
         ref={taRef}
         value={input}
         placeholder="Запитайте про історії архіву…"
-        rows={2}
+        rows={1}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -173,6 +173,12 @@ export default function Search() {
         <Icon n="send" s={18} />
       </IconButton>
     </div>
+  )
+
+  const disclaimer = (
+    <p className="disclaimer">
+      ШІ може помилятися. Перевіряйте відповіді за першоджерелами.
+    </p>
   )
 
   const selBar = scriptIds.length > 0 && (
@@ -465,66 +471,88 @@ export default function Search() {
   )
 
   return (
-    <div className={`shell ${side ? "" : "side-off"}`}>
-      <aside className="side" aria-label="Меню">
+    <div className={`shell ${side ? "" : "side-rail"}`}>
+      <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
         <div className="side-top">
-          <IconButton aria-label="Сховати меню" onClick={() => setSide(false)}>
+          <IconButton
+            aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
+            onClick={() => setSide(!side)}
+          >
             <Icon n="list" />
           </IconButton>
-          <Button className="side-new" onClick={newChat}>
-            <Icon n="plus" s={14} />
-            Новий чат
-          </Button>
+          {side && (
+            <Button className="side-new" onClick={newChat}>
+              <Icon n="plus" s={14} />
+              Новий чат
+            </Button>
+          )}
         </div>
+        {!side && (
+          <IconButton aria-label="Новий чат" title="Новий чат" onClick={newChat}>
+            <Icon n="plus" />
+          </IconButton>
+        )}
         <nav className="side-nav">
-          <button className={view === "browse" ? "on" : ""} onClick={() => setView("browse")}>
+          <button
+            title="Теми"
+            className={view === "browse" ? "on" : ""}
+            onClick={() => setView("browse")}
+          >
             <Icon n="list" s={16} />
-            Теми
+            <span className="lbl">Теми</span>
           </button>
-          <button onClick={() => setFavsM(true)}>
+          <button title="Обране" onClick={() => setFavsM(true)}>
             <Icon n="star" s={16} />
-            Обране
+            <span className="lbl">Обране</span>
             {data.favs.length > 0 && <small>{data.favs.length}</small>}
           </button>
-          <button onClick={() => setScripts(true)}>
+          <button title="Чернетки" onClick={() => setScripts(true)}>
             <Icon n="file" s={16} />
-            Чернетки
+            <span className="lbl">Чернетки</span>
             {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
           </button>
-          <button onClick={() => setTagsM(true)}>
+          <button title="Теги" onClick={() => setTagsM(true)}>
             <Icon n="tag" s={16} />
-            Теги
+            <span className="lbl">Теги</span>
           </button>
         </nav>
-        <div className="side-label">Чати</div>
-        <ul className="side-chats">
-          {visibleChats.length === 0 && <li className="muted">Поки порожньо</li>}
-          {visibleChats.map((c) => (
-            <li key={c.id} className={c.id === data.active && view === "chat" ? "on" : ""}>
-              <button
-                className="side-chat"
-                onClick={() => {
-                  a.setActive(c.id)
-                  setPick(null)
-                  setView("chat")
-                }}
-              >
-                {c.title}
-              </button>
-              <IconButton size="sm" aria-label="Видалити чат" onClick={() => setDel(c.id)}>
-                <Icon n="trash" s={14} />
-              </IconButton>
-            </li>
-          ))}
-        </ul>
+        {side && (
+          <>
+            <div className="side-label">Чати</div>
+            <ul className="side-chats">
+              {visibleChats.length === 0 && (
+                <li className="muted">Поки порожньо</li>
+              )}
+              {visibleChats.map((c) => (
+                <li
+                  key={c.id}
+                  className={c.id === data.active && view === "chat" ? "on" : ""}
+                >
+                  <button
+                    className="side-chat"
+                    onClick={() => {
+                      a.setActive(c.id)
+                      setPick(null)
+                      setView("chat")
+                    }}
+                  >
+                    {c.title}
+                  </button>
+                  <IconButton
+                    size="sm"
+                    aria-label="Видалити чат"
+                    onClick={() => setDel(c.id)}
+                  >
+                    <Icon n="trash" s={14} />
+                  </IconButton>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </aside>
 
       <main className="main" aria-label="Пошуковий чат">
-        {!side && (
-          <IconButton className="main-menu" aria-label="Показати меню" onClick={() => setSide(true)}>
-            <Icon n="list" />
-          </IconButton>
-        )}
         {view === "browse" ? (
           browse
         ) : (
@@ -535,6 +563,7 @@ export default function Search() {
                   <div className="home">
                     <h1>Що ви шукаєте в архіві?</h1>
                     {composer}
+                    {disclaimer}
                     <div className="sugs2">
                       {SUGGESTIONS.slice(0, 4).map((s) => (
                         <button key={s} onClick={() => send(s)}>
@@ -558,6 +587,7 @@ export default function Search() {
                 <div className="chat-col">
                   {selBar}
                   {composer}
+                  {disclaimer}
                 </div>
               </div>
             )}

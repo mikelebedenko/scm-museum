@@ -77,8 +77,8 @@
 
   /* Chat: поле запиту, повідомлення, картка результату */
   --composer-bg: var(--color-surface-2);
-  --composer-radius: var(--radius-xl);
-  --composer-padding: var(--space-4);
+  --composer-radius: var(--radius-pill);
+  --composer-padding: var(--space-6);
   --msg-user-bg: var(--color-surface-3);
   --hit-thumb-width: 200px;
   --hit-gap: var(--space-4);

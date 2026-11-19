@@ -1,10 +1,9 @@
 /* ---------- Новий лейаут: бокова панель + чат по центру ---------- */
-.shell { flex: 1; min-height: 0; display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); gap: var(--space-4); padding: 0 var(--space-4) var(--space-4); }
-.shell.side-off { grid-template-columns: minmax(0, 1fr); }
-.shell.side-off .side { display: none; }
+.shell { flex: 1; min-height: 0; display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); gap: var(--space-4); padding: 0 var(--space-4) var(--space-4) var(--space-2); }
+.shell.side-rail { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
 
 /* бокова панель */
-.side { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow: hidden auto; padding: var(--space-3); background: var(--panel-bg); border-radius: var(--panel-radius); }
+.side { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow: hidden auto; padding: var(--space-2) var(--space-1); }
 .side-top { display: flex; align-items: center; gap: var(--space-2); }
 .side-new { flex: 1; }
 .side-nav { display: grid; gap: var(--space-half); }
@@ -24,7 +23,7 @@
 .side-chats li:hover .ib, .side-chats .ib:focus-visible { opacity: 1; }
 
 /* основна область */
-.main { position: relative; display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; background: var(--panel-bg); border-radius: var(--panel-radius); }
+.main { position: relative; display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
 .main-menu { position: absolute; top: var(--space-3); left: var(--space-3); z-index: var(--z-raised); }
 .chat-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; }
 .chat-col { width: min(var(--container-chat), 100%); box-sizing: border-box; margin: 0 auto; padding: 0 var(--space-6); flex: 1 0 auto; display: flex; flex-direction: column; }
@@ -84,3 +83,19 @@
 .browse { width: min(var(--container-md), 100%); box-sizing: border-box; margin: 0 auto; padding: var(--space-14) var(--space-6) var(--space-6); display: grid; gap: var(--space-4); align-content: start; }
 .msg-user { scroll-margin-top: var(--space-6); }
 .aitext svg { display: inline-block; }
+
+/* вузька панель-«рейка» */
+.side.is-rail { align-items: center; padding: var(--space-2) 0; }
+.side.is-rail .side-nav { justify-items: center; }
+.side.is-rail .side-nav button { width: var(--icon-button-size); justify-content: center; padding: 0; border-radius: var(--radius-full); }
+.side.is-rail .lbl, .side.is-rail .side-nav small { display: none; }
+
+/* поле запиту — «таблетка», підпис під ним */
+.cmp textarea { min-height: var(--space-6); line-height: var(--lh-normal); }
+.cmp { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.disclaimer { text-align: center; font: var(--type-caption); color: var(--color-text-subtle); }
+.chat-dock { display: grid; gap: var(--space-2); }
+.msg-ai .aitext { font: var(--type-body-lg); line-height: var(--lh-relaxed); }
+.msg-user { border-radius: var(--radius-xl); font: var(--type-body-lg); }
+.cmp + .disclaimer { margin-top: var(--space-2); }
+.chat-scroll > .chat-dock { background: linear-gradient(to top, var(--color-bg) 75%, transparent); padding-top: var(--space-6); }
