@@ -107,6 +107,7 @@ export default function Media({
       </div>
     )
   const fav = data.favs.includes(m.storyId)
+  const textual = textOnly || m.kind === "text"
   const seg = idx >= 0 ? m.segments[idx] : null
   const frs = fragments.filter((f) => f.mid === m.id)
 
@@ -127,7 +128,7 @@ export default function Media({
         )}
         <div className="mgrid">
           <section className="mleft">
-            {!textOnly && (
+            {!textual && (
               <>
             <div
               className={`stage ${m.kind} ${play ? "playing" : ""}`}
@@ -262,6 +263,7 @@ export default function Media({
                   </span>
                 </div>
                 <div className="pr-grp">
+                  <span className="volwrap">
                   <IconButton
                     onClick={() => setMuted(!muted)}
                     aria-label={muted ? "Увімкнути звук" : "Вимкнути звук"}
@@ -287,6 +289,7 @@ export default function Media({
                     }}
                     aria-label="Гучність"
                   />
+                  </span>
                   <button
                     className="pill"
                     onClick={() =>
@@ -366,11 +369,12 @@ export default function Media({
                 <h1>{m.title}</h1>
                 <p>
                   <span className={`kind ${m.kind}`}>
-                    <Icon n={m.kind} s={12} />
-                    {m.kind === "video" ? "Відео" : "Аудіо"}
+                    <Icon n={m.kind === "text" ? "file" : m.kind} s={12} />
+                    {m.kind === "video" ? "Відео" : m.kind === "audio" ? "Аудіо" : "Текст"}
                   </span>
                   <span className="open">Відкрита</span>
-                  {LANG[m.lang]} · {m.recorded} · {fmt(m.duration)}
+                  {LANG[m.lang]} · {m.recorded}
+                  {m.duration > 0 && ` · ${fmt(m.duration)}`}
                 </p>
               </div>
               <Button
@@ -412,7 +416,7 @@ export default function Media({
                       setPlay(true)
                     }}
                   >
-                    <time>{fmt(s.s)}</time>
+                    {!textual && <time>{fmt(s.s)}</time>}
                     <b>{s.who}</b>
                     <span>{s.uk}</span>
                   </button>

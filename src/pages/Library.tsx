@@ -235,7 +235,7 @@ export function FavoritesModal({
                 </h3>
                 <p className="muted sm">{s.summary}</p>
                 <p className="muted sm">
-                  {m.kind === "video" ? "Відео" : "Аудіо"} · текстовий опис ·{" "}
+                  {m.kind === "video" ? "Відео" : m.kind === "audio" ? "Аудіо" : "Текст"} · текстовий опис ·{" "}
                   {LANG[m.lang]} · {fmt(m.duration)}
                 </p>
                 <div className="chips">

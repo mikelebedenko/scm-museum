@@ -25,5 +25,7 @@
 .mpanel.inline .skip { padding: 0 var(--space-2); }
 .mpanel.inline .pp { width: var(--control-md); height: var(--control-md); }
 .mpanel.inline .ptime { margin-left: var(--space-1); font-size: var(--fs-sm); white-space: nowrap; }
-.mpanel.inline .vol { display: none; }
+.mpanel.inline .volwrap { position: relative; display: inline-flex; }
+.mpanel.inline .volwrap .vol { display: none; position: absolute; bottom: calc(100% + var(--space-4)); right: var(--space-3); width: 112px; box-shadow: 0 0 0 var(--space-3) var(--color-surface-3); }
+.mpanel.inline .volwrap:hover .vol, .mpanel.inline .volwrap:focus-within .vol { display: block; }
 .mpanel.inline .pill { height: var(--control-sm); padding: 0 var(--space-2); font-size: var(--fs-sm); }

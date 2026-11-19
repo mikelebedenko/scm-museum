@@ -8,7 +8,7 @@ export interface Segment {
 export interface Material {
   id: string
   title: string
-  kind: "audio" | "video"
+  kind: "audio" | "video" | "text"
   lang: "uk" | "en" | "ru"
   speaker: string
   recorded: string
@@ -969,6 +969,69 @@ export const materials: Material[] = [
       },
     ],
   },
+  {
+    id: "m26",
+    title: "Щоденник Лідії Коваль, березень 2022",
+    kind: "text",
+    lang: "uk",
+    speaker: "Лідія Коваль",
+    recorded: "03.2022",
+    duration: 0,
+    storyId: "st22",
+    story: "Записки з підвалу",
+    tags: ["щоденник", "укриття", "діти", "пам’ять"],
+    segments: [
+      {
+        s: 0,
+        e: 0,
+        who: "Авторка",
+        uk: "5 березня. Третя доба в підвалі. Діти заснули на розкладачках, я записую, поки горить свічка. Сусіди ділять останній хліб.",
+        en: "5 March. Third day in the basement. The children fell asleep on camp beds; I write while the candle burns. The neighbours are sharing the last bread.",
+      },
+      {
+        s: 0,
+        e: 0,
+        who: "Авторка",
+        uk: "7 березня. Сьогодні нарешті принесли воду. Дівчинка з третього поверху намалювала для всіх сонце й повісила на стіну.",
+        en: "7 March. Water was finally brought today. The girl from the third floor drew a sun for everyone and hung it on the wall.",
+      },
+      {
+        s: 0,
+        e: 0,
+        who: "Авторка",
+        uk: "9 березня. Ми вирішили виходити по черзі, щоб набрати дрова. Чоловіки пішли першими, а ми чекали й рахували хвилини.",
+        en: "9 March. We decided to go out in turns for firewood. The men went first and we waited, counting minutes.",
+      },
+    ],
+  },
+  {
+    id: "m27",
+    title: "Лист до сина, що виїхав за кордон",
+    kind: "text",
+    lang: "uk",
+    speaker: "Раїса Прокопенко",
+    recorded: "14.06.2022",
+    duration: 0,
+    storyId: "st23",
+    story: "Лист до сина",
+    tags: ["листи", "родина", "пам’ять", "евакуація"],
+    segments: [
+      {
+        s: 0,
+        e: 0,
+        who: "Авторка",
+        uk: "Синку, у нас усе добре. Я поливаю твої квіти на балконі, а сусідка приносить свіже молоко. Не поспішай повертатися, поки не стане спокійно.",
+        en: "Son, we are fine. I water your flowers on the balcony and the neighbour brings fresh milk. Do not rush back until it is calm.",
+      },
+      {
+        s: 0,
+        e: 0,
+        who: "Авторка",
+        uk: "Кожного вечора перечитую твої повідомлення. Передай привіт онукам і скажи, що бабуся чекає їх на варення з абрикос.",
+        en: "Every evening I reread your messages. Say hello to the grandchildren and tell them grandmother is waiting for them with apricot jam.",
+      },
+    ],
+  },
 ]
 
 export const stories: Story[] = [
@@ -1153,6 +1216,24 @@ export const stories: Story[] = [
     hasText: true,
   },
   {
+    id: "st22",
+    title: "Записки з підвалу",
+    summary:
+      "Щоденник жінки, яка вела записи під час перших днів в укритті: вода, дрова, дитячі малюнки.",
+    tags: ["щоденник", "укриття", "діти", "пам’ять"],
+    mediaIds: ["m26"],
+    hasText: true,
+  },
+  {
+    id: "st23",
+    title: "Лист до сина",
+    summary:
+      "Лист матері до сина за кордон: про балкон із квітами, сусідів і чекання на повернення.",
+    tags: ["листи", "родина", "пам’ять", "евакуація"],
+    mediaIds: ["m27"],
+    hasText: true,
+  },
+  {
     id: "st7",
     title: "Попасна",
     summary: "Закрита історія евакуації поранених із Попасної.",
@@ -1193,7 +1274,7 @@ export const RUBRICS: Rubric[] = [
     id: "children",
     title: "Діти та освіта",
     description: "Навчання в укритті, табори, школи й дитячий досвід війни.",
-    storyIds: ["st1", "st3", "st8", "st11", "st18", "st20"],
+    storyIds: ["st1", "st3", "st8", "st11", "st18", "st20", "st22"],
   },
   {
     id: "medicine",
@@ -1211,7 +1292,7 @@ export const RUBRICS: Rubric[] = [
     id: "memory",
     title: "Пам’ять і культура",
     description: "Музика, листи, фотографії та речі, що зберігають історію родин.",
-    storyIds: ["st13", "st17", "st21", "st8"],
+    storyIds: ["st13", "st17", "st21", "st8", "st22", "st23"],
   },
 ]
 

@@ -8,7 +8,6 @@ import { Chip } from "../components/Chip"
 import { IconButton } from "../components/IconButton"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
-import Media from "./Media"
 import { LibPanel } from "./LibPanel"
 import { Icon, Popover, Modal, Empty, toast, Tip } from "../ui"
 import {
@@ -52,7 +51,7 @@ export default function Search() {
   const [sel, setSel] = useState<string[]>([])
   const [storySel, setStorySel] = useState<string[]>([])
   const [script, setScript] = useState(false)
-  const [media, setMedia] = useState<{ id: string; t: number; e: number } | null>(
+  const [playReq, setPlayReq] = useState<{ id: string; t: number; e: number; n: number } | null>(
     null,
   )
   const [favOnly, setFavOnly] = useState(false)
@@ -199,7 +198,7 @@ export default function Search() {
     const e = fragEnd(f)
     const key = `${m.id}:${f.id}`
     const fav = data.favs.includes(mm.storyId)
-    const open = () => setMedia({ id: mm.id, t: s, e })
+    const open = () => setPlayReq({ id: mm.id, t: s, e, n: Date.now() })
     return (
       <article key={h.fid} className={`hit ${sel.includes(f.id) ? "sel" : ""}`}>
         <button className="hit-thumb" onClick={open} aria-label={`Відкрити ${mm.title} з ${fmt(s)}`}>
@@ -220,8 +219,8 @@ export default function Search() {
           <h3>{mm.story}</h3>
           <p className="hit-meta">
             <span className={`kind ${mm.kind}`}>
-              <Icon n={mm.kind} s={12} />
-              {mm.kind === "video" ? "Відео" : "Аудіо"}
+              <Icon n={mm.kind === "text" ? "file" : mm.kind} s={12} />
+              {mm.kind === "video" ? "Відео" : mm.kind === "audio" ? "Аудіо" : "Текст"}
             </span>
             <span className="tcr">
               {fmt(s)} – {fmt(e)}
@@ -444,15 +443,6 @@ export default function Search() {
             </div>
           </>
         )}
-        {media && (
-          <Media
-            key={`${media.id}:${media.t}`}
-            id={media.id}
-            t0={media.t}
-            e0={media.e}
-            onClose={() => setMedia(null)}
-          />
-        )}
       </main>
 
       <LibPanel
@@ -470,7 +460,17 @@ export default function Search() {
         }
         canScript={perms.has("script")}
         busy={busy}
+        fragSel={sel}
+        playReq={playReq}
         onToggleStory={toggleStory}
+        onToggleFrag={toggleSel}
+        onSetStories={(ids, on) =>
+          setStorySel((cur) =>
+            on
+              ? Array.from(new Set([...cur, ...ids]))
+              : cur.filter((x) => !ids.includes(x)),
+          )
+        }
         onClear={clearSel}
         onGenerate={() => setScript(true)}
         onAsk={send}

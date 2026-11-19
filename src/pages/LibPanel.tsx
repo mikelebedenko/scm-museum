@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../components/Button"
 import { Checkbox } from "../components/Checkbox"
 import { Segmented } from "../components/Segmented"
@@ -17,6 +17,10 @@ import {
   storyMedia,
   storyCover,
   thumbUrl,
+  frag,
+  mat,
+  fragStart,
+  fragEnd,
   type Material,
 } from "../data"
 import { fmt } from "../lib"
@@ -30,7 +34,7 @@ type Nav =
   | { v: "tags" }
   | { v: "tag"; id: string }
   | { v: "story"; id: string; prev: Nav }
-  | { v: "play"; id: string; text: boolean; prev: Nav }
+  | { v: "play"; id: string; text: boolean; t?: number; e?: number; prev: Nav }
 
 type TypeFilter = "all" | "video" | "audio" | "text"
 
@@ -46,7 +50,11 @@ type Props = {
   selSummary: string
   canScript: boolean
   busy: boolean
+  fragSel: string[]
+  playReq: { id: string; t: number; e: number; n: number } | null
   onToggleStory: (id: string) => void
+  onToggleFrag: (id: string) => void
+  onSetStories: (ids: string[], on: boolean) => void
   onClear: () => void
   onGenerate: () => void
   onAsk: (q: string) => void
@@ -65,6 +73,22 @@ export function LibPanel(p: Props) {
   const [type, setType] = useState<TypeFilter>("all")
   const [topic, setTopic] = useState("all")
   const [topicMenu, setTopicMenu] = useState(false)
+  const [sheet, setSheet] = useState(false)
+
+  useEffect(() => {
+    if (p.playReq)
+      setNav({
+        v: "play",
+        id: p.playReq.id,
+        text: false,
+        t: p.playReq.t,
+        e: p.playReq.e,
+        prev: { v: "menu" },
+      })
+  }, [p.playReq])
+  useEffect(() => {
+    if (!p.selSummary) setSheet(false)
+  }, [p.selSummary])
 
   const isOpen = (id: string) => status[id] === "Відкрита"
   const allIds = stories.filter((s) => isOpen(s.id)).map((s) => s.id)
@@ -171,6 +195,20 @@ export function LibPanel(p: Props) {
             </span>
           )}
         </div>
+        {shown.length > 1 && (
+          <Checkbox
+            className="lib-all"
+            checked={shown.every((id) => p.storySel.includes(id))}
+            onChange={() =>
+              p.onSetStories(
+                shown,
+                !shown.every((id) => p.storySel.includes(id)),
+              )
+            }
+          >
+            <em>Вибрати всі ({shown.length})</em>
+          </Checkbox>
+        )}
         {shown.length === 0 ? (
           <p className="lib-hint">{empty}</p>
         ) : (
@@ -281,8 +319,11 @@ export function LibPanel(p: Props) {
     body = (
       <nav className="side-nav lib-menu">
         {RUBRICS.map((r) => (
-          <button key={r.id} onClick={() => go({ v: "topic", id: r.id })}>
-            <span className="lbl">{r.title}</span>
+          <button key={r.id} className="has-desc" onClick={() => go({ v: "topic", id: r.id })}>
+            <span className="lbl">
+              {r.title}
+              <span className="lib-desc">{r.description}</span>
+            </span>
             <small>{r.storyIds.filter(isOpen).length}</small>
           </button>
         ))}
@@ -331,10 +372,12 @@ export function LibPanel(p: Props) {
     title = "Історія"
     body = (
       <div className="lib-detail">
-        <button className="lib-hero" onClick={() => play(cover.id)} aria-label="Відтворити">
-          <img src={thumbUrl(cover.id, 640, 360)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} />
-          <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
-        </button>
+        {cover.kind === "text" ? null : (
+          <button className="lib-hero" onClick={() => play(cover.id)} aria-label="Відтворити">
+            <img src={thumbUrl(cover.id, 640, 360)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} />
+            <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
+          </button>
+        )}
         <h3>{st.title}</h3>
         <p className="lib-hint">{st.summary}</p>
         <div className="chips">
@@ -357,12 +400,12 @@ export function LibPanel(p: Props) {
                 <span className="found-title">{m.title}</span>
                 <span className="found-meta">
                   <Icon n={TYPE_ICON[m.kind]} s={14} />
-                  {fmt(m.duration)}
+                  {m.duration > 0 && fmt(m.duration)}
                 </span>
               </button>
             </li>
           ))}
-          {st.hasText && (
+          {st.hasText && !media.every((m) => m.kind === "text") && (
             <li>
               <button className="found-item" onClick={() => play(media[0].id, true)}>
                 <span className="found-title">Текст і транскрипція</span>
@@ -379,7 +422,7 @@ export function LibPanel(p: Props) {
     title = st.title
     body = (
       <div className="lib-detail">
-        <Media key={`${cur.id}:${cur.text}`} id={cur.id} inline textOnly={cur.text} onClose={back} />
+        <Media key={`${cur.id}:${cur.text}:${cur.t ?? 0}`} id={cur.id} t0={cur.t} e0={cur.e} inline textOnly={cur.text} onClose={back} />
         <div className="side-label">Матеріали історії</div>
         <ul className="found-list">
           {storyMedia(st.id).map((m) => (
@@ -391,12 +434,12 @@ export function LibPanel(p: Props) {
                 <span className="found-title">{m.title}</span>
                 <span className="found-meta">
                   <Icon n={TYPE_ICON[m.kind]} s={14} />
-                  {fmt(m.duration)}
+                  {m.duration > 0 && fmt(m.duration)}
                 </span>
               </button>
             </li>
           ))}
-          {st.hasText && (
+          {st.hasText && !storyMedia(st.id).every((m) => m.kind === "text") && (
             <li>
               <button
                 className={`found-item ${cur.text ? "is-current" : ""}`}
@@ -416,72 +459,135 @@ export function LibPanel(p: Props) {
     body = <StoryRows ids={tagStories(nav.id)} empty="З цим тегом ще немає історій." />
   }
 
+  const fragRows = p.fragSel
+  const showBar = !!p.selSummary
   return (
     <aside className="lib" aria-label="Бібліотека">
-      {nav.v === "menu" ? (
-        <>
-          <button
-            className="acc-head side-head"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span>Бібліотека</span>
-            <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
-              <Icon n="down" s={18} />
-            </span>
-          </button>
-          {menuOpen && (
-            <nav className="side-nav lib-menu lib-menu-main">
-              <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
-              <hr className="lib-sep" />
-              <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
-              <NavItem icon="star" label="Вибране" count={favIds.length} to={{ v: "favs" }} />
-              <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
-              <button onClick={p.onOpenScripts}>
-                <Icon n="file" s={24} />
-                <span className="lbl">Сценарії</span>
-                {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-              </button>
-            </nav>
-          )}
-          {p.foundStories.length > 0 && (
-            <div className="lib-section">
+      {sheet ? (
+        <div className="lib-sheet">
+          <div className="lib-crumb">
+            <IconButton aria-label="Закрити список" onClick={() => setSheet(false)}>
+              <Icon n="down" s={20} />
+            </IconButton>
+            <span>Для сценарію</span>
+          </div>
+          <ul className="lib-picked">
+            {p.storySel.map((id) => {
+              const st = story(id)
+              const types = typesOf(id)
+              return (
+                <li key={id}>
+                  <button className="lib-picked-main" onClick={() => { setSheet(false); openStory(id) }}>
+                    <span className="lib-picked-title">{st.title}</span>
+                    <span className="found-meta">
+                      {[...types].map((t) => (
+                        <Icon key={t} n={TYPE_ICON[t]} s={14} />
+                      ))}
+                      Історія
+                    </span>
+                  </button>
+                  <IconButton aria-label="Прибрати зі сценарію" onClick={() => p.onToggleStory(id)}>
+                    <Icon n="close" s={18} />
+                  </IconButton>
+                </li>
+              )
+            })}
+            {fragRows.map((fid) => {
+              const f = frag(fid)
+              return (
+                <li key={fid}>
+                  <div className="lib-picked-main">
+                    <span className="lib-picked-title">{mat(f.mid).story}</span>
+                    <span className="found-meta">
+                      <Icon n="clock" s={14} />
+                      {fmt(fragStart(f))} – {fmt(fragEnd(f))} · фрагмент
+                    </span>
+                  </div>
+                  <IconButton aria-label="Прибрати фрагмент" onClick={() => p.onToggleFrag(fid)}>
+                    <Icon n="close" s={18} />
+                  </IconButton>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ) : (
+        <div className="lib-scroll">
+          {nav.v === "menu" ? (
+            <>
               <button
                 className="acc-head side-head"
-                aria-expanded={foundOpen}
-                onClick={() => setFoundOpen(!foundOpen)}
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(!menuOpen)}
               >
-                <span>Знайдені історії</span>
-                <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
+                <span>Бібліотека</span>
+                <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
                   <Icon n="down" s={18} />
                 </span>
               </button>
-              {foundOpen && (
-                <div className="lib-cards">
-                  {p.foundStories.map((m) => (
-                    <StoryCard key={m.storyId} id={m.storyId} />
-                  ))}
+              {menuOpen && (
+                <nav className="side-nav lib-menu lib-menu-main">
+                  <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
+                  <hr className="lib-sep" />
+                  <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
+                  <NavItem icon="star" label="Вибране" count={favIds.length} to={{ v: "favs" }} />
+                  <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
+                  <button onClick={p.onOpenScripts}>
+                    <Icon n="file" s={24} />
+                    <span className="lbl">Сценарії</span>
+                    {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+                  </button>
+                </nav>
+              )}
+              {p.foundStories.length > 0 && (
+                <div className="lib-section">
+                  <button
+                    className="acc-head side-head"
+                    aria-expanded={foundOpen}
+                    onClick={() => setFoundOpen(!foundOpen)}
+                  >
+                    <span>Знайдені історії</span>
+                    <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
+                      <Icon n="down" s={18} />
+                    </span>
+                  </button>
+                  {foundOpen && (
+                    <div className="lib-cards">
+                      {p.foundStories.map((m) => (
+                        <StoryCard key={m.storyId} id={m.storyId} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </>
+          ) : (
+            <>
+              <div className="lib-crumb">
+                <IconButton aria-label="Назад" onClick={back}>
+                  <Icon n="back" s={20} />
+                </IconButton>
+                <span>{title}</span>
+              </div>
+              <div className="lib-body">{body}</div>
+            </>
           )}
-        </>
-      ) : (
-        <>
-          <div className="lib-crumb">
-            <IconButton aria-label="Назад" onClick={back}>
-              <Icon n="back" s={20} />
-            </IconButton>
-            <span>{title}</span>
-          </div>
-          <div className="lib-body">{body}</div>
-        </>
+        </div>
       )}
-      {p.selSummary && (
-        <div className="lib-sticky">
+      {showBar && (
+        <div className="lib-bar">
           <div className="sel-row">
-            <span>Вибрано: {p.selSummary}</span>
-            <LinkButton onClick={p.onClear}>Скасувати</LinkButton>
+            <button
+              className="sel-toggle"
+              aria-expanded={sheet}
+              onClick={() => setSheet(!sheet)}
+            >
+              <span>Вибрано: {p.selSummary}</span>
+              <span className={`acc-chev ${sheet ? "" : "is-open"}`}>
+                <Icon n="down" s={16} />
+              </span>
+            </button>
+            <LinkButton onClick={p.onClear}>Очистити все</LinkButton>
           </div>
           <Button variant="primary" disabled={!p.canScript} onClick={p.onGenerate}>
             <Icon n="spark" s={14} />
