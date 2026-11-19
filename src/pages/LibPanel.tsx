@@ -157,7 +157,7 @@ export function LibPanel(p: Props) {
             <span className="relative">
               <FilterButton
                 className="lib-topic-btn"
-                active={topic !== "all"}
+                active={topic !== "all" || topicMenu}
                 aria-expanded={topicMenu}
                 onClick={() => setTopicMenu(!topicMenu)}
               >
@@ -166,28 +166,29 @@ export function LibPanel(p: Props) {
                     ? "Теми"
                     : RUBRICS.find((r) => r.id === topic)?.title}
                 </span>
-                <Icon n="down" s={14} />
+                <span className={`acc-chev ${topicMenu ? "is-open" : ""}`}>
+                  <Icon n="down" s={14} />
+                </span>
               </FilterButton>
               <Popover
                 open={topicMenu}
                 onClose={() => setTopicMenu(false)}
                 className="topicpop"
               >
-                <div className="pop-t">Тема</div>
-                <div className="pop-list">
+                <div className="topic-opts" role="listbox" aria-label="Тема">
                   {[{ id: "all", title: "Усі теми" }, ...RUBRICS].map((r) => (
                     <button
                       key={r.id}
+                      role="option"
+                      aria-selected={topic === r.id}
                       className={topic === r.id ? "on" : ""}
                       onClick={() => {
                         setTopic(r.id)
                         setTopicMenu(false)
                       }}
                     >
-                      <span className="box">
-                        {topic === r.id && <Icon n="check" s={11} />}
-                      </span>
-                      {r.title}
+                      <span>{r.title}</span>
+                      {topic === r.id && <Icon n="check" s={16} />}
                     </button>
                   ))}
                 </div>

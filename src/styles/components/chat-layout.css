@@ -307,3 +307,12 @@
 .lib-subhead { font: var(--type-h3); color: var(--color-text); }
 .lib-detail > .lib-sep { margin: var(--space-2) 0; }
 .lib-kind-ico { flex: none; display: inline-grid; place-items: center; color: var(--color-text-subtle); }
+
+/* випадаючий список тем */
+.lib-topic-btn .acc-chev { color: inherit; }
+.lib-topic-btn.on { background: var(--color-accent-subtle); }
+.topicpop { top: calc(100% + var(--space-2)); right: 0; left: auto; width: 280px; padding: var(--space-2); box-shadow: var(--shadow-md); }
+.topic-opts { display: grid; gap: var(--space-half); max-height: 360px; overflow: hidden auto; }
+.topic-opts button { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); height: var(--control-lg); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: var(--fs-base); text-align: left; transition: var(--duration-base); }
+.topic-opts button:hover { background: var(--color-surface-3); color: var(--color-text); }
+.topic-opts button.on { background: var(--color-accent-subtle); color: var(--color-accent); font-weight: var(--fw-medium); }
