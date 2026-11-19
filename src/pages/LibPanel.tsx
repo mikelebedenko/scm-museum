@@ -235,7 +235,10 @@ export function LibPanel(p: Props) {
           </div>
         )}
         <div className="lib-story-body">
-          <button className="lib-story-title" onClick={() => openStory(id)}>
+          <button
+            className="lib-story-title"
+            onClick={() => (kind === "text" ? play(cover.id, true) : openStory(id))}
+          >
             {st.title}
           </button>
           <p>{st.summary}</p>
