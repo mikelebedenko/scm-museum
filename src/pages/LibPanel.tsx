@@ -35,6 +35,7 @@ type Nav =
   | { v: "tags" }
   | { v: "tag"; id: string }
   | { v: "story"; id: string; prev: Nav }
+  | { v: "systag"; name: string; prev: Nav }
   | { v: "play"; id: string; text: boolean; t?: number; e?: number; prev: Nav }
 
 type TypeFilter = "all" | "video" | "audio" | "text"
@@ -114,7 +115,7 @@ export function LibPanel(p: Props) {
   const tagCount = (tagId: string) => tagStories(tagId).length
 
   const back = () => {
-    if (nav.v === "story" || nav.v === "play") { setNav(nav.prev); return }
+    if (nav.v === "story" || nav.v === "play" || nav.v === "systag") { setNav(nav.prev); return }
     if (nav.v === "topic") setNav({ v: "topics" })
     else if (nav.v === "tag") setNav({ v: "tags" })
     else setNav({ v: "menu" })
@@ -597,18 +598,6 @@ export function LibPanel(p: Props) {
             {cover.kind === "text" && cover.readMin ? ` · ${cover.readMin} хв читання` : ""}
           </p>
         </div>
-        <p className="lib-hint">{st.summary}</p>
-        <div className="chips">
-          {st.tags
-            .filter((t) => !genre || t.toLowerCase() !== genre.toLowerCase())
-            .map((t) => <Chip key={t}>{t}</Chip>)}
-        </div>
-        {cover.kind === "text" && cover.segments[0] && (
-          <div className="lib-quote-wrap">
-            <p className="lib-quote">«{cover.segments[0].uk}»</p>
-            <LinkButton onClick={() => play(cover.id, true)}>Читати далі</LinkButton>
-          </div>
-        )}
         <div className="lib-actions">
           <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
@@ -619,6 +608,26 @@ export function LibPanel(p: Props) {
             {sel ? "У сценарії" : "Додати до сценарію"}
           </Button>
         </div>
+        <p className="lib-hint">{st.summary}</p>
+        <div className="chips">
+          {st.tags
+            .filter((t) => !genre || t.toLowerCase() !== genre.toLowerCase())
+            .map((t) => (
+              <button
+                key={t}
+                className="chip lib-tag"
+                onClick={() => setNav({ v: "systag", name: t, prev: nav })}
+              >
+                {t}
+              </button>
+            ))}
+        </div>
+        {cover.kind === "text" && cover.segments[0] && (
+          <div className="lib-quote-wrap">
+            <p className="lib-quote">«{cover.segments[0].uk}»</p>
+            <LinkButton onClick={() => play(cover.id, true)}>Читати далі</LinkButton>
+          </div>
+        )}
         {(() => {
           const extra = media.slice(1)
           const showTr = st.hasText && cover.kind !== "text"
@@ -684,6 +693,14 @@ export function LibPanel(p: Props) {
           )
         })()}
       </div>
+    )
+  } else if (nav.v === "systag") {
+    title = nav.name
+    body = (
+      <StoryRows
+        ids={allIds.filter((id) => story(id).tags.includes(nav.name))}
+        empty="З цим тегом немає історій."
+      />
     )
   } else if (nav.v === "tag") {
     const t = data.tags.find((x) => x.id === nav.id)

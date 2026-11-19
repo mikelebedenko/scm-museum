@@ -395,3 +395,7 @@
 .lib-lines i:nth-child(4) { width: 70%; }
 .lib-lines i:nth-child(5) { width: 84%; }
 .lib-read-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-md); padding: 0 var(--space-5); border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-text-on-accent); font: var(--type-label); }
+
+/* клікабельні теги */
+.lib-tag { cursor: pointer; transition: var(--duration-base); }
+.lib-tag:hover { border-color: var(--color-accent); color: var(--color-accent); }
