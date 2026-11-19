@@ -397,7 +397,6 @@ export default function Media({
               </div>
               <div className="mactions">
                 <Button
-                  size="sm"
                   variant={fav ? "primary" : "default"}
                   onClick={() => {
                     a.toggleFav(m.storyId)
@@ -413,8 +412,7 @@ export default function Media({
                 </Button>
                 {onToggleSelected && (
                   <Button
-                    size="sm"
-                    variant={selected ? "primary" : "default"}
+                      variant={selected ? "primary" : "default"}
                     onClick={onToggleSelected}
                   >
                     <Icon n={selected ? "check" : "plus"} s={14} />

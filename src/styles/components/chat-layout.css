@@ -472,3 +472,6 @@
 .fld > span.sc-row .sc-label { font: var(--type-label); color: var(--color-text); }
 .sc-presets { margin-bottom: 0; }
 .sc-presets .chip { cursor: pointer; }
+
+/* дії на екрані історії та в плеєрі — крупніші кнопки */
+.lib-actions .btn, .mpanel.inline .mactions .btn { height: var(--control-lg); font-size: var(--fs-base); gap: var(--space-2); }

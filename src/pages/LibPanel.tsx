@@ -614,11 +614,11 @@ export function LibPanel(p: Props) {
           </p>
         </div>
         <div className="lib-actions">
-          <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
+          <Button variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
             {fav ? "У вибраному" : "Додати до вибраного"}
           </Button>
-          <Button size="sm" variant={sel ? "primary" : "default"} onClick={() => p.onToggleStory(nav.id)}>
+          <Button variant={sel ? "primary" : "default"} onClick={() => p.onToggleStory(nav.id)}>
             <Icon n={sel ? "check" : "plus"} s={14} />
             {sel ? "У сценарії" : "Додати до сценарію"}
           </Button>
