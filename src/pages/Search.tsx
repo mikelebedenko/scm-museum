@@ -62,6 +62,7 @@ export default function Search() {
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
   const [view, setView] = useState<"chat" | "browse">("chat")
   const [side, setSide] = useState(true)
+  const [lib, setLib] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
@@ -471,7 +472,7 @@ export default function Search() {
   )
 
   return (
-    <div className={`shell ${side ? "" : "side-rail"}`}>
+    <div className={`shell ${side ? "" : "side-rail"} ${lib ? "" : "lib-off"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
         <div className="side-top">
           <IconButton
@@ -486,28 +487,6 @@ export default function Search() {
           <button title="Новий чат" onClick={newChat}>
             <Icon n="plus" s={16} />
             <span className="lbl">Новий чат</span>
-          </button>
-          <button
-            title="Теми"
-            className={view === "browse" ? "on" : ""}
-            onClick={() => setView("browse")}
-          >
-            <Icon n="list" s={16} />
-            <span className="lbl">Теми</span>
-          </button>
-          <button title="Обране" onClick={() => setFavsM(true)}>
-            <Icon n="star" s={16} />
-            <span className="lbl">Обране</span>
-            {data.favs.length > 0 && <small>{data.favs.length}</small>}
-          </button>
-          <button title="Чернетки" onClick={() => setScripts(true)}>
-            <Icon n="file" s={16} />
-            <span className="lbl">Чернетки</span>
-            {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-          </button>
-          <button title="Теги" onClick={() => setTagsM(true)}>
-            <Icon n="tag" s={16} />
-            <span className="lbl">Теги</span>
           </button>
         </nav>
         {side && (
@@ -547,6 +526,15 @@ export default function Search() {
       </aside>
 
       <main className="main" aria-label="Пошуковий чат">
+        {!lib && (
+          <IconButton
+            className="main-lib"
+            aria-label="Показати бібліотеку"
+            onClick={() => setLib(true)}
+          >
+            <Icon n="list" />
+          </IconButton>
+        )}
         {view === "browse" ? (
           browse
         ) : (
@@ -597,6 +585,44 @@ export default function Search() {
           />
         )}
       </main>
+
+      {lib && (
+        <aside className="lib" aria-label="Бібліотека">
+          <div className="side-head">
+            <span>Бібліотека</span>
+            <IconButton
+              size="sm"
+              aria-label="Сховати бібліотеку"
+              onClick={() => setLib(false)}
+            >
+              <Icon n="list" s={16} />
+            </IconButton>
+          </div>
+          <nav className="side-nav">
+            <button
+              className={view === "browse" ? "on" : ""}
+              onClick={() => setView(view === "browse" ? "chat" : "browse")}
+            >
+              <Icon n="list" s={16} />
+              <span className="lbl">Теми</span>
+            </button>
+            <button onClick={() => setFavsM(true)}>
+              <Icon n="star" s={16} />
+              <span className="lbl">Обране</span>
+              {data.favs.length > 0 && <small>{data.favs.length}</small>}
+            </button>
+            <button onClick={() => setScripts(true)}>
+              <Icon n="file" s={16} />
+              <span className="lbl">Чернетки</span>
+              {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+            </button>
+            <button onClick={() => setTagsM(true)}>
+              <Icon n="tag" s={16} />
+              <span className="lbl">Теги</span>
+            </button>
+          </nav>
+        </aside>
+      )}
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
       {favsM && (
