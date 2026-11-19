@@ -148,6 +148,20 @@ export default function Search() {
     setStorySel([])
   }
   const lastAi = aiMsgs[aiMsgs.length - 1]
+  const foundStories = lastAi
+    ? Array.from(
+        new Map(
+          visibleHits(lastAi).map((h) => {
+            const m = mat(frag(h.fid).mid)
+            return [m.storyId, m] as const
+          }),
+        ).values(),
+      )
+    : []
+  const toggleStory = (id: string) =>
+    setStorySel((cur) =>
+      cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id],
+    )
   const lastQuery = lastAi?.query
   const empty = !chat || chat.msgs.length === 0
   const aiCan = perms.has("ai")
@@ -542,6 +556,32 @@ export default function Search() {
               <span className="lbl">Теги</span>
             </button>
           </nav>
+          {foundStories.length > 0 && (
+            <div className="lib-section">
+              <div className="side-label">Знайдені матеріали</div>
+              <ul className="found-list">
+                {foundStories.map((m) => (
+                  <li key={m.storyId}>
+                    <Checkbox
+                      checked={storySel.includes(m.storyId)}
+                      onChange={() => toggleStory(m.storyId)}
+                      title="Додати до сценарію"
+                    />
+                    <button
+                      className="found-item"
+                      onClick={() => setMedia({ id: m.id, t: 0, e: 0 })}
+                    >
+                      <span className="found-title">{m.story}</span>
+                      <span className="found-meta">
+                        <Icon n={m.kind === "video" ? "video" : "audio"} s={14} />
+                        {fmt(m.duration)}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="lib-section">
             <div className="side-label">Сценарій</div>
             <p className="lib-hint">
