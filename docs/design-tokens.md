@@ -88,6 +88,11 @@
 | `Button` | `variant`: default · primary · danger; `size`: md · sm; `wide` |
 | `IconButton` | `aria-label` (обов'язково), `size`: md · sm, `active` |
 | `Chip` | `tone`: default · mine · selected · add |
+| `FilterButton` | `active` |
+| `LinkButton` | — |
+| `Checkbox` | `checked`, `onChange`, `title`, children = підпис |
+| `Segmented` | `value`, `options[{value,label}]`, `onChange` |
+| `Tabs` | `value`, `options[{value,label}]`, `onChange` |
 
 Усі три — тонкі обгортки над класами `.btn` / `.ib` / `.chip`; розміри, радіуси й кольори беруться з Component Tokens. Нові кнопки пишемо через компоненти, а не `<button className="btn…">`.
 Показ усіх варіантів: `/#/tokens`.

@@ -1,3 +1,5 @@
+import { Tabs } from "../components/Tabs"
+import { LinkButton } from "../components/LinkButton"
 import { Button } from "../components/Button"
 import { Chip } from "../components/Chip"
 import { IconButton } from "../components/IconButton"
@@ -78,9 +80,9 @@ export default function Media({
     return (
       <div className="mpanel">
         <Empty icon="alert" title="Матеріал не знайдено">
-          <button className="lnk" onClick={onClose}>
+          <LinkButton onClick={onClose}>
             Закрити
-          </button>
+          </LinkButton>
         </Empty>
       </div>
     )
@@ -376,20 +378,14 @@ export default function Media({
             </div>
           </section>
           <section className="mright">
-            <div className="tabs2">
-              <button
-                className={tab === "tr" ? "on" : ""}
-                onClick={() => setTab("tr")}
-              >
-                Транскрипція
-              </button>
-              <button
-                className={tab === "info" ? "on" : ""}
-                onClick={() => setTab("info")}
-              >
-                Метадані й теги
-              </button>
-            </div>
+            <Tabs
+              value={tab}
+              onChange={setTab}
+              options={[
+                { value: "tr", label: "Транскрипція" },
+                { value: "info", label: "Метадані й теги" },
+              ]}
+            />
             {tab === "tr" ? (
               <div className="trans">
                 {m.segments.map((s, i) => (

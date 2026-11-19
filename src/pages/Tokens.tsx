@@ -2,6 +2,12 @@ import { Button } from "../components/Button"
 import { Chip } from "../components/Chip"
 import { IconButton } from "../components/IconButton"
 import { Icon } from "../ui"
+import { Checkbox } from "../components/Checkbox"
+import { FilterButton } from "../components/FilterButton"
+import { LinkButton } from "../components/LinkButton"
+import { Segmented } from "../components/Segmented"
+import { Tabs } from "../components/Tabs"
+import { useState } from "react"
 // Живий довідник токенів: відкривається за адресою #/tokens
 const colors = {
   Поверхні: [
@@ -79,6 +85,10 @@ const box = {
 const h = { font: "var(--type-h3)", margin: "var(--space-8) 0 var(--space-3)" }
 
 export default function Tokens() {
+  const [seg, setSeg] = useState("all")
+  const [tab, setTab] = useState("a")
+  const [chk, setChk] = useState(true)
+  const [flt, setFlt] = useState(false)
   return (
     <div
       style={{
@@ -265,6 +275,21 @@ export default function Tokens() {
           <span className="st active">active</span>
           <span className="st pending">pending</span>
           <span className="st blocked">blocked</span>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>FilterButton</code>
+          <FilterButton active={flt} onClick={() => setFlt(!flt)}>Теги</FilterButton>
+          <FilterButton active>Активний</FilterButton>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>LinkButton</code>
+          <LinkButton>Скинути фільтри</LinkButton>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Checkbox</code>
+          <Checkbox checked={chk} onChange={() => setChk(!chk)} />
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-6)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Segmented</code>
+          <Segmented value={seg} onChange={setSeg} options={[{ value: "all", label: "Усі" }, { value: "video", label: "Відео" }, { value: "audio", label: "Аудіо" }]} />
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Tabs</code>
+          <Tabs value={tab} onChange={setTab} options={[{ value: "a", label: "Транскрипція" }, { value: "b", label: "Метадані" }]} />
         </div>
       </div>
     </div>

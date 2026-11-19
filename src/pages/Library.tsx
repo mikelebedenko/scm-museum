@@ -1,3 +1,4 @@
+import { LinkButton } from "../components/LinkButton"
 import { Button } from "../components/Button"
 import { Chip } from "../components/Chip"
 import { IconButton } from "../components/IconButton"
@@ -182,9 +183,9 @@ export function FavoritesModal({
           </Chip>
         ))}
         {tagF.length > 0 && (
-          <button className="lnk" onClick={() => setTagF([])}>
+          <LinkButton onClick={() => setTagF([])}>
             Скинути
-          </button>
+          </LinkButton>
         )}
       </div>
       {hiddenN > 0 && (

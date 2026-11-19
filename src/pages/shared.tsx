@@ -1,3 +1,4 @@
+import { FilterButton } from "../components/FilterButton"
 import { Button } from "../components/Button"
 import { Chip } from "../components/Chip"
 import { useState } from "react"
@@ -116,14 +117,13 @@ export function TagFilter({
   const [q, setQ] = useState("")
   return (
     <span className="relative">
-      <button
-        className={`fbtn ${sel.length ? "on" : ""}`}
-        onClick={() => setOpen(!open)}
-      >
+      <FilterButton
+         active={sel.length > 0}
+        onClick={() => setOpen(!open)}>
         <Icon n="tag" s={13} />
         Теги{sel.length ? ` · ${sel.length}` : ""}
         <Icon n="down" s={12} />
-      </button>
+      </FilterButton>
       <Popover
         open={open}
         onClose={() => setOpen(false)}
@@ -185,15 +185,14 @@ export function LangFilter({
   const [open, setOpen] = useState(false)
   return (
     <span className="relative">
-      <button
-        className={`fbtn ${sel.length ? "on" : ""}`}
+      <FilterButton
+         active={sel.length > 0}
         onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
+        aria-expanded={open}>
         <Icon n="globe" s={13} />
         Мова{sel.length ? ` · ${sel.length}` : ""}
         <Icon n="down" s={12} />
-      </button>
+      </FilterButton>
       <Popover open={open} onClose={() => setOpen(false)} className="tagpop">
         <div className="pop-t">Мова оригінального мовлення</div>
         <div className="pop-list">

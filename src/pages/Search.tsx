@@ -1,3 +1,7 @@
+import { Segmented } from "../components/Segmented"
+import { Checkbox } from "../components/Checkbox"
+import { FilterButton } from "../components/FilterButton"
+import { LinkButton } from "../components/LinkButton"
 import { Button } from "../components/Button"
 import { Chip } from "../components/Chip"
 import { IconButton } from "../components/IconButton"
@@ -354,26 +358,27 @@ export default function Search() {
       <section className="rescol" aria-label="Історії архіву">
         <div className="colhead">
           <div className="modehead grow">
-            <div
-              className="seg2 viewmode viewmode-head"
+            <Segmented
+              className="viewmode viewmode-head"
               aria-label="Режим перегляду"
-            >
-              <button
-                className={view === "search" ? "on" : ""}
-                onClick={() => setView("search")}
-              >
-                Результати пошуку ·{" "}
-                {active
-                  ? new Set(hits.map((h) => mat(frag(h.fid).mid).storyId)).size
-                  : 0}
-              </button>
-              <button
-                className={view === "rubrics" ? "on" : ""}
-                onClick={() => setView("rubrics")}
-              >
-                Рубрики
-              </button>
-            </div>
+              value={view}
+              onChange={setView}
+              options={[
+                {
+                  value: "search",
+                  label: (
+                    <>
+                      Результати пошуку ·{" "}
+                      {active
+                        ? new Set(hits.map((h) => mat(frag(h.fid).mid).storyId))
+                            .size
+                        : 0}
+                    </>
+                  ),
+                },
+                { value: "rubrics", label: "Рубрики" },
+              ]}
+            />
             {scriptIds.length > 0 && (
               <span className="selpill" role="status">
                 <i />
@@ -437,36 +442,32 @@ export default function Search() {
         <div className="filters">
           {view === "rubrics" ? (
             <div className="rubric-tabs">
-              <button
-                className={`fbtn ${rubric === "all" ? "on" : ""}`}
-                onClick={() => setRubric("all")}
-              >
+              <FilterButton
+                 active={rubric === "all"}
+                onClick={() => setRubric("all")}>
                 Усі історії
-              </button>
+              </FilterButton>
               {RUBRICS.map((item) => (
-                <button
+                <FilterButton
                   key={item.id}
-                  className={`fbtn ${rubric === item.id ? "on" : ""}`}
-                  onClick={() => setRubric(item.id)}
-                >
+                   active={rubric === item.id}
+                  onClick={() => setRubric(item.id)}>
                   {item.title}
                   <span>{item.storyIds.length}</span>
-                </button>
+                </FilterButton>
               ))}
             </div>
           ) : (
             <>
-              <div className="seg2">
-                {(["all", "video", "audio"] as const).map((t) => (
-                  <button
-                    key={t}
-                    className={type === t ? "on" : ""}
-                    onClick={() => setType(t)}
-                  >
-                    {t === "all" ? "Усі" : t === "video" ? "Відео" : "Аудіо"}
-                  </button>
-                ))}
-              </div>
+              <Segmented
+                value={type}
+                onChange={setType}
+                options={[
+                  { value: "all", label: "Усі" },
+                  { value: "video", label: "Відео" },
+                  { value: "audio", label: "Аудіо" },
+                ]}
+              />
               <LangFilter
                 sel={lang}
                 toggle={(l) =>
@@ -476,26 +477,23 @@ export default function Search() {
                 }
               />
               <TagFilter sel={tagF} toggle={toggleTag} />
-              <button
-                className={`fbtn ${favOnly ? "on" : ""}`}
+              <FilterButton
+                 active={favOnly}
                 onClick={() => setFavOnly(!favOnly)}
-                aria-pressed={favOnly}
-              >
+                aria-pressed={favOnly}>
                 <Icon n="star" s={13} fill={favOnly} />
                 Обране
-              </button>
+              </FilterButton>
               {filtersOn && (
-                <button
-                  className="lnk"
+                <LinkButton
                   onClick={() => {
                     setType("all")
                     setLang([])
                     setTagF([])
                     setFavOnly(false)
-                  }}
-                >
+                  }}>
                   Скинути
-                </button>
+                </LinkButton>
               )}
             </>
           )}
@@ -641,14 +639,12 @@ export default function Search() {
                         />
                       </span>
                     </button>
-                    <label className="cb on-thumb" title="Додати до сценарію">
-                      <input
-                        type="checkbox"
-                        checked={sel.includes(f.id)}
-                        onChange={() => toggleSel(f.id)}
-                      />
-                      <span />
-                    </label>
+                    <Checkbox
+                      className="on-thumb"
+                      title="Додати до сценарію"
+                      checked={sel.includes(f.id)}
+                      onChange={() => toggleSel(f.id)}
+                    />
                   </div>
                   <div className="fr-body">
                     <header className="fr-head">
@@ -828,11 +824,14 @@ function BrowseStory({
 
   return (
     <article className={`story-card ${selected ? "selected" : ""}`}>
-      <label className="cb story-select" title="Додати історію до сценарію">
-        <input type="checkbox" checked={selected} onChange={onToggle} />
-        <span />
+      <Checkbox
+        className="story-select"
+        title="Додати історію до сценарію"
+        checked={selected}
+        onChange={onToggle}
+      >
         <em>До сценарію</em>
-      </label>
+      </Checkbox>
       <button
         className="story-cover"
         onClick={() => onOpen(cover.id)}
@@ -886,9 +885,9 @@ function BrowseStory({
             <Icon n="star" s={14} fill={fav} />
             {fav ? "В Обраному" : "Додати в Обране"}
           </Button>
-          <button className="lnk" onClick={() => onOpen(cover.id)}>
+          <LinkButton onClick={() => onOpen(cover.id)}>
             Переглянути історію
-          </button>
+          </LinkButton>
         </footer>
       </div>
     </article>
