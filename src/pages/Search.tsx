@@ -41,6 +41,7 @@ export default function Search() {
   const [hq, setHq] = useState("")
   const [del, setDel] = useState<string | null>(null)
   const end = useRef<HTMLDivElement>(null)
+  const userRef = useRef<HTMLDivElement>(null)
   const [type, setType] = useState<"all" | "audio" | "video">("all")
   const [lang, setLang] = useState<string[]>([])
   const [tagF, setTagF] = useState<string[]>([])
@@ -59,18 +60,17 @@ export default function Search() {
   const aiMsgs = chat?.msgs.filter((m) => m.role === "ai") ?? []
   const active: Msg | undefined =
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
-  const [view, setView] = useState<"search" | "rubrics">("rubrics")
+  const [view, setView] = useState<"chat" | "browse">("chat")
+  const [side, setSide] = useState(true)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
   useEffect(() => {
-    end.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+    userRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
   }, [chat?.msgs.length, busy])
-  useEffect(() => {
-    setSel([])
-  }, [active?.id])
 
   const taRef = useRef<HTMLTextAreaElement>(null)
   const newChat = () => {
-    setView("rubrics")
+    setView("chat")
     // порожній чат не дублюємо: просто переводимо фокус на поле запиту
     if (chat && chat.msgs.length === 0)
       toast("Поточний чат порожній — введіть запит")
@@ -85,36 +85,30 @@ export default function Search() {
   const send = (text: string, force = false) => {
     if (!text.trim() || busy) return
     setBusy(true)
-    setView("search")
+    setView("chat")
     setInput("")
     setPick(null)
     a.sendQuery(text.trim(), chat?.id ?? null, force, () => setBusy(false))
   }
 
   // BR-03: приховуємо фрагменти історій, що перестали бути «Відкрита»
-  const allHits = active?.hits ?? []
-  const open = allHits.filter(
-    (h) => status[mat(frag(h.fid).mid).storyId] === "Відкрита",
-  )
-  const hidden = allHits.length - open.length
-  const hits = useMemo(
-    () =>
-      open.filter((h) => {
-        const f = frag(h.fid)
-        const m = mat(f.mid)
-        if (type !== "all" && m.kind !== type) return false
-        if (lang.length && !lang.includes(m.lang)) return false
-        if (favOnly && !data.favs.includes(m.storyId)) return false
-        return tagF.every((t) =>
-          t.startsWith("my:")
-            ? (data.assign[m.storyId] ?? []).includes(t.slice(3))
-            : m.tags.includes(t) || f.tags.includes(t),
-        )
-      }),
-    [open, type, lang, tagF, favOnly, data.assign, data.favs],
-  )
-  // для сценарію враховуємо лише виділені фрагменти, що видно після фільтрів
-  const picked = sel.filter((id) => hits.some((h) => h.fid === id))
+  const isOpen = (h: { fid: string }) =>
+    status[mat(frag(h.fid).mid).storyId] === "Відкрита"
+  const matches = (h: { fid: string }) => {
+    const f = frag(h.fid)
+    const m = mat(f.mid)
+    if (type !== "all" && m.kind !== type) return false
+    if (lang.length && !lang.includes(m.lang)) return false
+    if (favOnly && !data.favs.includes(m.storyId)) return false
+    return tagF.every((t) =>
+      t.startsWith("my:")
+        ? (data.assign[m.storyId] ?? []).includes(t.slice(3))
+        : m.tags.includes(t) || f.tags.includes(t),
+    )
+  }
+  const visibleHits = (m: Msg) => (m.hits ?? []).filter(isOpen).filter(matches)
+  const hiddenCount = (m: Msg) => (m.hits ?? []).filter((h) => !isOpen(h)).length
+  const picked = sel
   const storyFragments = fragments
     .filter((f) => storySel.includes(mat(f.mid).storyId))
     .map((f) => f.id)
@@ -147,612 +141,428 @@ export default function Search() {
     return m ? (m.text || m.answer || "").slice(0, 70) : ""
   }
 
-  return (
-    <div className="ws">
-      <section className="chatcol" aria-label="Пошуковий чат">
-        <div className="colhead">
-          <div className="relative grow">
-            <button
-              className="chtitle"
-              onClick={() => setHist(!hist)}
-              aria-expanded={hist}
-            >
-              <b>{chat?.title ?? "Чат"}</b>
-            </button>
-            <Popover
-              open={hist}
-              onClose={() => setHist(false)}
-              className="hist"
-            >
-              <label className="fld inl">
-                <Icon n="search" s={14} />
-                <input
-                  autoFocus
-                  placeholder="Пошук за текстом у чатах…"
-                  value={hq}
-                  onChange={(e) => setHq(e.target.value)}
-                />
-              </label>
-              <div className="pop-list tall">
-                {histChats.length === 0 && (
-                  <p className="muted sm pad">Нічого не знайдено</p>
-                )}
-                {histChats.map((c) => (
-                  <div
-                    key={c.id}
-                    className={`hrow ${c.id === data.active ? "on" : ""}`}
-                  >
-                    <button
-                      onClick={() => {
-                        a.setActive(c.id)
-                        setPick(null)
-                        setView(
-                          c.msgs.some((m) => m.role === "ai")
-                            ? "search"
-                            : "rubrics",
-                        )
-                        setHist(false)
-                        setHq("")
-                      }}
-                    >
-                      <b>{c.title}</b>
-                      <small>
-                        {dShort(c.created)} ·{" "}
-                        {c.msgs.filter((m) => m.role === "user").length} запитів
-                      </small>
-                      {hq && snippet(c) && <em>…{snippet(c)}…</em>}
-                    </button>
-                    <IconButton
-                      size="sm"
-                      onClick={() => setDel(c.id)}
-                      aria-label="Видалити чат"
-                    >
-                      <Icon n="trash" s={14} />
-                    </IconButton>
-                  </div>
-                ))}
-              </div>
-            </Popover>
-          </div>
-          <Tip text="Створити новий пошуковий чат">
-            <Button onClick={newChat}>
-              <Icon n="plus" s={14} />
-              Новий чат
-            </Button>
-          </Tip>
-        </div>
+  const clearSel = () => {
+    setSel([])
+    setStorySel([])
+  }
+  const lastAi = aiMsgs[aiMsgs.length - 1]
+  const empty = !chat || chat.msgs.length === 0
+  const aiCan = perms.has("ai")
 
-        <div className="thread">
-          {(!chat || chat.msgs.length === 0) && (
-            <div className="intro">
-              <h2>Що ви шукаєте в архіві?</h2>
-              <p>
-                Опишіть тему природною мовою — платформа знайде релевантні
-                історії та покаже точні фрагменти їхніх джерел.
-              </p>
-              <div className="sugs">
-                {SUGGESTIONS.map((s) => (
-                  <button key={s} onClick={() => send(s)}>
-                    {s}
-                  </button>
-                ))}
-              </div>
-              {!perms.has("ai") && (
-                <p className="locknote">
-                  <Icon n="lock" s={13} /> Відповіді ШІ та контекстний діалог
-                  доступні з Розширеною роллю.
-                </p>
-              )}
-            </div>
-          )}
-          {chat?.msgs.map((m) =>
-            m.role === "user" ? (
-              <div key={m.id} className="q">
-                <span className="mark" />
-                {m.text}
-              </div>
-            ) : (
-              <div
-                key={m.id}
-                className={`ans ${active?.id === m.id ? "cur" : ""}`}
-              >
-                <button
-                  className="ansbtn"
-                  onClick={() => {
-                    setPick(m.id)
-                    setView("search")
-                  }}
-                  aria-label="Показати результати цього запиту"
-                >
-                  {m.status === "error" && (
-                    <div className="state err">
-                      <Icon n="alert" />
-                      Не вдалося отримати результати пошуку.
-                    </div>
-                  )}
-                  {m.status === "empty" && (
-                    <div className="state">
-                      <Icon n="search" />
-                      Релевантних історій не знайдено.
-                    </div>
-                  )}
-                  {m.status === "ok" && (
-                    <div className="found">
-                      <b>
-                        {
-                          new Set(
-                            m.hits?.map((h) => mat(frag(h.fid).mid).storyId) ??
-                              [],
-                          ).size
-                        }
-                      </b>{" "}
-                      історій знайдено
-                      {m.ctx && (
-                        <span className="ctx">з урахуванням контексту</span>
-                      )}
-                    </div>
-                  )}
-                  {m.answer ? (
-                    <p className="aitext">
-                      <Icon n="spark" s={13} /> {m.answer}
-                    </p>
-                  ) : (
-                    m.status === "ok" && (
-                      <p className="locknote">
-                        <Icon n="lock" s={13} /> Відповідь ШІ — з Розширеною
-                        роллю
-                      </p>
-                    )
-                  )}
-                </button>
-                {m.status === "error" && (
-                  <Button size="sm" onClick={() => send(m.query ?? "", true)}>
-                    Повторити запит
-                  </Button>
-                )}
-              </div>
-            ),
-          )}
-          {busy && (
-            <div className="ans">
-              <div className="state">
-                <span className="dots">
-                  <i />
-                  <i />
-                  <i />
-                </span>{" "}
-                Шукаю в індексі…
-              </div>
-            </div>
-          )}
-          <div ref={end} />
-        </div>
+  const composer = (
+    <div className="cmp">
+      <textarea
+        ref={taRef}
+        value={input}
+        placeholder="Запитайте про історії архіву…"
+        rows={2}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault()
+            send(input)
+          }
+        }}
+      />
+      <IconButton
+        className="cmp-send"
+        aria-label="Шукати"
+        disabled={busy || !input.trim()}
+        onClick={() => send(input)}
+      >
+        <Icon n="send" s={18} />
+      </IconButton>
+    </div>
+  )
 
-        <div className="composer">
-          <textarea
-            ref={taRef}
-            value={input}
-            placeholder="Сформулюйте запит або уточніть попередній…"
-            rows={2}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault()
-                send(input)
-              }
+  const selBar = scriptIds.length > 0 && (
+    <div className="sel-bar" role="status">
+      <span>
+        До сценарію:{" "}
+        {[
+          storySel.length ? `${storySel.length} іст.` : "",
+          picked.length ? `${picked.length} фрагм.` : "",
+        ]
+          .filter(Boolean)
+          .join(" · ")}
+      </span>
+      <Tip text={!perms.has("script") ? "Потрібна Розширена роль" : "Створити чернетку сценарію"}>
+        <Button
+          size="sm"
+          variant="primary"
+          disabled={!perms.has("script")}
+          onClick={() => setScript(true)}
+        >
+          <Icon n="spark" s={14} />
+          Згенерувати сценарій
+        </Button>
+      </Tip>
+      <IconButton size="sm" aria-label="Скасувати вибір" onClick={clearSel}>
+        <Icon n="close" s={14} />
+      </IconButton>
+    </div>
+  )
+
+  const filtersBar = (
+    <div className="filters2">
+      <FilterButton active={filtersOn} onClick={() => setFiltersOpen(!filtersOpen)}>
+        <Icon n="filter" s={13} />
+        Фільтри
+      </FilterButton>
+      {filtersOpen && (
+        <>
+          <Segmented
+            value={type}
+            onChange={setType}
+            options={[
+              { value: "all", label: "Усі" },
+              { value: "video", label: "Відео" },
+              { value: "audio", label: "Аудіо" },
+            ]}
+          />
+          <LangFilter
+            sel={lang}
+            toggle={(l) =>
+              setLang((x) =>
+                x.includes(l) ? x.filter((y) => y !== l) : [...x, l],
+              )
+            }
+          />
+          <TagFilter sel={tagF} toggle={toggleTag} />
+          <FilterButton active={favOnly} onClick={() => setFavOnly(!favOnly)} aria-pressed={favOnly}>
+            <Icon n="star" s={13} fill={favOnly} />
+            Обране
+          </FilterButton>
+          {filtersOn && (
+            <LinkButton
+              onClick={() => {
+                setType("all")
+                setLang([])
+                setTagF([])
+                setFavOnly(false)
+              }}
+            >
+              Скинути
+            </LinkButton>
+          )}
+        </>
+      )}
+    </div>
+  )
+
+  const renderHit = (m: Msg, h: { fid: string; score: number }) => {
+    const f = frag(h.fid)
+    const mm = mat(f.mid)
+    const s = fragStart(f)
+    const e = fragEnd(f)
+    const key = `${m.id}:${f.id}`
+    const fav = data.favs.includes(mm.storyId)
+    const open = () => setMedia({ id: mm.id, t: s, e })
+    return (
+      <article key={h.fid} className={`hit ${sel.includes(f.id) ? "sel" : ""}`}>
+        <button className="hit-thumb" onClick={open} aria-label={`Відкрити ${mm.title} з ${fmt(s)}`}>
+          <img
+            src={thumbUrl(mm.id, 480, 270)}
+            alt=""
+            loading="lazy"
+            onError={(ev) => {
+              ev.currentTarget.style.visibility = "hidden"
             }}
           />
-          <div className="crow">
-            <Button
-              variant="primary"
-              disabled={busy || !input.trim()}
-              onClick={() => send(input)}
-            >
-              <Icon n="send" s={14} />
-              Шукати
+          <span className="hit-play">
+            <Icon n="play" s={16} fill />
+          </span>
+          <span className="hit-dur">{fmt(mm.duration)}</span>
+        </button>
+        <div className="hit-body">
+          <h3>{mm.story}</h3>
+          <p className="hit-meta">
+            <span className={`kind ${mm.kind}`}>
+              <Icon n={mm.kind} s={12} />
+              {mm.kind === "video" ? "Відео" : "Аудіо"}
+            </span>
+            <span className="tcr">
+              {fmt(s)} – {fmt(e)}
+            </span>
+            <span className="score">{h.score}%</span>
+          </p>
+          <p className="hit-quote">
+            <b>{fragWho(f)}:</b> «{fragQuote(f)}»
+          </p>
+          <div className="hit-actions">
+            <Button size="sm" onClick={open}>
+              <Icon n="play" s={12} fill />
+              Відкрити з {fmt(s)}
             </Button>
+            <span className="grow" />
+            <Checkbox
+              className="hit-pick"
+              title="Додати до сценарію"
+              checked={sel.includes(f.id)}
+              onChange={() => toggleSel(f.id)}
+            >
+              <em>У сценарій</em>
+            </Checkbox>
+            <IconButton
+              size="sm"
+              className="fav"
+              active={fav}
+              aria-label={fav ? "Видалити історію з Обраного" : "Додати історію до Обраного"}
+              onClick={() => {
+                a.toggleFav(mm.storyId)
+                toast(fav ? "Історію видалено з Обраного" : "Історію додано до Обраного")
+              }}
+            >
+              <Icon n="star" s={16} fill={fav} />
+            </IconButton>
+            <IconButton
+              size="sm"
+              active={data.ratings[key] === "rel"}
+              aria-pressed={data.ratings[key] === "rel"}
+              aria-label="Релевантно"
+              onClick={() => a.rate(key, "rel")}
+            >
+              <Icon n="up" s={14} />
+            </IconButton>
+            <IconButton
+              size="sm"
+              className="dn bad"
+              active={data.ratings[key] === "irrel"}
+              aria-pressed={data.ratings[key] === "irrel"}
+              aria-label="Нерелевантно"
+              onClick={() => a.rate(key, "irrel")}
+            >
+              <Icon n="up" s={14} />
+            </IconButton>
           </div>
         </div>
-      </section>
+      </article>
+    )
+  }
 
-      <section className="rescol" aria-label="Історії архіву">
-        <div className="colhead">
-          <div className="modehead grow">
-            <Segmented
-              className="viewmode viewmode-head"
-              aria-label="Режим перегляду"
-              value={view}
-              onChange={setView}
-              options={[
-                {
-                  value: "search",
-                  label: (
-                    <>
-                      Результати пошуку ·{" "}
-                      {active
-                        ? new Set(hits.map((h) => mat(frag(h.fid).mid).storyId))
-                            .size
-                        : 0}
-                    </>
-                  ),
-                },
-                { value: "rubrics", label: "Рубрики" },
-              ]}
-            />
-            {scriptIds.length > 0 && (
-              <span className="selpill" role="status">
-                <i />
-                До сценарію:{" "}
-                {[
-                  storySel.length ? `${storySel.length} іст.` : "",
-                  picked.length ? `${picked.length} фрагм.` : "",
-                ]
-                  .filter(Boolean)
-                  .join(" · ")}
-                <button
-                  onClick={() => {
-                    setSel([])
-                    setStorySel([])
-                  }}
-                  aria-label="Скасувати вибір"
-                  title="Скасувати вибір"
-                >
-                  <Icon n="close" s={10} />
-                </button>
-              </span>
-            )}
-          </div>
-          <Tip text="Мій список «Обране»">
-            <Button onClick={() => setFavsM(true)}>
-              <Icon n="star" s={14} />
-              Обране{data.favs.length ? ` · ${data.favs.length}` : ""}
-            </Button>
-          </Tip>
-          <Tip text="Створення, редагування та видалення власних тегів">
-            <Button onClick={() => setTagsM(true)}>
-              <Icon n="tag" s={14} />
-              Теги
-            </Button>
-          </Tip>
-          <Tip text="Збережені чернетки сценаріїв">
-            <Button onClick={() => setScripts(true)}>
-              <Icon n="file" s={14} />
-              Чернетки{data.scripts.length ? ` · ${data.scripts.length}` : ""}
-            </Button>
-          </Tip>
-          <Tip
-            text={
-              !perms.has("script")
-                ? "Потрібна Розширена роль"
-                : scriptIds.length === 0
-                  ? "Спершу оберіть історії в рубриках або фрагменти пошуку"
-                  : "Створити текстову чернетку сценарію з обраних джерел"
-            }
-          >
-            <Button
-              variant="primary"
-              disabled={!perms.has("script") || scriptIds.length === 0}
-              onClick={() => setScript(true)}
+  const lastUserId = [...(chat?.msgs ?? [])].reverse().find((m) => m.role === "user")?.id
+  const thread = (
+    <div className="thread2">
+      {chat?.msgs.map((m) => {
+        if (m.role === "user")
+          return (
+            <div
+              key={m.id}
+              className="msg-user"
+              ref={m.id === lastUserId ? userRef : undefined}
             >
-              <Icon n="spark" s={14} />
-              Згенерувати сценарій
-            </Button>
-          </Tip>
-        </div>
-        <div className="filters">
-          {view === "rubrics" ? (
-            <div className="rubric-tabs">
-              <FilterButton
-                 active={rubric === "all"}
-                onClick={() => setRubric("all")}>
-                Усі історії
-              </FilterButton>
-              {RUBRICS.map((item) => (
-                <FilterButton
-                  key={item.id}
-                   active={rubric === item.id}
-                  onClick={() => setRubric(item.id)}>
-                  {item.title}
-                  <span>{item.storyIds.length}</span>
-                </FilterButton>
-              ))}
+              {m.text}
             </div>
-          ) : (
-            <>
-              <Segmented
-                value={type}
-                onChange={setType}
-                options={[
-                  { value: "all", label: "Усі" },
-                  { value: "video", label: "Відео" },
-                  { value: "audio", label: "Аудіо" },
-                ]}
-              />
-              <LangFilter
-                sel={lang}
-                toggle={(l) =>
-                  setLang((x) =>
-                    x.includes(l) ? x.filter((y) => y !== l) : [...x, l],
-                  )
-                }
-              />
-              <TagFilter sel={tagF} toggle={toggleTag} />
-              <FilterButton
-                 active={favOnly}
-                onClick={() => setFavOnly(!favOnly)}
-                aria-pressed={favOnly}>
-                <Icon n="star" s={13} fill={favOnly} />
-                Обране
-              </FilterButton>
-              {filtersOn && (
-                <LinkButton
-                  onClick={() => {
-                    setType("all")
-                    setLang([])
-                    setTagF([])
-                    setFavOnly(false)
-                  }}>
-                  Скинути
-                </LinkButton>
-              )}
-            </>
-          )}
-        </div>
-        {view === "search" && tagF.length > 0 && (
-          <div className="activetags">
-            {tagF.map((t) => (
-              <Chip tone="selected" key={t}>
-                {t.startsWith("my:")
-                  ? data.tags.find((x) => x.id === t.slice(3))?.name
-                  : t}
-                <button onClick={() => toggleTag(t)}>
-                  <Icon n="close" s={10} />
-                </button>
-              </Chip>
-            ))}
-          </div>
-        )}
-        <div className="results">
-          {view === "rubrics" && (
-            <div className="rubric-view">
-              <div className="rubric-intro">
-                <div>
-                  <h2>
-                    {rubric === "all"
-                      ? "Досліджуйте історії за темами"
-                      : RUBRICS.find((item) => item.id === rubric)?.title}
-                  </h2>
-                  <p>
-                    {rubric === "all"
-                      ? "Переглядайте відкриті історії архіву й додавайте цікаві до персонального кабінету."
-                      : RUBRICS.find((item) => item.id === rubric)?.description}
-                  </p>
-                </div>
-                <span className="rubric-count">
-                  <small>Історій</small>
-                  <b>{browseStories.length}</b>
-                </span>
+          )
+        const vis = visibleHits(m)
+        const hid = hiddenCount(m)
+        return (
+          <section key={m.id} className="msg-ai">
+            {m.status === "error" && (
+              <div className="state err">
+                <Icon n="alert" />
+                Не вдалося отримати результати пошуку.
+                <Button size="sm" onClick={() => send(m.query ?? "", true)}>
+                  Повторити
+                </Button>
               </div>
-              <div className="story-grid">
-                {browseStories.map((s) => (
-                  <BrowseStory
-                    key={s.id}
-                    story={s}
-                    selected={storySel.includes(s.id)}
-                    onToggle={() =>
-                      setStorySel((current) =>
-                        current.includes(s.id)
-                          ? current.filter((id) => id !== s.id)
-                          : [...current, s.id],
-                      )
-                    }
-                    onOpen={(id) => setMedia({ id, t: 0, e: 0 })}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          {view === "search" && hidden > 0 && (
-            <div className="banner">
-              <Icon n="lock" s={14} />
-              {hidden} фрагм. приховано: історію більше не позначено як
-              «Відкрита».
-            </div>
-          )}
-          {view === "search" && !active && (
-            <Empty icon="search" title="Почніть із запиту">
-              Тут з’являться історії та релевантні фрагменти їхніх відео, аудіо
-              й текстів.
-            </Empty>
-          )}
-          {view === "search" && active?.status === "error" && (
-            <Empty icon="alert" title="Не вдалося отримати результати">
-              Спробуйте повторити запит пізніше.
-            </Empty>
-          )}
-          {view === "search" && active?.status === "empty" && (
-            <Empty icon="search" title="Релевантних фрагментів не знайдено">
-              Спробуйте інші слова або ширше формулювання.
-            </Empty>
-          )}
-          {view === "search" &&
-            active?.status === "ok" &&
-            hits.length === 0 && (
-              <Empty icon="filter" title="Нічого не відповідає фільтрам">
-                Змініть або скиньте фільтри.
-              </Empty>
             )}
-          {view === "search" &&
-            hits.map((h) => {
-              const f = frag(h.fid)
-              const m = mat(f.mid)
-              const s = fragStart(f),
-                e = fragEnd(f)
-              const key = `${active!.id}:${f.id}`
-              const fav = data.favs.includes(m.storyId)
-              return (
-                <article
-                  key={h.fid}
-                  className={`frag ${sel.includes(f.id) ? "sel" : ""}`}
-                  onClick={(ev) => {
-                    // клік по картці вибирає фрагмент; інтерактивні елементи всередині працюють самостійно
-                    if (
-                      (ev.target as HTMLElement).closest(
-                        "button, a, input, label, select, textarea, .pop",
-                      )
-                    )
-                      return
-                    if (window.getSelection()?.toString()) return
-                    toggleSel(f.id)
-                  }}
-                >
-                  <div className="fr-media">
-                    <button
-                      className="thumb"
-                      onClick={() => setMedia({ id: m.id, t: s, e })}
-                      aria-label={`Відкрити ${m.title} з ${fmt(s)}`}
-                    >
-                      <img
-                        src={thumbUrl(m.id, 480, 270)}
-                        alt=""
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.style.visibility = "hidden"
-                        }}
-                      />
-                      <span className="pl">
-                        <Icon n="play" s={16} fill />
-                      </span>
-                      <span className={`kb ${m.kind}`}>
-                        <Icon n={m.kind} s={11} />
-                        {fmt(m.duration)}
-                      </span>
-                      <span
-                        className="pos"
-                        title="Положення фрагмента в записі"
-                      >
-                        <i
-                          style={{
-                            left: `${(s / m.duration) * 100}%`,
-                            width: `${Math.max(2, ((e - s) / m.duration) * 100)}%`,
-                          }}
-                        />
-                      </span>
-                    </button>
-                    <Checkbox
-                      className="on-thumb"
-                      title="Додати до сценарію"
-                      checked={sel.includes(f.id)}
-                      onChange={() => toggleSel(f.id)}
-                    />
+            {m.status === "empty" && (
+              <div className="state">
+                <Icon n="search" />
+                Релевантних історій не знайдено. Спробуйте інші слова.
+              </div>
+            )}
+            {m.answer && (
+              <p className="aitext">
+                <Icon n="spark" s={14} /> {m.answer}
+              </p>
+            )}
+            {m.status === "ok" && (
+              <>
+                {!m.answer && !aiCan && (
+                  <p className="locknote">
+                    <Icon n="lock" s={13} /> Відповідь ШІ — з Розширеною роллю
+                  </p>
+                )}
+                {m.id === lastAi?.id && filtersBar}
+                {hid > 0 && (
+                  <div className="banner">
+                    <Icon n="lock" s={14} />
+                    {hid} фрагм. приховано: історію більше не позначено як «Відкрита».
                   </div>
-                  <div className="fr-body">
-                    <header className="fr-head">
-                      <div className="fr-id">
-                        <span className="story-label">ІСТОРІЯ</span>
-                        <h3>{m.story}</h3>
-                        <p className="fr-meta">
-                          <span className={`kind ${m.kind}`}>
-                            <Icon n={m.kind} s={12} />
-                            {m.kind === "video" ? "Відео" : "Аудіо"}
-                          </span>
-                          <span>{LANG[m.lang]}</span>
-                          <span className="tcr" title="Часові межі фрагмента">
-                            {fmt(s)} – {fmt(e)}
-                          </span>
-                          <span
-                            className="score"
-                            title="Семантична релевантність"
-                          >
-                            {h.score}% збіг
-                          </span>
-                        </p>
-                        <p className="source-line">
-                          Джерело:{" "}
-                          <button
-                            className="hlink"
-                            onClick={() => setMedia({ id: m.id, t: s, e })}
-                          >
-                            {m.title}
-                          </button>
-                        </p>
-                      </div>
-                      <IconButton
-                        className="fav"
-                        active={fav}
-                        onClick={() => {
-                          a.toggleFav(m.storyId)
-                          toast(
-                            fav
-                              ? "Історію видалено з Обраного"
-                              : "Історію додано до Обраного",
-                          )
-                        }}
-                        aria-label={
-                          fav
-                            ? "Видалити історію з Обраного"
-                            : "Додати історію до Обраного"
-                        }
-                        title={
-                          fav
-                            ? "Видалити історію з Обраного"
-                            : "Додати історію до Обраного"
-                        }
-                      >
-                        <Icon n="star" s={18} fill={fav} />
-                      </IconButton>
-                    </header>
-                    <p className="desc">{f.desc}</p>
-                    <p className="quote">
-                      <b>{fragWho(f)}:</b> «{fragQuote(f)}»
-                    </p>
-                    <div className="chips">
-                      {f.tags.map((t) => (
-                        <Chip key={t}>{t}</Chip>
-                      ))}
-                      <UserTagChips storyId={m.storyId} />
-                      <TagPicker storyId={m.storyId} />
-                    </div>
-                    <footer className="fr-foot">
-                      <Button
-                        size="sm"
-                        onClick={() => setMedia({ id: m.id, t: s, e })}
-                      >
-                        <Icon n="play" s={12} fill />
-                        Відкрити з {fmt(s)}
-                      </Button>
-                      <div
-                        className="fr-rate"
-                        role="group"
-                        aria-label="Оцінка релевантності"
-                      >
-                        <button
-                          className={`rt ${
-                            data.ratings[key] === "rel" ? "on" : ""
-                          }`}
-                          onClick={() => a.rate(key, "rel")}
-                          aria-pressed={data.ratings[key] === "rel"}
-                        >
-                          <Icon n="up" s={13} />
-                          Релевантно
-                        </button>
-                        <button
-                          className={`rt dn ${
-                            data.ratings[key] === "irrel" ? "on bad" : ""
-                          }`}
-                          onClick={() => a.rate(key, "irrel")}
-                          aria-pressed={data.ratings[key] === "irrel"}
-                        >
-                          <Icon n="up" s={13} />
-                          Нерелевантно
-                        </button>
-                      </div>
-                    </footer>
-                  </div>
-                </article>
-              )
-            })}
+                )}
+                <div className="hits">
+                  {vis.map((h) => renderHit(m, h))}
+                  {vis.length === 0 && (
+                    <p className="muted">Нічого не відповідає фільтрам.</p>
+                  )}
+                </div>
+              </>
+            )}
+          </section>
+        )
+      })}
+      {busy && (
+        <div className="state">
+          <span className="dots">
+            <i />
+            <i />
+            <i />
+          </span>{" "}
+          Шукаю в архіві…
         </div>
+      )}
+      <div ref={end} />
+    </div>
+  )
+
+  const browse = (
+    <div className="chat-scroll">
+      <div className="browse">
+        <LinkButton onClick={() => setView("chat")}>
+          <Icon n="back" s={14} /> До чату
+        </LinkButton>
+        <div className="rubric-tabs">
+          <FilterButton active={rubric === "all"} onClick={() => setRubric("all")}>
+            Усі історії
+          </FilterButton>
+          {RUBRICS.map((item) => (
+            <FilterButton
+              key={item.id}
+              active={rubric === item.id}
+              onClick={() => setRubric(item.id)}
+            >
+              {item.title}
+              <span>{item.storyIds.length}</span>
+            </FilterButton>
+          ))}
+        </div>
+        <div className="story-grid">
+          {browseStories.map((s) => (
+            <BrowseStory
+              key={s.id}
+              story={s}
+              selected={storySel.includes(s.id)}
+              onToggle={() =>
+                setStorySel((current) =>
+                  current.includes(s.id)
+                    ? current.filter((id) => id !== s.id)
+                    : [...current, s.id],
+                )
+              }
+              onOpen={(id) => setMedia({ id, t: 0, e: 0 })}
+            />
+          ))}
+        </div>
+      </div>
+      {scriptIds.length > 0 && <div className="chat-dock">{selBar}</div>}
+    </div>
+  )
+
+  const visibleChats = data.chats.filter(
+    (c) => c.msgs.length > 0 || c.id === data.active,
+  )
+
+  return (
+    <div className={`shell ${side ? "" : "side-off"}`}>
+      <aside className="side" aria-label="Меню">
+        <div className="side-top">
+          <IconButton aria-label="Сховати меню" onClick={() => setSide(false)}>
+            <Icon n="list" />
+          </IconButton>
+          <Button className="side-new" onClick={newChat}>
+            <Icon n="plus" s={14} />
+            Новий чат
+          </Button>
+        </div>
+        <nav className="side-nav">
+          <button className={view === "browse" ? "on" : ""} onClick={() => setView("browse")}>
+            <Icon n="list" s={16} />
+            Теми
+          </button>
+          <button onClick={() => setFavsM(true)}>
+            <Icon n="star" s={16} />
+            Обране
+            {data.favs.length > 0 && <small>{data.favs.length}</small>}
+          </button>
+          <button onClick={() => setScripts(true)}>
+            <Icon n="file" s={16} />
+            Чернетки
+            {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+          </button>
+          <button onClick={() => setTagsM(true)}>
+            <Icon n="tag" s={16} />
+            Теги
+          </button>
+        </nav>
+        <div className="side-label">Чати</div>
+        <ul className="side-chats">
+          {visibleChats.length === 0 && <li className="muted">Поки порожньо</li>}
+          {visibleChats.map((c) => (
+            <li key={c.id} className={c.id === data.active && view === "chat" ? "on" : ""}>
+              <button
+                className="side-chat"
+                onClick={() => {
+                  a.setActive(c.id)
+                  setPick(null)
+                  setView("chat")
+                }}
+              >
+                {c.title}
+              </button>
+              <IconButton size="sm" aria-label="Видалити чат" onClick={() => setDel(c.id)}>
+                <Icon n="trash" s={14} />
+              </IconButton>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <main className="main" aria-label="Пошуковий чат">
+        {!side && (
+          <IconButton className="main-menu" aria-label="Показати меню" onClick={() => setSide(true)}>
+            <Icon n="list" />
+          </IconButton>
+        )}
+        {view === "browse" ? (
+          browse
+        ) : (
+          <>
+            <div className="chat-scroll">
+              <div className="chat-col">
+                {empty ? (
+                  <div className="home">
+                    <h1>Що ви шукаєте в архіві?</h1>
+                    {composer}
+                    <div className="sugs2">
+                      {SUGGESTIONS.slice(0, 4).map((s) => (
+                        <button key={s} onClick={() => send(s)}>
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                    {!aiCan && (
+                      <p className="locknote">
+                        <Icon n="lock" s={13} /> Відповіді ШІ — з Розширеною роллю.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  thread
+                )}
+              </div>
+            </div>
+            {!empty && (
+              <div className="chat-dock">
+                <div className="chat-col">
+                  {selBar}
+                  {composer}
+                </div>
+              </div>
+            )}
+          </>
+        )}
         {media && (
           <Media
             key={`${media.id}:${media.t}`}
@@ -762,7 +572,7 @@ export default function Search() {
             onClose={() => setMedia(null)}
           />
         )}
-      </section>
+      </main>
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
       {favsM && (

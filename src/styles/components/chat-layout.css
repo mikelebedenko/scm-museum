@@ -1,0 +1,86 @@
+/* ---------- Новий лейаут: бокова панель + чат по центру ---------- */
+.shell { flex: 1; min-height: 0; display: grid; grid-template-columns: var(--sidebar-width) minmax(0, 1fr); gap: var(--space-4); padding: 0 var(--space-4) var(--space-4); }
+.shell.side-off { grid-template-columns: minmax(0, 1fr); }
+.shell.side-off .side { display: none; }
+
+/* бокова панель */
+.side { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow: hidden auto; padding: var(--space-3); background: var(--panel-bg); border-radius: var(--panel-radius); }
+.side-top { display: flex; align-items: center; gap: var(--space-2); }
+.side-new { flex: 1; }
+.side-nav { display: grid; gap: var(--space-half); }
+.side-nav button { display: flex; align-items: center; gap: var(--space-3); height: var(--control-md); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: var(--fs-md); text-align: left; transition: var(--duration-base); }
+.side-nav button:hover { background: var(--color-surface-3); color: var(--color-text); }
+.side-nav button.on { background: var(--color-accent-subtle); color: var(--color-accent); }
+.side-nav small { margin-left: auto; color: var(--color-text-subtle); font-size: var(--fs-xs); }
+.side-label { margin-top: var(--space-2); padding: 0 var(--space-3); font: var(--type-overline); letter-spacing: var(--ls-wider); text-transform: uppercase; color: var(--color-text-subtle); }
+.side-chats { display: grid; gap: var(--space-half); margin: 0; padding: 0; list-style: none; }
+.side-chats li { display: flex; align-items: center; border-radius: var(--radius-md); }
+.side-chats li:hover { background: var(--color-surface-3); }
+.side-chats li.on { background: var(--color-accent-subtle); }
+.side-chats li.muted { padding: var(--space-2) var(--space-3); font-size: var(--fs-md); }
+.side-chat { flex: 1; min-width: 0; padding: var(--space-2) var(--space-3); overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-md); color: var(--color-text-muted); }
+.side-chats li.on .side-chat, .side-chat:hover { color: var(--color-text); }
+.side-chats .ib { opacity: 0; }
+.side-chats li:hover .ib, .side-chats .ib:focus-visible { opacity: 1; }
+
+/* основна область */
+.main { position: relative; display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; background: var(--panel-bg); border-radius: var(--panel-radius); }
+.main-menu { position: absolute; top: var(--space-3); left: var(--space-3); z-index: var(--z-raised); }
+.chat-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; }
+.chat-col { width: min(var(--container-chat), 100%); box-sizing: border-box; margin: 0 auto; padding: 0 var(--space-6); flex: 1 0 auto; display: flex; flex-direction: column; }
+.chat-dock { flex: none; padding-bottom: var(--space-4); }
+.chat-dock .chat-col { flex: none; }
+.chat-scroll > .chat-dock { position: sticky; bottom: 0; width: min(var(--container-chat), 100%); margin: 0 auto; padding: 0 var(--space-6) var(--space-4); box-sizing: border-box; }
+
+/* головний екран */
+.home { margin: auto 0; display: grid; gap: var(--space-6); padding: var(--space-14) 0; }
+.home h1 { font: var(--type-display); text-align: center; }
+.sugs2 { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+.sugs2 button { min-height: var(--control-md); padding: var(--space-2) var(--space-4); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--radius-pill); color: var(--color-text-muted); font-size: var(--fs-md); text-align: left; transition: var(--duration-base); }
+.sugs2 button:hover { background: var(--color-surface-3); color: var(--color-text); }
+
+/* поле запиту */
+.cmp { position: relative; background: var(--composer-bg); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--composer-radius); padding: var(--space-4) var(--space-14) var(--space-4) var(--composer-padding); transition: var(--duration-base); }
+.cmp:focus-within { border-color: var(--color-accent); }
+.cmp textarea { display: block; width: 100%; min-height: var(--space-12); box-sizing: border-box; resize: none; border: 0; background: none; padding: 0; font: var(--type-body); }
+.cmp-send { position: absolute; right: var(--space-3); bottom: var(--space-3); background: var(--color-accent); color: var(--color-text-on-accent); }
+.cmp-send:hover:not(:disabled) { background: var(--color-accent-hover); color: var(--color-text-on-accent); }
+
+/* переписка */
+.thread2 { display: grid; gap: var(--space-6); padding: var(--space-14) 0 var(--space-6); }
+.msg-user { justify-self: end; max-width: 80%; padding: var(--space-3) var(--space-4); background: var(--msg-user-bg); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg); font: var(--type-body); }
+.msg-ai { display: grid; gap: var(--space-4); }
+.msg-ai .aitext { font: var(--type-body); line-height: var(--lh-relaxed); }
+.msg-ai .state { align-items: center; flex-wrap: wrap; }
+.filters2 { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.sel-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-2); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); background: var(--color-surface-3); border-radius: var(--radius-pill); font-size: var(--fs-sm); }
+.sel-bar > span { flex: 1; }
+
+/* картка результату */
+.hits { display: grid; gap: var(--space-3); }
+.hit { display: grid; grid-template-columns: var(--hit-thumb-width) minmax(0, 1fr); gap: var(--hit-gap); padding: var(--space-3); background: var(--card-bg); border: var(--border-width) solid var(--card-border); border-radius: var(--card-radius); transition: var(--duration-base); }
+.hit:hover { border-color: var(--card-border-hover); }
+.hit.sel { border-color: var(--card-border-selected); background: var(--color-accent-wash); }
+.hit-thumb { position: relative; align-self: start; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-md); background: var(--color-surface-3); }
+.hit-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform var(--duration-slow); }
+.hit-thumb:hover img { transform: scale(1.05); }
+.hit-play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-on-accent); }
+.hit-play::before { content: ''; position: absolute; width: var(--control-md); height: var(--control-md); border-radius: var(--radius-full); background: var(--color-accent); opacity: .92; }
+.hit-play svg { position: relative; margin-left: var(--space-half); }
+.hit-dur { position: absolute; right: var(--space-2); bottom: var(--space-2); padding: var(--space-half) var(--space-2); border-radius: var(--radius-xs); background: var(--color-overlay-strong); color: var(--color-text-on-media); font: var(--type-mono); }
+.hit-body { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
+.hit-body h3 { font: var(--type-h4); }
+.hit-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); font: var(--type-caption); color: var(--color-text-muted); }
+.hit-meta .tcr { font: var(--type-mono); color: var(--color-text); }
+.hit-meta .score { color: var(--color-accent); font-weight: var(--fw-semibold); }
+.hit-quote { padding-left: var(--space-3); border-left: var(--border-width-thick) solid var(--color-border-strong); font: var(--type-body-sm); font-style: italic; color: var(--color-text-muted); }
+.hit-quote b { font-style: normal; font-weight: var(--fw-medium); color: var(--color-accent); }
+.hit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.hit-pick { display: inline-flex; align-items: center; gap: var(--space-2); }
+.hit-pick em { font: var(--type-caption); font-style: normal; color: var(--color-text-muted); }
+.ib.bad.on { color: var(--color-danger); }
+
+/* каталог тем */
+.browse { width: min(var(--container-md), 100%); box-sizing: border-box; margin: 0 auto; padding: var(--space-14) var(--space-6) var(--space-6); display: grid; gap: var(--space-4); align-content: start; }
+.msg-user { scroll-margin-top: var(--space-6); }
+.aitext svg { display: inline-block; }

@@ -74,4 +74,12 @@
   /* Header */
   --header-bg: var(--color-bg);
   --header-padding-x: var(--space-8);
+
+  /* Chat: поле запиту, повідомлення, картка результату */
+  --composer-bg: var(--color-surface-2);
+  --composer-radius: var(--radius-xl);
+  --composer-padding: var(--space-4);
+  --msg-user-bg: var(--color-surface-3);
+  --hit-thumb-width: 200px;
+  --hit-gap: var(--space-4);
 }

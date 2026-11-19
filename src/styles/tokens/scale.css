@@ -18,7 +18,8 @@
 
   /* лейаут */
   --header-height: 64px;
-  --sidebar-width: clamp(380px, 31vw, 480px);
+  --sidebar-width: 280px;
+  --container-chat: 720px;
   --container-sm: 820px;
   --container-md: 1200px;
   --container-lg: 1400px;
