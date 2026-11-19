@@ -437,3 +437,8 @@
 @keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
 .lib-sheet .lib-subhead { padding-inline: var(--space-4); }
 .lib-sheet-head { padding-right: var(--space-2); }
+
+/* шторка: «ручка» по центру, ритм усередині, хрестик на одній вертикалі з хрестиками карток */
+.lib .lib-sheet { display: grid; gap: var(--space-3); align-content: start; }
+.lib-sheet-handle { display: block; justify-self: center; }
+.lib-sheet-head { align-items: center; }

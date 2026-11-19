@@ -873,8 +873,8 @@ export function LibPanel(p: Props) {
               <h3 className="lib-sheet-title">Для сценарію</h3>
               <p className="lib-sheet-sum">{sheetSummary}</p>
             </div>
-            <IconButton aria-label="Закрити" onClick={() => setSheet(false)}>
-              <Icon n="close" s={20} />
+            <IconButton size="sm" aria-label="Закрити" onClick={() => setSheet(false)}>
+              <Icon n="close" s={16} />
             </IconButton>
           </div>
           {p.storySel.length > 0 && (
