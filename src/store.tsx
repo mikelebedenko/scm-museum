@@ -434,6 +434,14 @@ export function useActions() {
         d.scripts = d.scripts.filter((x) => x.id !== id)
         addLog(s, "Видалення сценарію", "ok", actor)
       }),
+    renameScript: (id: string, title: string) =>
+      update((s) => {
+        const sc = D(s).scripts.find((x) => x.id === id)
+        if (sc) {
+          sc.title = title
+          addLog(s, "Перейменування сценарію", "ok", actor)
+        }
+      }),
     saveScript: (sc: Script) =>
       update((s) => {
         D(s).scripts.unshift(sc)

@@ -714,6 +714,20 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
   const { data } = useMe()
   const a = useActions()
   const [open, setOpen] = useState<string | null>(null)
+  const [editing, setEditing] = useState<string | null>(null)
+  const [val, setVal] = useState("")
+  const startEdit = (id: string, title: string) => {
+    setEditing(id)
+    setVal(title)
+  }
+  const saveEdit = (id: string, title: string) => {
+    const n = val.trim()
+    setEditing(null)
+    if (n && n !== title) {
+      a.renameScript(id, n)
+      toast("Сценарій перейменовано")
+    }
+  }
   return (
     <Modal wide title="Збережені сценарії" onClose={onClose}>
       {data.scripts.length === 0 && (
@@ -724,15 +738,42 @@ function ScriptsModal({ onClose }: { onClose: () => void }) {
       {data.scripts.map((sc) => (
         <div key={sc.id} className="scr">
           <div className="scr-h">
-            <button
-              className="hlink"
-              onClick={() => setOpen(open === sc.id ? null : sc.id)}
-            >
-              <b>{sc.title}</b>
-            </button>
+            {editing === sc.id ? (
+              <input
+                className="scr-name"
+                value={val}
+                autoFocus
+                aria-label="Назва сценарію"
+                onChange={(e) => setVal(e.target.value)}
+                onFocus={(e) => e.currentTarget.select()}
+                onBlur={() => saveEdit(sc.id, sc.title)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") e.currentTarget.blur()
+                  if (e.key === "Escape") {
+                    e.stopPropagation()
+                    setEditing(null)
+                  }
+                }}
+              />
+            ) : (
+              <button
+                className="hlink"
+                onClick={() => setOpen(open === sc.id ? null : sc.id)}
+              >
+                <b>{sc.title}</b>
+              </button>
+            )}
             <small>
-              {dt(sc.created)} · {sc.sources.length} матеріалів
+              {dt(sc.created)} · {sc.sources.length} джерел
             </small>
+            <IconButton
+              size="sm"
+              aria-label="Перейменувати"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => startEdit(sc.id, sc.title)}
+            >
+              <Icon n="edit" s={18} />
+            </IconButton>
             <IconButton
               size="sm"
               aria-label="Копіювати"
