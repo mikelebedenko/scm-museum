@@ -50,6 +50,7 @@ export default function Search() {
   const [tagF, setTagF] = useState<string[]>([])
   const [sel, setSel] = useState<string[]>([])
   const [storySel, setStorySel] = useState<string[]>([])
+  const [libOpen, setLibOpen] = useState(true)
   const [script, setScript] = useState(false)
   const [playReq, setPlayReq] = useState<{ id: string; t: number; e: number; n: number } | null>(
     null,
@@ -362,7 +363,7 @@ export default function Search() {
   )
 
   return (
-    <div className={`shell ${side ? "" : "side-rail"}`}>
+    <div className={`shell ${side ? "" : "side-rail"} ${libOpen ? "" : "lib-off"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
         <div className="side-top">
           {side && <span className="side-title">Чати</span>}
@@ -460,6 +461,8 @@ export default function Search() {
         }
         canScript={perms.has("script")}
         busy={busy}
+        open={libOpen}
+        onToggle={() => setLibOpen(!libOpen)}
         fragSel={sel}
         playReq={playReq}
         onToggleStory={toggleStory}

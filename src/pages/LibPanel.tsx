@@ -62,6 +62,8 @@ type Props = {
   selSummary: string
   canScript: boolean
   busy: boolean
+  open: boolean
+  onToggle: () => void
   fragSel: string[]
   playReq: { id: string; t: number; e: number; n: number } | null
   onToggleStory: (id: string) => void
@@ -627,6 +629,23 @@ export function LibPanel(p: Props) {
     body = <StoryRows ids={tagStories(nav.id)} empty="З цим тегом ще немає історій." />
   }
 
+  if (!p.open)
+    return (
+      <aside className="lib-rail" aria-label="Бібліотека">
+        <IconButton aria-label="Показати бібліотеку" onClick={p.onToggle}>
+          <Icon n="panelR" s={20} />
+        </IconButton>
+      </aside>
+    )
+  const collapseBtn = (
+    <IconButton
+      className="lib-collapse"
+      aria-label="Сховати бібліотеку"
+      onClick={p.onToggle}
+    >
+      <Icon n="panelR" s={20} />
+    </IconButton>
+  )
   const fragRows = p.fragSel
   const showBar = !!p.selSummary
   return (
@@ -665,16 +684,19 @@ export function LibPanel(p: Props) {
         <div className="lib-scroll">
           {nav.v === "menu" ? (
             <>
-              <button
-                className="acc-head side-head"
-                aria-expanded={menuOpen}
-                onClick={() => setMenuOpen(!menuOpen)}
-              >
-                <span>Бібліотека</span>
-                <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
-                  <Icon n="down" s={18} />
-                </span>
-              </button>
+              <div className="lib-head">
+                <button
+                  className="acc-head side-head lib-title-btn"
+                  aria-expanded={menuOpen}
+                  onClick={() => setMenuOpen(!menuOpen)}
+                >
+                  <span>Бібліотека</span>
+                  <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
+                    <Icon n="down" s={18} />
+                  </span>
+                </button>
+                {collapseBtn}
+              </div>
               {menuOpen && (
                 <nav className="side-nav lib-menu lib-menu-main">
                   <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
@@ -718,6 +740,7 @@ export function LibPanel(p: Props) {
                   <Icon n="back" s={20} />
                 </IconButton>
                 <span>{title}</span>
+                {collapseBtn}
               </div>
               <div className="lib-body">{body}</div>
             </>
