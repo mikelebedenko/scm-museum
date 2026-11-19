@@ -63,7 +63,6 @@ export default function Search() {
     aiMsgs.find((m) => m.id === pick) ?? aiMsgs[aiMsgs.length - 1]
   const [view, setView] = useState<"chat" | "browse">("chat")
   const [side, setSide] = useState(true)
-  const [lib, setLib] = useState(true)
   const [topicsOpen, setTopicsOpen] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [rubric, setRubric] = useState("all")
@@ -415,9 +414,6 @@ export default function Search() {
           ))}
         </div>
       </div>
-      {!lib && scriptIds.length > 0 && (
-        <div className="chat-dock">{selBar}</div>
-      )}
     </div>
   )
 
@@ -426,7 +422,7 @@ export default function Search() {
   )
 
   return (
-    <div className={`shell ${side ? "" : "side-rail"} ${lib ? "" : "lib-off"}`}>
+    <div className={`shell ${side ? "" : "side-rail"}`}>
       <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
         <div className="side-top">
           {side && <span className="side-title">Чати</span>}
@@ -505,7 +501,6 @@ export default function Search() {
             </div>
             <div className="chat-dock">
               <div className="chat-col">
-                {!lib && selBar}
                 {composer}
               </div>
             </div>
@@ -522,15 +517,7 @@ export default function Search() {
         )}
       </main>
 
-      {!lib && (
-        <aside className="lib-rail" aria-label="Бібліотека">
-          <IconButton aria-label="Показати бібліотеку" onClick={() => setLib(true)}>
-            <Icon n="panelR" s={20} />
-          </IconButton>
-        </aside>
-      )}
-
-      {lib && (
+      {(
         <aside className="lib" aria-label="Бібліотека">
           <div className="side-head">
             <span>Бібліотека</span>
