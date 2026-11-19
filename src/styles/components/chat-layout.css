@@ -356,3 +356,6 @@
 .lib-excerpt { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--color-surface-2); }
 .lib-excerpt p { color: var(--color-text-muted); font-size: var(--fs-base); line-height: var(--lh-relaxed); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .lib-excerpt .btn { justify-self: start; }
+
+/* заголовок «Чати» — на одній вертикалі з рядками меню та підписами */
+.side:not(.is-rail) .side-top { padding-left: var(--space-3); }
