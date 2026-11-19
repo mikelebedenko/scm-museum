@@ -5,12 +5,15 @@ import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
 import { Icon, type IconName } from "../ui"
-import { useMe, useStore } from "../store"
+import { Chip } from "../components/Chip"
+import { useActions, useMe, useStore } from "../store"
 import {
   RUBRICS,
   stories,
   story,
   storyMedia,
+  storyCover,
+  thumbUrl,
   type Material,
 } from "../data"
 import { fmt } from "../lib"
@@ -23,6 +26,7 @@ type Nav =
   | { v: "favs" }
   | { v: "tags" }
   | { v: "tag"; id: string }
+  | { v: "story"; id: string; prev: Nav }
 
 type TypeFilter = "all" | "video" | "audio" | "text"
 
@@ -49,11 +53,13 @@ type Props = {
 export function LibPanel(p: Props) {
   const { data } = useMe()
   const { state } = useStore()
+  const act = useActions()
   const status = state.settings.storyStatus
   const [nav, setNav] = useState<Nav>({ v: "menu" })
   const [menuOpen, setMenuOpen] = useState(true)
   const [foundOpen, setFoundOpen] = useState(true)
   const [type, setType] = useState<TypeFilter>("all")
+  const [topic, setTopic] = useState("all")
 
   const isOpen = (id: string) => status[id] === "Відкрита"
   const allIds = stories.filter((s) => isOpen(s.id)).map((s) => s.id)
@@ -63,16 +69,20 @@ export function LibPanel(p: Props) {
   const tagCount = (tagId: string) => tagStories(tagId).length
 
   const back = () => {
+    if (nav.v === "story") { setNav(nav.prev); return }
     if (nav.v === "topic") setNav({ v: "topics" })
     else if (nav.v === "tag") setNav({ v: "tags" })
     else setNav({ v: "menu" })
     setType("all")
+    setTopic("all")
   }
 
   const go = (n: Nav) => {
     setNav(n)
     setType("all")
+    setTopic("all")
   }
+  const openStory = (id: string) => setNav({ v: "story", id, prev: nav })
 
   const typesOf = (id: string) => {
     const t = new Set<string>(storyMedia(id).map((m) => m.kind))
@@ -80,8 +90,21 @@ export function LibPanel(p: Props) {
     return t
   }
 
-  const StoryRows = ({ ids, empty }: { ids: string[]; empty: string }) => {
-    const shown = ids.filter((id) => type === "all" || typesOf(id).has(type))
+  const StoryRows = ({
+    ids,
+    empty,
+    topics = false,
+  }: {
+    ids: string[]
+    empty: string
+    topics?: boolean
+  }) => {
+    const shown = ids.filter(
+      (id) =>
+        (type === "all" || typesOf(id).has(type)) &&
+        (topic === "all" ||
+          RUBRICS.find((r) => r.id === topic)?.storyIds.includes(id)),
+    )
     return (
       <>
         <div className="lib-types">
@@ -98,38 +121,73 @@ export function LibPanel(p: Props) {
             </FilterButton>
           ))}
         </div>
+        {topics && (
+          <div className="lib-types">
+            <FilterButton active={topic === "all"} onClick={() => setTopic("all")}>
+              Усі теми
+            </FilterButton>
+            {RUBRICS.map((r) => (
+              <FilterButton
+                key={r.id}
+                active={topic === r.id}
+                onClick={() => setTopic(r.id)}
+              >
+                {r.title}
+              </FilterButton>
+            ))}
+          </div>
+        )}
         {shown.length === 0 ? (
           <p className="lib-hint">{empty}</p>
         ) : (
-          <ul className="found-list">
-            {shown.map((id) => {
-              const media = storyMedia(id)
-              const dur = media.reduce((a, m) => a + m.duration, 0)
-              return (
-                <li key={id}>
-                  <Checkbox
-                    checked={p.storySel.includes(id)}
-                    onChange={() => p.onToggleStory(id)}
-                    title="Додати до сценарію"
-                  />
-                  <button
-                    className="found-item"
-                    onClick={() => p.onOpenMedia(media[0].id)}
-                  >
-                    <span className="found-title">{story(id).title}</span>
-                    <span className="found-meta">
-                      {[...typesOf(id)].map((t) => (
-                        <Icon key={t} n={TYPE_ICON[t]} s={14} />
-                      ))}
-                      {dur > 0 && fmt(dur)}
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+          <div className="lib-cards">
+            {shown.map((id) => (
+              <StoryCard key={id} id={id} />
+            ))}
+          </div>
         )}
       </>
+    )
+  }
+
+  const StoryCard = ({ id }: { id: string }) => {
+    const st = story(id)
+    const cover = storyCover(id)
+    const dur = storyMedia(id).reduce((a, m) => a + m.duration, 0)
+    const sel = p.storySel.includes(id)
+    return (
+      <article className={`lib-story ${sel ? "selected" : ""}`}>
+        <div className="lib-thumb">
+          <button onClick={() => openStory(id)} aria-label={`Відкрити історію ${st.title}`}>
+            <img
+              src={thumbUrl(cover.id, 320, 200)}
+              alt=""
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.style.visibility = "hidden"
+              }}
+            />
+          </button>
+          <Checkbox
+            className="lib-thumb-sel"
+            checked={sel}
+            onChange={() => p.onToggleStory(id)}
+            title="Додати до сценарію"
+          />
+        </div>
+        <div className="lib-story-body">
+          <button className="lib-story-title" onClick={() => openStory(id)}>
+            {st.title}
+          </button>
+          <p>{st.summary}</p>
+          <span className="found-meta">
+            {[...typesOf(id)].map((t) => (
+              <Icon key={t} n={TYPE_ICON[t]} s={14} />
+            ))}
+            {dur > 0 && fmt(dur)}
+          </span>
+        </div>
+      </article>
     )
   }
 
@@ -157,8 +215,8 @@ export function LibPanel(p: Props) {
   let title = "Бібліотека"
   let body: React.ReactNode = null
   if (nav.v === "all") {
-    title = "Усі матеріали"
-    body = <StoryRows ids={allIds} empty="Матеріалів немає." />
+    title = "Усі історії"
+    body = <StoryRows ids={allIds} topics empty="Історій немає." />
   } else if (nav.v === "topics") {
     title = "Теми"
     body = (
@@ -211,6 +269,57 @@ export function LibPanel(p: Props) {
         <LinkButton onClick={p.onManageTags}>Керувати тегами</LinkButton>
       </>
     )
+  } else if (nav.v === "story") {
+    const st = story(nav.id)
+    const cover = storyCover(nav.id)
+    const media = storyMedia(nav.id)
+    const fav = data.favs.includes(nav.id)
+    const sel = p.storySel.includes(nav.id)
+    title = "Історія"
+    body = (
+      <div className="lib-detail">
+        <button className="lib-hero" onClick={() => p.onOpenMedia(cover.id)} aria-label="Відтворити">
+          <img src={thumbUrl(cover.id, 640, 360)} alt="" onError={(e) => { e.currentTarget.style.visibility = "hidden" }} />
+          <span className="lib-hero-play"><Icon n="play" s={20} fill /></span>
+        </button>
+        <h3>{st.title}</h3>
+        <p className="lib-hint">{st.summary}</p>
+        <div className="chips">
+          {st.tags.map((t) => <Chip key={t}>{t}</Chip>)}
+        </div>
+        <div className="lib-actions">
+          <Checkbox checked={sel} onChange={() => p.onToggleStory(nav.id)}>
+            <em>До сценарію</em>
+          </Checkbox>
+          <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
+            <Icon n="star" s={14} fill={fav} />
+            {fav ? "В Обраному" : "В Обране"}
+          </Button>
+        </div>
+        <div className="side-label">Матеріали історії</div>
+        <ul className="found-list">
+          {media.map((m) => (
+            <li key={m.id}>
+              <button className="found-item" onClick={() => p.onOpenMedia(m.id)}>
+                <span className="found-title">{m.title}</span>
+                <span className="found-meta">
+                  <Icon n={TYPE_ICON[m.kind]} s={14} />
+                  {fmt(m.duration)}
+                </span>
+              </button>
+            </li>
+          ))}
+          {st.hasText && (
+            <li>
+              <button className="found-item" onClick={() => p.onOpenMedia(media[0].id)}>
+                <span className="found-title">Текст і транскрипція</span>
+                <span className="found-meta"><Icon n="file" s={14} /></span>
+              </button>
+            </li>
+          )}
+        </ul>
+      </div>
+    )
   } else if (nav.v === "tag") {
     const t = data.tags.find((x) => x.id === nav.id)
     title = t?.name ?? "Тег"
@@ -233,7 +342,7 @@ export function LibPanel(p: Props) {
           </button>
           {menuOpen && (
             <nav className="side-nav">
-              <NavItem icon="video" label="Усі матеріали" count={allIds.length} to={{ v: "all" }} />
+              <NavItem icon="video" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
               <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
               <NavItem icon="star" label="Обране" count={favIds.length} to={{ v: "favs" }} />
               <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
@@ -246,7 +355,7 @@ export function LibPanel(p: Props) {
                 aria-expanded={foundOpen}
                 onClick={() => setFoundOpen(!foundOpen)}
               >
-                <span>Знайдені матеріали</span>
+                <span>Знайдені історії</span>
                 <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
                   <Icon n="down" s={18} />
                 </span>
@@ -262,7 +371,7 @@ export function LibPanel(p: Props) {
                       />
                       <button
                         className="found-item"
-                        onClick={() => p.onOpenMedia(m.id)}
+                        onClick={() => openStory(m.storyId)}
                       >
                         <span className="found-title">{m.story}</span>
                         <span className="found-meta">

@@ -190,3 +190,25 @@
 .side-nav button .lbl { min-width: 0; }
 .side-nav button small { margin-left: auto; }
 .side-nav button small + .nav-go { margin-left: var(--space-2); }
+
+/* картки історій у правій панелі */
+.lib-cards { display: grid; gap: var(--space-3); }
+.lib-story { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-2); border: var(--border-width) solid var(--card-border); border-radius: var(--radius-lg); background: var(--card-bg); }
+.lib-story:hover { border-color: var(--card-border-hover); }
+.lib-story.selected { border-color: var(--card-border-selected); box-shadow: var(--ring-accent); }
+.lib-thumb { position: relative; align-self: start; aspect-ratio: 16 / 10; border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface-3); }
+.lib-thumb > button { display: block; width: 100%; height: 100%; }
+.lib-thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.lib-thumb-sel { position: absolute; top: var(--space-2); left: var(--space-2); padding: var(--space-half); border-radius: var(--radius-sm); background: var(--color-overlay); }
+.lib-story-body { display: grid; gap: var(--space-1); align-content: start; min-width: 0; }
+.lib-story-title { text-align: left; font: var(--type-label); color: var(--color-text); }
+.lib-story-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.lib-story-body p { color: var(--color-text-muted); font-size: var(--fs-sm); line-height: var(--lh-snug); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lib-detail { display: grid; gap: var(--space-3); align-content: start; }
+.lib-detail h3 { font: var(--type-h3); }
+.lib-hero { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface-3); }
+.lib-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lib-hero-play { position: absolute; inset: 0; display: grid; place-items: center; color: var(--color-text-on-media); }
+.lib-hero-play::before { content: ""; position: absolute; width: var(--control-lg, 48px); height: var(--control-lg, 48px); border-radius: var(--radius-full); background: var(--color-overlay-strong); }
+.lib-hero-play svg { position: relative; }
+.lib-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
