@@ -1,7 +1,21 @@
 # Design tokens — SCM.Museum
 
-Єдине джерело: [`src/styles/tokens.css`](../src/styles/tokens.css). Живий довідник: `/#/tokens`.
+Єдине джерело: [`src/styles/tokens.css`](../src/styles/tokens.css) → папка `src/styles/tokens/`. Живий довідник: `/#/tokens`.
 Правило: у `index.css` і компонентах — **тільки `var(--token)`**, без hex/rgba/px «з голови».
+
+## Колекції (як у Figma-бібліотеці)
+| Файл | Колекція |
+|---|---|
+| `tokens/colors.css` | Colors |
+| `tokens/typography.css` | Typography |
+| `tokens/stroke.css` | Stroke |
+| `tokens/radius.css` | Radius |
+| `tokens/scale.css` | Scale (контроли, іконки, лейаут) |
+| `tokens/spacing.css` | Spacing |
+| `tokens/components.css` | Component Tokens (`--btn-*`, `--chip-*`, `--field-*`, `--card-*`, `--panel-*`, `--modal-*`, `--tab-*`, `--table-*`…) |
+| `tokens/effects.css` | тіні, z-index, рух, стани (додатково) |
+
+Поки токенізовано компоненти: button, icon button, chip, field/select, card, panel, modal/popover/toast, tabs, table, header. Інші класи читають базові токени напряму.
 
 ## Три рівні
 1. **Примітиви** `--p-*` — сирі значення (палітра). Напряму в компонентах не використовуються.

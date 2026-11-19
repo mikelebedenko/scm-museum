@@ -1,0 +1,29 @@
+/* Effects — тіні, шари, рух, стани */
+:root {
+  /* тіні та кільця */
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, .28);
+  --shadow-accent: 0 4px 16px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --shadow-inset: inset 0 0 0 1px rgba(0, 0, 0, .12);
+  --ring-accent: 0 0 0 1px var(--color-accent);
+  --ring-focus: 0 0 0 4px color-mix(in srgb, var(--color-accent) 35%, transparent);
+
+
+
+  --z-raised: 2;
+  --z-panel: 30;
+  --z-popover: 40;
+  --z-tooltip: 60;
+  --z-modal: 80;
+  --z-toast: 120;
+
+
+
+  --duration-fast: .12s;
+  --duration-base: .15s;
+  --duration-slow: .25s;
+  --ease: ease;
+
+
+
+  --opacity-disabled: .45;
+}

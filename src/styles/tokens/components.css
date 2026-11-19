@@ -1,0 +1,77 @@
+/*
+ * Component Tokens — значення конкретних компонентів.
+ * Посилаються лише на базові токени (colors, spacing, radius, stroke, scale, typography).
+ * Щоб змінити вигляд, скажімо, всіх кнопок — міняйте тут, а не в index.css.
+ */
+:root {
+  /* Button */
+  --btn-height: var(--control-md);
+  --btn-height-sm: var(--control-sm);
+  --btn-height-lg: var(--control-lg);
+  --btn-padding-x: var(--space-4);
+  --btn-gap: var(--space-2);
+  --btn-radius: var(--radius-pill);
+  --btn-font-size: var(--fs-md);
+  --btn-font-size-sm: var(--fs-sm);
+  --btn-font-weight: var(--fw-semibold);
+  --btn-border: var(--color-border-strong);
+
+  /* Icon button */
+  --icon-button-size: var(--control-md);
+  --icon-button-size-sm: var(--control-sm);
+  --icon-button-radius: var(--radius-full);
+
+  /* Chip / Tag */
+  --chip-height: var(--control-xs);
+  --chip-padding-x: var(--space-2);
+  --chip-gap: var(--space-1);
+  --chip-radius: var(--radius-pill);
+  --chip-font-size: var(--fs-sm);
+
+  /* Field (input, textarea, select) */
+  --field-height: var(--control-md);
+  --field-padding-x: var(--space-3);
+  --field-padding-y: var(--space-2);
+  --field-radius: var(--radius-md);
+  --field-bg: var(--color-surface-1);
+  --field-border: var(--color-border-strong);
+  --field-border-focus: var(--color-accent);
+  --select-radius: var(--radius-pill);
+  --select-bg: var(--color-surface-2);
+
+  /* Card (фрагмент, історія) */
+  --card-bg: var(--color-surface-2);
+  --card-bg-hover: var(--color-surface-3);
+  --card-radius: var(--radius-lg);
+  --card-padding: var(--space-4);
+  --card-gap: var(--space-3);
+  --card-border: transparent;
+  --card-border-hover: var(--color-border-strong);
+  --card-border-selected: var(--color-accent);
+
+  /* Panel (колонки чату/результатів, плеєр) */
+  --panel-bg: var(--color-surface-1);
+  --panel-radius: var(--radius-xl);
+  --panel-gap: var(--space-4);
+
+  /* Modal / Popover / Toast */
+  --modal-bg: var(--color-surface-2);
+  --modal-radius: var(--radius-lg);
+  --modal-padding: var(--space-4);
+  --modal-width: 460px;
+  --modal-width-wide: 760px;
+  --popover-bg: var(--color-surface-2);
+  --popover-radius: var(--radius-lg);
+  --popover-min-width: 220px;
+  --toast-radius: var(--radius-pill);
+
+  /* Tabs / Table */
+  --tab-padding-x: var(--space-4);
+  --tab-padding-y: var(--space-3);
+  --table-cell-padding-x: var(--space-4);
+  --table-cell-padding-y: var(--space-3);
+
+  /* Header */
+  --header-bg: var(--color-bg);
+  --header-padding-x: var(--space-8);
+}

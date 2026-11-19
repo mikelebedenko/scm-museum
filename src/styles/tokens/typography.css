@@ -1,0 +1,47 @@
+/* Typography — шрифти, шкала, ваги, ролі (--type-*) */
+:root {
+
+
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* шкала розмірів */
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-base: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 18px;
+  --fs-2xl: 22px;
+  --fs-3xl: 28px;
+  --fs-4xl: 36px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-none: 1;
+  --lh-tight: 1.2;
+  --lh-snug: 1.4;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.65;
+
+  --ls-normal: 0;
+  --ls-wide: .04em;
+  --ls-wider: .08em;
+
+  /* ролі (font shorthand): використовуйте font: var(--type-*) */
+  --type-display: var(--fw-semibold) var(--fs-4xl) / var(--lh-tight) var(--font-sans);
+  --type-h1: var(--fw-semibold) var(--fs-3xl) / var(--lh-tight) var(--font-sans);
+  --type-h2: var(--fw-semibold) var(--fs-2xl) / var(--lh-tight) var(--font-sans);
+  --type-h3: var(--fw-semibold) var(--fs-xl) / var(--lh-snug) var(--font-sans);
+  --type-h4: var(--fw-semibold) var(--fs-lg) / var(--lh-snug) var(--font-sans);
+  --type-body-lg: var(--fw-regular) var(--fs-lg) / var(--lh-normal) var(--font-sans);
+  --type-body: var(--fw-regular) var(--fs-base) / var(--lh-normal) var(--font-sans);
+  --type-body-sm: var(--fw-regular) var(--fs-md) / var(--lh-normal) var(--font-sans);
+  --type-caption: var(--fw-regular) var(--fs-sm) / var(--lh-snug) var(--font-sans);
+  --type-label: var(--fw-semibold) var(--fs-md) / var(--lh-none) var(--font-sans);
+  --type-overline: var(--fw-semibold) var(--fs-xs) / var(--lh-snug) var(--font-sans);
+  --type-mono: var(--fw-medium) var(--fs-sm) / var(--lh-snug) var(--font-mono);
+}
