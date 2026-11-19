@@ -136,7 +136,7 @@ export function TagsModal({ onClose }: { onClose: () => void }) {
   )
 }
 
-/** FR-26–29: власний перелік «Обране» з фільтром за тегами. */
+/** FR-26–29: власний перелік «Вибране» з фільтром за тегами. */
 export function FavoritesModal({
   onClose,
   onOpen,
@@ -169,7 +169,7 @@ export function FavoritesModal({
     [open, tagF, data.assign],
   )
   return (
-    <Modal wide title="Обране" onClose={onClose}>
+    <Modal wide title="Вибране" onClose={onClose}>
       <div className="filters flat">
         <TagFilter sel={tagF} toggle={toggle} />
         {tagF.map((t) => (
@@ -195,7 +195,7 @@ export function FavoritesModal({
         </div>
       )}
       {open.length === 0 && (
-        <Empty icon="star" title="Обране порожнє">
+        <Empty icon="star" title="Вибране порожнє">
           Додавайте цілі історії зірочкою у результатах пошуку або на сайті
           музею.
         </Empty>
@@ -249,11 +249,11 @@ export function FavoritesModal({
               <IconButton
                 active
                 className="fav"
-                aria-label="Видалити з Обраного"
-                title="Видалити з Обраного"
+                aria-label="Видалити з вибраного"
+                title="Видалити з вибраного"
                 onClick={() => {
                   a.toggleFav(s.id)
-                  toast("Історію видалено з Обраного")
+                  toast("Історію видалено з вибраного")
                 }}
               >
                 <Icon n="star" s={16} fill />

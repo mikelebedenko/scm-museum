@@ -242,10 +242,10 @@ export default function Search() {
               size="sm"
               className="fav"
               active={fav}
-              aria-label={fav ? "Видалити історію з Обраного" : "Додати історію до Обраного"}
+              aria-label={fav ? "Видалити історію з вибраного" : "Додати історію до вибраного"}
               onClick={() => {
                 a.toggleFav(mm.storyId)
-                toast(fav ? "Історію видалено з Обраного" : "Історію додано до Обраного")
+                toast(fav ? "Історію видалено з вибраного" : "Історію додано до вибраного")
               }}
             >
               <Icon n="star" s={16} fill={fav} />
@@ -574,13 +574,13 @@ function BrowseStory({
               a.toggleFav(story.id)
               toast(
                 fav
-                  ? "Історію видалено з Обраного"
-                  : "Історію додано до Обраного",
+                  ? "Історію видалено з вибраного"
+                  : "Історію додано до вибраного",
               )
             }}
           >
             <Icon n="star" s={14} fill={fav} />
-            {fav ? "В Обраному" : "Додати в Обране"}
+            {fav ? "У вибраному" : "Додати у вибране"}
           </Button>
           <LinkButton onClick={() => onOpen(cover.id)}>
             Переглянути історію

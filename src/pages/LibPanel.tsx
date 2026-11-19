@@ -271,7 +271,7 @@ export function LibPanel(p: Props) {
       </>
     )
   } else if (nav.v === "favs") {
-    title = "Обране"
+    title = "Вибране"
     body = <StoryRows ids={favIds} empty="Позначайте історії зірочкою — вони з’являться тут." />
   } else if (nav.v === "tags") {
     title = "Теги"
@@ -317,7 +317,7 @@ export function LibPanel(p: Props) {
           </Checkbox>
           <Button size="sm" variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
-            {fav ? "В Обраному" : "В Обране"}
+            {fav ? "У вибраному" : "У вибране"}
           </Button>
         </div>
         <div className="side-label">Матеріали історії</div>
@@ -406,7 +406,7 @@ export function LibPanel(p: Props) {
               <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
               <hr className="lib-sep" />
               <NavItem icon="list" label="Теми" count={RUBRICS.length} to={{ v: "topics" }} />
-              <NavItem icon="star" label="Обране" count={favIds.length} to={{ v: "favs" }} />
+              <NavItem icon="star" label="Вибране" count={favIds.length} to={{ v: "favs" }} />
               <NavItem icon="tag" label="Теги" to={{ v: "tags" }} />
             </nav>
           )}

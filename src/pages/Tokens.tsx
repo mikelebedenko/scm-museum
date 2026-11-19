@@ -263,7 +263,7 @@ export default function Tokens() {
         <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
           <code style={{ font: "var(--type-caption)", width: 120 }}>IconButton</code>
           <IconButton aria-label="Пошук"><Icon n="search" /></IconButton>
-          <IconButton aria-label="Обране" active><Icon n="star" fill /></IconButton>
+          <IconButton aria-label="Вибране" active><Icon n="star" fill /></IconButton>
           <IconButton size="sm" aria-label="Закрити"><Icon n="close" s={14} /></IconButton>
         </div>
         <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>

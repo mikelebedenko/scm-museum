@@ -211,7 +211,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const r = localStorage.getItem(KEY)
       if (r) {
         const saved = JSON.parse(r) as State
-        // Старі версії зберігали Обране й теги за id медіафайлу. Безшовно переносимо їх на історії.
+        // Старі версії зберігали Вибране й теги за id медіафайлу. Безшовно переносимо їх на історії.
         Object.values(saved.data).forEach((d) => {
           // На старті показуємо каталог; збережені чати лишаються доступними в історії.
           d.active = null
@@ -343,7 +343,7 @@ export function useActions() {
         d.favs = on ? d.favs.filter((x) => x !== storyId) : [...d.favs, storyId]
         addLog(
           s,
-          on ? "Видалення з Обраного" : "Додавання до Обраного",
+          on ? "Видалення з вибраного" : "Додавання до вибраного",
           "ok",
           actor,
           story(storyId).title,
