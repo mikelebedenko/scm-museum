@@ -542,17 +542,9 @@ export default function Search() {
                     {composer}
                     {disclaimer}
                     <div className="sugs2">
-                      {SUGGESTIONS.slice(0, 2).map((s) => (
+                      {SUGGESTIONS.slice(0, 3).map((s) => (
                         <button key={s} onClick={() => send(s)}>
                           {s}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="sugs2 topics-row">
-                      <span>Або оберіть тему:</span>
-                      {RUBRICS.map((r) => (
-                        <button key={r.id} title={r.description} onClick={() => send(r.title)}>
-                          {r.title}
                         </button>
                       ))}
                     </div>

@@ -149,6 +149,3 @@
 .topic-list button:hover:not(:disabled) { background: var(--color-surface-3); color: var(--color-text); }
 .topic-list button.on { color: var(--color-accent); background: var(--color-accent-subtle); }
 .topic-list small { margin-left: auto; font-size: var(--fs-xs); color: var(--color-text-subtle); }
-.topics-row { align-items: center; }
-.topics-row span { width: 100%; text-align: center; font: var(--type-caption); color: var(--color-text-subtle); }
-.topics-row button { color: var(--color-accent); border-color: var(--color-accent-border); }
