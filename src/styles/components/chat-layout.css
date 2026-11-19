@@ -359,3 +359,10 @@
 
 /* заголовок «Чати» — на одній вертикалі з рядками меню та підписами */
 .side:not(.is-rail) .side-top { padding-left: var(--space-3); }
+
+/* шторка вибраного: заголовок зі зведенням, круглий фокус, хрестик у куті картки */
+.lib-sheet-head { display: grid; gap: var(--space-1); padding: 0 var(--space-1); }
+.lib-sheet-title { font: var(--type-h2); }
+.lib-sheet-sum { color: var(--color-text-subtle); font-size: var(--fs-md); }
+.sel-toggle { margin-left: calc(var(--space-2) * -1); padding: var(--space-1) var(--space-2); border-radius: var(--radius-md); }
+.sel-toggle:focus-visible { outline-offset: 0; }

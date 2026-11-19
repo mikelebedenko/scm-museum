@@ -99,6 +99,12 @@ export function LibPanel(p: Props) {
   useEffect(() => {
     if (!p.selSummary) setSheet(false)
   }, [p.selSummary])
+  useEffect(() => {
+    if (!sheet) return
+    const f = (e: KeyboardEvent) => e.key === "Escape" && setSheet(false)
+    addEventListener("keydown", f)
+    return () => removeEventListener("keydown", f)
+  }, [sheet])
 
   const isOpen = (id: string) => status[id] === "Відкрита"
   const allIds = stories.filter((s) => isOpen(s.id)).map((s) => s.id)
@@ -249,7 +255,7 @@ export function LibPanel(p: Props) {
           : types.has("audio")
             ? "audio"
             : "text"
-    const check = picked ? (
+    const removeBtn = (
       <IconButton
         className="lib-card-remove"
         size="sm"
@@ -258,7 +264,8 @@ export function LibPanel(p: Props) {
       >
         <Icon n="close" s={16} />
       </IconButton>
-    ) : (
+    )
+    const check = picked ? null : (
       <Checkbox
         className="lib-thumb-sel"
         checked={sel}
@@ -330,6 +337,7 @@ export function LibPanel(p: Props) {
             )}
           </span>
         </div>
+        {picked && removeBtn}
       </article>
     )
   }
@@ -710,16 +718,36 @@ export function LibPanel(p: Props) {
     </IconButton>
   )
   const fragRows = p.fragSel
+  const sheetDur =
+    p.storySel.reduce(
+      (a, id) =>
+        a + storyMedia(id).reduce((x, m) => x + (m.kind === "text" ? 0 : m.duration), 0),
+      0,
+    ) +
+    fragRows.reduce((a, fid) => {
+      const f = frag(fid)
+      return mat(f.mid).kind === "text" ? a : a + fragEnd(f) - fragStart(f)
+    }, 0)
+  const sheetRead = p.storySel.reduce(
+    (a, id) => a + storyMedia(id).reduce((x, m) => x + (m.readMin ?? 0), 0),
+    0,
+  )
+  const sheetSummary = [
+    p.storySel.length ? `${p.storySel.length} іст.` : "",
+    fragRows.length ? `${fragRows.length} фрагм.` : "",
+    sheetDur > 0 ? `${fmt(sheetDur)} запису` : "",
+    sheetRead > 0 ? `${sheetRead} хв читання` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ")
   const showBar = !!p.selSummary
   return (
     <aside className="lib" aria-label="Бібліотека">
       {sheet ? (
         <div className="lib-sheet">
-          <div className="lib-crumb">
-            <IconButton aria-label="Закрити список" onClick={() => setSheet(false)}>
-              <Icon n="down" s={20} />
-            </IconButton>
-            <span>Для сценарію</span>
+          <div className="lib-sheet-head">
+            <h3 className="lib-sheet-title">Для сценарію</h3>
+            <p className="lib-sheet-sum">{sheetSummary}</p>
           </div>
           {p.storySel.length > 0 && (
             <>
