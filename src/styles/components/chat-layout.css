@@ -292,3 +292,13 @@
 
 /* перейменування сценарію */
 .scr-name { flex: 1; min-width: 0; padding: var(--space-1) var(--space-2); background: var(--field-bg); border: var(--border-width) solid var(--field-border-focus); border-radius: var(--radius-md); color: var(--color-text); font: var(--type-label); outline: 0; }
+
+/* вся картка історії — зона кліку (розтягнуте посилання на назві) */
+.lib-story { position: relative; cursor: pointer; }
+.lib-story-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.lib-story-title:focus-visible { outline: 0; }
+.lib-story:has(.lib-story-title:focus-visible) { outline: var(--focus-outline); outline-offset: 2px; }
+.lib-story .lib-thumb-sel { z-index: 2; }
+.lib-story-head .lib-thumb-sel { z-index: 2; }
+.lib-story-title:hover { text-decoration: none; }
+.lib-story:hover .lib-story-title { text-decoration: underline; text-underline-offset: 3px; }
