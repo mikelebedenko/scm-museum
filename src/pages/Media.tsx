@@ -408,7 +408,7 @@ export default function Media({
                   <button
                     key={i}
                     ref={i === idx ? cur : undefined}
-                    className={`tl ${i === idx ? "cur" : ""} ${
+                    className={`tl ${textual ? "no-time" : ""} ${i === idx ? "cur" : ""} ${
                       s.s >= t0 && e0 > t0 && s.e <= e0 ? "hit" : ""
                     }`}
                     onClick={() => {
