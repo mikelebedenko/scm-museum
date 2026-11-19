@@ -54,6 +54,7 @@
 | `caption` | 12 | підписи, метадані |
 | `label` | 13 semibold | кнопки, поля |
 | `overline` | 11 | eyebrow (+ `uppercase`, `--ls-wider`) |
+| `brand` | 22 medium | назва продукту в шапці |
 | `mono` | 12 | таймкоди, цифри |
 
 ## Відступи, форма, розміри

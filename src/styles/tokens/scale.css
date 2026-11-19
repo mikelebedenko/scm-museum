@@ -8,6 +8,9 @@
   --control-md: 36px;
   --control-lg: 44px;
 
+  /* логотип */
+  --logo-size: var(--space-10);
+
   /* іконки */
   --icon-sm: 16px;
   --icon-md: 20px;

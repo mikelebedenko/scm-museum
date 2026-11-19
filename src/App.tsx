@@ -1,3 +1,4 @@
+import { Logo } from "./components/Logo"
 import { StoreProvider } from "./store"
 import { Toasts } from "./ui"
 import Search from "./pages/Search"
@@ -8,11 +9,8 @@ function Shell() {
     <div className="app">
       <header className="top">
         <div className="brand">
-          <span className="brandmark">К</span>
-          <span>
-            <b>Кабінет дослідника</b>
-            <small>Архів усної історії</small>
-          </span>
+          <Logo />
+          <span className="brand-name">SCM.Museum</span>
         </div>
       </header>
       <main className="page">
