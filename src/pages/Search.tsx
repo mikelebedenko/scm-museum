@@ -54,22 +54,6 @@ export default function Search() {
   const [libOpen, setLibOpen] = useState(true)
   const [view, setView] = useState<"chat" | "scripts">("chat")
   const [scriptOpenId, setScriptOpenId] = useState<string | null>(null)
-  const persisted = (k: string) => {
-    try {
-      return localStorage.getItem(k) !== "0"
-    } catch {
-      return true
-    }
-  }
-  const [chatsOpen, setChatsOpen] = useState(() => persisted("kd_side_chats"))
-  const toggleSec = (k: string, v: boolean, set: (x: boolean) => void) => {
-    set(!v)
-    try {
-      localStorage.setItem(k, v ? "0" : "1")
-    } catch {
-      /* ignore */
-    }
-  }
   const [playReq, setPlayReq] = useState<{ id: string; t: number; e: number; n: number } | null>(
     null,
   )
@@ -425,17 +409,8 @@ export default function Search() {
         </nav>
         {side && (
           <>
-            <button
-              className="side-sec-head"
-              aria-expanded={chatsOpen}
-              onClick={() => toggleSec("kd_side_chats", chatsOpen, setChatsOpen)}
-            >
-              <span>Нещодавні</span>
-              <span className={`acc-chev ${chatsOpen ? "is-open" : ""}`}>
-                <Icon n="down" s={16} />
-              </span>
-            </button>
-            {chatsOpen && <ul className="side-chats">
+            <div className="side-label">Нещодавні</div>
+            <ul className="side-chats">
               {visibleChats.length === 0 && (
                 <li className="muted">Поки порожньо</li>
               )}
@@ -463,7 +438,7 @@ export default function Search() {
                   </IconButton>
                 </li>
               ))}
-            </ul>}
+            </ul>
             <section className="side-scripts">
               <div className={`side-sec-row ${view === "scripts" && !scriptOpenId ? "on" : ""}`}>
                 <button
