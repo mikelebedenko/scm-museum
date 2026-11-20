@@ -189,19 +189,10 @@ export default function Search() {
     const key = `${m.id}:${f.id}`
     const fav = data.favs.includes(mm.storyId)
     const open = () => setPlayReq({ id: mm.id, t: s, e, n: Date.now() })
-    const picked = sel.includes(f.id)
-    const check = (
-      <Checkbox
-        className="lib-thumb-sel"
-        title="Додати до сценарію"
-        checked={picked}
-        onChange={() => toggleSel(f.id)}
-      />
-    )
     return (
       <article
         key={h.fid}
-        className={`lib-story hit is-${mm.kind} ${picked ? "selected" : ""}`}
+        className={`lib-story hit is-${mm.kind}`}
       >
         {mm.kind !== "text" && (
           <div className="lib-thumb">
@@ -221,22 +212,12 @@ export default function Search() {
                 </span>
               )}
             </button>
-            {check}
           </div>
         )}
         <div className="lib-story-body hit-body">
-          {mm.kind === "text" ? (
-            <div className="lib-story-head">
-              {check}
-              <button className="lib-story-title" onClick={open}>
-                {mm.story}
-              </button>
-            </div>
-          ) : (
-            <button className="lib-story-title" onClick={open}>
-              {mm.story}
-            </button>
-          )}
+          <button className="lib-story-title" onClick={open}>
+            {mm.story}
+          </button>
           <span className="hit-mat">{mm.title}</span>
           <span className="found-meta">
             <Tip text={mm.kind === "video" ? "Відео" : mm.kind === "audio" ? "Аудіо" : "Текст"}>

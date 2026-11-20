@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { Button } from "../components/Button"
-import { Checkbox } from "../components/Checkbox"
 import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
@@ -153,20 +152,6 @@ export function LibPanel(p: Props) {
             ]}
           />
         </div>
-        {shown.length > 1 && (
-          <Checkbox
-            className="lib-all"
-            checked={shown.every((id) => p.storySel.includes(id))}
-            onChange={() =>
-              p.onSetStories(
-                shown,
-                !shown.every((id) => p.storySel.includes(id)),
-              )
-            }
-          >
-            <em>Вибрати всі ({shown.length})</em>
-          </Checkbox>
-        )}
         {shown.length === 0 ? (
           <p className="lib-hint">{empty}</p>
         ) : (
@@ -206,14 +191,6 @@ export function LibPanel(p: Props) {
         <Icon n="close" s={16} />
       </IconButton>
     )
-    const check = picked ? null : (
-      <Checkbox
-        className="lib-thumb-sel"
-        checked={sel}
-        onChange={() => p.onToggleStory(id)}
-        title="Додати до сценарію"
-      />
-    )
     const goStory = () => {
       if (picked) setSheet(false)
       openStory(id)
@@ -240,22 +217,12 @@ export function LibPanel(p: Props) {
                 </span>
               )}
             </button>
-            {check}
           </div>
         )}
         <div className="lib-story-body">
-          {kind === "text" ? (
-            <div className="lib-story-head">
-              {check}
-              <button className="lib-story-title" onClick={goStory}>
-                {st.title}
-              </button>
-            </div>
-          ) : (
-            <button className="lib-story-title" onClick={goStory}>
-              {st.title}
-            </button>
-          )}
+          <button className="lib-story-title" onClick={goStory}>
+            {st.title}
+          </button>
           <p>{st.summary}</p>
           <span className="found-meta">
             {kind === "text" && genreOf(st.tags) && (
