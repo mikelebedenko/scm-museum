@@ -62,7 +62,6 @@ export default function Search() {
     }
   }
   const [chatsOpen, setChatsOpen] = useState(() => persisted("kd_side_chats"))
-  const [scriptsOpen, setScriptsOpen] = useState(() => persisted("kd_side_scripts"))
   const toggleSec = (k: string, v: boolean, set: (x: boolean) => void) => {
     set(!v)
     try {
@@ -478,18 +477,8 @@ export default function Search() {
                   <span>Сценарії</span>
                   {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
                 </button>
-                <IconButton
-                  size="sm"
-                  aria-label={scriptsOpen ? "Згорнути сценарії" : "Розгорнути сценарії"}
-                  aria-expanded={scriptsOpen}
-                  onClick={() => toggleSec("kd_side_scripts", scriptsOpen, setScriptsOpen)}
-                >
-                  <span className={`acc-chev ${scriptsOpen ? "is-open" : ""}`}>
-                    <Icon n="down" s={16} />
-                  </span>
-                </IconButton>
               </div>
-              {scriptsOpen && data.scripts.length > 0 && (
+              {data.scripts.length > 0 && (
                 <ul className="side-chats">
                   {data.scripts.slice(0, 5).map((sc) => (
                     <li
