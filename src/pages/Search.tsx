@@ -9,6 +9,7 @@ import { IconButton } from "../components/IconButton"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMe, useStore, useActions } from "../store"
 import { LibPanel } from "./LibPanel"
+import { ScriptsPage } from "./ScriptsPage"
 import { Icon, Popover, Modal, Empty, toast, Tip } from "../ui"
 import {
   SUGGESTIONS,
@@ -27,19 +28,10 @@ import {
   RUBRICS,
   fragments,
 } from "../data"
-import { fmt, range, dShort, dt } from "../lib"
+import { fmt, range, dShort, dt, plural } from "../lib"
 import { TagPicker, UserTagChips, TagFilter, LangFilter } from "./shared"
 import { TagsModal, FavoritesModal } from "./Library"
 import type { Msg } from "../types"
-
-/** Українська множина: 1 / 2–4 / 5+ (і 11–14). */
-const plural = (n: number, one: string, few: string, many: string) => {
-  const m10 = n % 10
-  const m100 = n % 100
-  if (m10 === 1 && m100 !== 11) return one
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few
-  return many
-}
 
 export default function Search() {
   const { state } = useStore()
@@ -60,12 +52,11 @@ export default function Search() {
   const [sel, setSel] = useState<string[]>([])
   const [storySel, setStorySel] = useState<string[]>([])
   const [libOpen, setLibOpen] = useState(true)
-  const [script, setScript] = useState(false)
+  const [view, setView] = useState<"chat" | "scripts">("chat")
   const [playReq, setPlayReq] = useState<{ id: string; t: number; e: number; n: number } | null>(
     null,
   )
   const [favOnly, setFavOnly] = useState(false)
-  const [scripts, setScripts] = useState(false)
   const [tagsM, setTagsM] = useState(false)
   const status = state.settings.storyStatus
 
@@ -80,6 +71,7 @@ export default function Search() {
 
   const taRef = useRef<HTMLTextAreaElement>(null)
   const newChat = () => {
+    setView("chat")
     // порожній чат не дублюємо: просто переводимо фокус на поле запиту
     if (chat && chat.msgs.length === 0)
       toast("Поточний чат порожній — введіть запит")
@@ -172,7 +164,7 @@ export default function Search() {
         <span className="grow" />
         <Button
           disabled={!perms.has("script") || scriptIds.length === 0}
-          onClick={() => setScript(true)}
+          onClick={() => setView("scripts")}
         >
           <Icon n="spark" s={14} />
           Згенерувати сценарій
@@ -415,6 +407,15 @@ export default function Search() {
             <Icon n="plus" s={20} />
             <span className="lbl">Новий чат</span>
           </button>
+          <button
+            title="Сценарії"
+            className={view === "scripts" ? "on" : ""}
+            onClick={() => setView("scripts")}
+          >
+            <Icon n="file" s={20} />
+            <span className="lbl">Сценарії</span>
+            {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+          </button>
         </nav>
         {side && (
           <>
@@ -426,14 +427,15 @@ export default function Search() {
               {visibleChats.map((c) => (
                 <li
                   key={c.id}
-                  className={c.id === data.active ? "on" : ""}
+                  className={c.id === data.active && view === "chat" ? "on" : ""}
                 >
                   <button
                     className="side-chat"
                     onClick={() => {
                       a.setActive(c.id)
                       setPick(null)
-                                      }}
+                      setView("chat")
+                    }}
                   >
                     {c.title}
                   </button>
@@ -451,8 +453,18 @@ export default function Search() {
         )}
       </aside>
 
-      <main className="main" aria-label="Пошуковий чат">
-        {(
+      <main className="main" aria-label={view === "scripts" ? "Сценарії" : "Пошуковий чат"}>
+        {view === "scripts" ? (
+          <ScriptsPage
+            storySel={storySel}
+            fragSel={sel}
+            scriptIds={scriptIds}
+            canScript={perms.has("script")}
+            onToggleStory={toggleStory}
+            onToggleFrag={toggleSel}
+            onClearSources={clearSel}
+          />
+        ) : (
           <>
             <div className="chat-scroll">
               <div className="chat-col">
@@ -509,13 +521,11 @@ export default function Search() {
           )
         }
         onClear={clearSel}
-        onGenerate={() => setScript(true)}
+        onGenerate={() => setView("scripts")}
         onManageTags={() => setTagsM(true)}
-        onOpenScripts={() => setScripts(true)}
       />
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
-      {scripts && <ScriptsModal onClose={() => setScripts(false)} />}
       {del && (
         <Modal
           title="Видалити чат?"
@@ -539,9 +549,6 @@ export default function Search() {
         >
           <p>Чат і всі його запити та результати буде видалено безповоротно.</p>
         </Modal>
-      )}
-      {script && (
-        <ScriptModal ids={scriptIds} onClose={() => setScript(false)} />
       )}
     </div>
   )
@@ -635,213 +642,4 @@ function BrowseStory({
   )
 }
 
-const PRESETS = [
-  "Короткий огляд історій",
-  "Документальний нарис",
-  "Тези для статті",
-]
-
-function ScriptModal({ ids, onClose }: { ids: string[]; onClose: () => void }) {
-  const a = useActions()
-  const titles = Array.from(new Set(ids.map((id) => mat(frag(id).mid).story)))
-  const [prompt, setPrompt] = useState("")
-  const [out, setOut] = useState<string | null>(null)
-  const [busy, setBusy] = useState(false)
-  const run = () => {
-    if (ids.length === 0) return
-    setBusy(true)
-    setTimeout(() => {
-      setOut(a.genScript(prompt.trim() || PRESETS[0], ids).body)
-      setBusy(false)
-    }, 900)
-  }
-  return (
-    <Modal
-      wide
-      title="Новий сценарій"
-      onClose={onClose}
-      foot={
-        out ? (
-          <>
-            <Button
-              onClick={() => {
-                navigator.clipboard?.writeText(out)
-                toast("Скопійовано")
-              }}
-            >
-              <Icon n="copy" s={14} />
-              Копіювати
-            </Button>
-            <Button variant="primary" onClick={onClose}>
-              Готово
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick={onClose}>Скасувати</Button>
-            <Button
-              variant="primary"
-              disabled={ids.length === 0 || busy}
-              onClick={run}
-            >
-              <Icon n="spark" s={14} />
-              {busy ? "Генерація…" : "Згенерувати сценарій"}
-            </Button>
-          </>
-        )
-      }
-    >
-      {!out ? (
-        <>
-          <section className="sc-sources">
-            <div className="sc-row">
-              <div className="sc-label">Джерела</div>
-              {ids.length > 0 && (
-                <span className="sc-count">
-                  {titles.length} іст. · {ids.length} фрагм.
-                </span>
-              )}
-            </div>
-            {ids.length === 0 ? (
-              <p className="sub">Оберіть історії або фрагменти — вони з’являться тут.</p>
-            ) : (
-              <div className="chips">
-                {titles.slice(0, 6).map((t) => (
-                  <Chip key={t}>{t}</Chip>
-                ))}
-                {titles.length > 6 && <Chip>+{titles.length - 6} ще</Chip>}
-              </div>
-            )}
-          </section>
-          <label className="fld">
-            <span className="sc-row">
-              <span className="sc-label">Про що сценарій</span>
-              <span className="sc-count">необов’язково</span>
-            </span>
-            <textarea
-              rows={4}
-              value={prompt}
-              autoFocus
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Тема, акценти й тон. Напр.: взаємодопомога незнайомих людей під час евакуації, стримано й документально."
-            />
-          </label>
-          <div className="chips sc-presets">
-            {PRESETS.map((x) => (
-              <button
-                key={x}
-                type="button"
-                className={`chip ${prompt === x ? "on" : ""}`}
-                onClick={() => setPrompt(prompt === x ? "" : x)}
-              >
-                {x}
-              </button>
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="okmsg">
-            <Icon n="check" />
-            Сценарій збережено. Знайти його можна в розділі «Згенеровані сценарії» у бібліотеці.
-          </div>
-          <pre className="scriptout">{out}</pre>
-        </>
-      )}
-    </Modal>
-  )
-}
-
-function ScriptsModal({ onClose }: { onClose: () => void }) {
-  const { data } = useMe()
-  const a = useActions()
-  const [open, setOpen] = useState<string | null>(null)
-  const [editing, setEditing] = useState<string | null>(null)
-  const [val, setVal] = useState("")
-  const startEdit = (id: string, title: string) => {
-    setEditing(id)
-    setVal(title)
-  }
-  const saveEdit = (id: string, title: string) => {
-    const n = val.trim()
-    setEditing(null)
-    if (n && n !== title) {
-      a.renameScript(id, n)
-      toast("Сценарій перейменовано")
-    }
-  }
-  return (
-    <Modal wide title="Згенеровані сценарії" onClose={onClose}>
-      {data.scripts.length === 0 && (
-        <Empty icon="file" title="Згенерованих сценаріїв ще немає">
-          Оберіть історії або фрагменти й натисніть «Згенерувати сценарій».
-        </Empty>
-      )}
-      {data.scripts.map((sc) => (
-        <div key={sc.id} className="scr">
-          <div className="scr-h">
-            {editing === sc.id ? (
-              <input
-                className="scr-name"
-                value={val}
-                autoFocus
-                aria-label="Назва сценарію"
-                onChange={(e) => setVal(e.target.value)}
-                onFocus={(e) => e.currentTarget.select()}
-                onBlur={() => saveEdit(sc.id, sc.title)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") e.currentTarget.blur()
-                  if (e.key === "Escape") {
-                    e.stopPropagation()
-                    setEditing(null)
-                  }
-                }}
-              />
-            ) : (
-              <button
-                className="hlink"
-                onClick={() => setOpen(open === sc.id ? null : sc.id)}
-              >
-                <b>{sc.title}</b>
-              </button>
-            )}
-            <small>
-              {dt(sc.created)} · {sc.sources.length} джерел
-            </small>
-            <IconButton
-              size="sm"
-              aria-label="Перейменувати"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => startEdit(sc.id, sc.title)}
-            >
-              <Icon n="edit" s={18} />
-            </IconButton>
-            <IconButton
-              size="sm"
-              aria-label="Копіювати"
-              onClick={() => {
-                navigator.clipboard?.writeText(sc.body)
-                toast("Скопійовано")
-              }}
-            >
-              <Icon n="copy" s={14} />
-            </IconButton>
-            <IconButton
-              size="sm"
-              aria-label="Видалити"
-              onClick={() => {
-                a.deleteScript(sc.id)
-                toast("Сценарій видалено")
-              }}
-            >
-              <Icon n="trash" s={18} />
-            </IconButton>
-          </div>
-          <p className="muted sm">Промпт: {sc.prompt}</p>
-          {open === sc.id && <pre className="scriptout">{sc.body}</pre>}
-        </div>
-      ))}
-    </Modal>
-  )
-}
 export { range }

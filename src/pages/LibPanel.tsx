@@ -63,7 +63,6 @@ type Props = {
   onClear: () => void
   onGenerate: () => void
   onManageTags: () => void
-  onOpenScripts: () => void
 }
 
 export function LibPanel(p: Props) {
@@ -647,7 +646,6 @@ export function LibPanel(p: Props) {
       { icon: "grid", label: "Усі історії", run: () => railGo({ v: "all" }) },
       { icon: "star", label: "Вибрані історії", run: () => railGo({ v: "favs" }) },
       { icon: "tag", label: "Список тегів", run: () => railGo({ v: "tags" }) },
-      { icon: "file", label: "Згенеровані сценарії", run: p.onOpenScripts },
     ]
     return (
       <aside className="lib-rail" aria-label="Бібліотека">
@@ -728,12 +726,7 @@ export function LibPanel(p: Props) {
                     <hr className="lib-sep" />
                       <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
                     <NavItem icon="tag" label="Список тегів" to={{ v: "tags" }} />
-                    <button onClick={p.onOpenScripts}>
-                      <Icon n="file" s={24} />
-                      <span className="lbl">Згенеровані сценарії</span>
-                      {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-                    </button>
-                  </nav>
+                    </nav>
                 )}
               </>
             ) : (
