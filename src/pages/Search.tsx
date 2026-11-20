@@ -453,26 +453,6 @@ export default function Search() {
                   {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
                 </button>
               </div>
-              {data.scripts.length > 0 && (
-                <ul className="side-chats">
-                  {data.scripts.slice(0, 5).map((sc) => (
-                    <li
-                      key={sc.id}
-                      className={view === "scripts" && scriptOpenId === sc.id ? "on" : ""}
-                    >
-                      <button
-                        className="side-chat"
-                        onClick={() => {
-                          setScriptOpenId(sc.id)
-                          setView("scripts")
-                        }}
-                      >
-                        {sc.title}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </section>
           </>
         )}
