@@ -501,3 +501,7 @@
 .side-sec-row.on .side-sec-title, .side-sec-title:hover { color: var(--color-text); }
 .side-sec-row.on .side-sec-title svg { color: var(--color-accent); }
 .side-sec-title small { margin-left: auto; color: var(--color-text-subtle); font-size: var(--fs-sm); }
+
+/* єдиний активний стан у лівій панелі: як у вибраного чату */
+.side-sec-row.on, .side-nav button.is-section.on { background: var(--color-accent-subtle); }
+.side-sec-row.on .side-sec-title { color: var(--color-text); }
