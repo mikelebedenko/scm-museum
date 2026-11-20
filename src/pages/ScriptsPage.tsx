@@ -280,7 +280,7 @@ export function ScriptsPage(p: Props) {
                     checked={p.storySel.includes(s.id)}
                     onChange={() => p.onToggleStory(s.id)}
                   >
-                    <span className="sc-pick-title">{s.title}</span>
+                    <em className="sc-pick-title">{s.title}</em>
                   </Checkbox>
                   <span className="found-meta">
                     {kinds.map((k) => (

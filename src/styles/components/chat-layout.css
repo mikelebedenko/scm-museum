@@ -482,5 +482,6 @@
 .sc-pick { display: grid; gap: var(--space-half); margin: 0; padding: 0; list-style: none; max-height: 360px; overflow: auto; }
 .sc-pick li { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); }
 .sc-pick li:hover { background: var(--color-surface-3); }
-.sc-pick-title { margin-left: var(--space-2); color: var(--color-text); }
+.sc-pick .cb { flex: 1; min-width: 0; align-items: center; gap: var(--space-3); }
+.sc-pick-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; color: var(--color-text); font-size: var(--fs-base); }
 .sc-cmp { padding: var(--space-4); }
