@@ -388,9 +388,11 @@ export default function Search() {
             <Icon n="plus" s={20} />
             <span className="lbl">Новий чат</span>
           </button>
+          <hr className="side-sep" />
+          <div className="side-group-label" aria-hidden>Робочі матеріали</div>
           <button
             title="Сценарії"
-            className={view === "scripts" ? "on" : ""}
+            className={`is-section ${view === "scripts" ? "on" : ""}`}
             onClick={() => setView("scripts")}
           >
             <Icon n="file" s={20} />
