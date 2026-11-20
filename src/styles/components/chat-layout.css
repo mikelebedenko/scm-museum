@@ -12,7 +12,7 @@
 .side-nav button.on { background: var(--color-accent-subtle); color: var(--color-accent); }
 .side-nav small { margin-left: auto; color: var(--color-text-subtle); font-size: var(--fs-xs); }
 .side-label { margin-top: var(--space-2); padding: 0 var(--space-3); font: var(--type-overline); letter-spacing: var(--ls-wider); text-transform: uppercase; color: var(--color-text-subtle); }
-.side-chats { display: grid; gap: var(--space-half); margin: 0; padding: 0; list-style: none; }
+.side-chats { grid-template-columns: minmax(0, 1fr); display: grid; gap: var(--space-half); margin: 0; padding: 0; list-style: none; }
 .side-chats li { display: flex; align-items: center; border-radius: var(--radius-md); padding-right: var(--space-2); }
 .side-chats li:hover { background: var(--color-surface-3); }
 .side-chats li.on { background: var(--color-accent-subtle); }
@@ -489,3 +489,15 @@
 .side.is-rail .side-group-label { visibility: hidden; padding: 0; }
 .side-nav button.is-section.on { background: var(--color-surface-3); color: var(--color-text); }
 .side-nav button.is-section.on svg { color: var(--color-accent); }
+
+/* ліва панель, як у Claude: розділи зі стрілками; «Сценарії» — внизу панелі */
+.side-sec-head { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-3); color: var(--color-text-subtle); font: var(--type-h4); font-weight: var(--fw-medium); text-align: left; }
+.side-sec-head:hover { color: var(--color-text-muted); }
+.side-sec-head .acc-chev { color: inherit; }
+.side-scripts { grid-template-columns: minmax(0, 1fr); margin-top: auto; padding-top: var(--space-3); border-top: var(--border-width) solid var(--color-border); display: grid; gap: var(--space-1); }
+.side-sec-row { display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-md); }
+.side-sec-row.on { background: var(--color-surface-3); }
+.side-sec-title { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--space-3); height: var(--control-md); padding: 0 var(--space-3); color: var(--color-text-muted); font-size: var(--fs-base); text-align: left; }
+.side-sec-row.on .side-sec-title, .side-sec-title:hover { color: var(--color-text); }
+.side-sec-row.on .side-sec-title svg { color: var(--color-accent); }
+.side-sec-title small { margin-left: auto; color: var(--color-text-subtle); font-size: var(--fs-sm); }

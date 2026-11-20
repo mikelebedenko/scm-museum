@@ -30,6 +30,9 @@ type Props = {
   onToggleStory: (id: string) => void
   onToggleFrag: (id: string) => void
   onClearSources: () => void
+  /** Відкритий сценарій (керується ззовні, щоб його можна було відкрити з лівої панелі). */
+  openId: string | null
+  onOpenId: (id: string | null) => void
 }
 
 /** Сторінка «Сценарії»: поле запиту з джерелами та історія згенерованих сценаріїв. */
@@ -42,7 +45,8 @@ export function ScriptsPage(p: Props) {
   const [busy, setBusy] = useState(false)
   const [picker, setPicker] = useState(false)
   const [q, setQ] = useState("")
-  const [openId, setOpenId] = useState<string | null>(null)
+  const openId = p.openId
+  const setOpenId = p.onOpenId
   const [editing, setEditing] = useState(false)
   const [val, setVal] = useState("")
 

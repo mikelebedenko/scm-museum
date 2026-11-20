@@ -53,6 +53,24 @@ export default function Search() {
   const [storySel, setStorySel] = useState<string[]>([])
   const [libOpen, setLibOpen] = useState(true)
   const [view, setView] = useState<"chat" | "scripts">("chat")
+  const [scriptOpenId, setScriptOpenId] = useState<string | null>(null)
+  const persisted = (k: string) => {
+    try {
+      return localStorage.getItem(k) !== "0"
+    } catch {
+      return true
+    }
+  }
+  const [chatsOpen, setChatsOpen] = useState(() => persisted("kd_side_chats"))
+  const [scriptsOpen, setScriptsOpen] = useState(() => persisted("kd_side_scripts"))
+  const toggleSec = (k: string, v: boolean, set: (x: boolean) => void) => {
+    set(!v)
+    try {
+      localStorage.setItem(k, v ? "0" : "1")
+    } catch {
+      /* ignore */
+    }
+  }
   const [playReq, setPlayReq] = useState<{ id: string; t: number; e: number; n: number } | null>(
     null,
   )
@@ -388,22 +406,37 @@ export default function Search() {
             <Icon n="plus" s={20} />
             <span className="lbl">Новий чат</span>
           </button>
-          <hr className="side-sep" />
-          <div className="side-group-label" aria-hidden>Робочі матеріали</div>
-          <button
-            title="Сценарії"
-            className={`is-section ${view === "scripts" ? "on" : ""}`}
-            onClick={() => setView("scripts")}
-          >
-            <Icon n="file" s={20} />
-            <span className="lbl">Сценарії</span>
-            {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-          </button>
+          {!side && (
+            <>
+              <hr className="side-sep" />
+              <div className="side-group-label" aria-hidden>Робочі матеріали</div>
+              <button
+                title="Сценарії"
+                className={`is-section ${view === "scripts" ? "on" : ""}`}
+                onClick={() => {
+                  setScriptOpenId(null)
+                  setView("scripts")
+                }}
+              >
+                <Icon n="file" s={20} />
+                <span className="lbl">Сценарії</span>
+              </button>
+            </>
+          )}
         </nav>
         {side && (
           <>
-            <div className="side-label">Нещодавні</div>
-            <ul className="side-chats">
+            <button
+              className="side-sec-head"
+              aria-expanded={chatsOpen}
+              onClick={() => toggleSec("kd_side_chats", chatsOpen, setChatsOpen)}
+            >
+              <span>Нещодавні</span>
+              <span className={`acc-chev ${chatsOpen ? "is-open" : ""}`}>
+                <Icon n="down" s={16} />
+              </span>
+            </button>
+            {chatsOpen && <ul className="side-chats">
               {visibleChats.length === 0 && (
                 <li className="muted">Поки порожньо</li>
               )}
@@ -431,7 +464,52 @@ export default function Search() {
                   </IconButton>
                 </li>
               ))}
-            </ul>
+            </ul>}
+            <section className="side-scripts">
+              <div className={`side-sec-row ${view === "scripts" && !scriptOpenId ? "on" : ""}`}>
+                <button
+                  className="side-sec-title"
+                  onClick={() => {
+                    setScriptOpenId(null)
+                    setView("scripts")
+                  }}
+                >
+                  <Icon n="file" s={18} />
+                  <span>Сценарії</span>
+                  {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
+                </button>
+                <IconButton
+                  size="sm"
+                  aria-label={scriptsOpen ? "Згорнути сценарії" : "Розгорнути сценарії"}
+                  aria-expanded={scriptsOpen}
+                  onClick={() => toggleSec("kd_side_scripts", scriptsOpen, setScriptsOpen)}
+                >
+                  <span className={`acc-chev ${scriptsOpen ? "is-open" : ""}`}>
+                    <Icon n="down" s={16} />
+                  </span>
+                </IconButton>
+              </div>
+              {scriptsOpen && data.scripts.length > 0 && (
+                <ul className="side-chats">
+                  {data.scripts.slice(0, 5).map((sc) => (
+                    <li
+                      key={sc.id}
+                      className={view === "scripts" && scriptOpenId === sc.id ? "on" : ""}
+                    >
+                      <button
+                        className="side-chat"
+                        onClick={() => {
+                          setScriptOpenId(sc.id)
+                          setView("scripts")
+                        }}
+                      >
+                        {sc.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
           </>
         )}
       </aside>
@@ -446,6 +524,8 @@ export default function Search() {
             onToggleStory={toggleStory}
             onToggleFrag={toggleSel}
             onClearSources={clearSel}
+            openId={scriptOpenId}
+            onOpenId={setScriptOpenId}
           />
         ) : (
           <>
