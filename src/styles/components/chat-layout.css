@@ -480,3 +480,7 @@
 .sc-pick .cb { flex: 1; min-width: 0; align-items: center; gap: var(--space-3); }
 .sc-pick-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; color: var(--color-text); font-size: var(--fs-base); }
 .sc-cmp { padding: var(--space-4); }
+
+/* сторінка «Сценарії»: тексти (заголовки, підписи, текст у полі й у рядках) — на одній осі, 16px від краю контейнерів */
+.sc-page > .sc-h1, .sc-page > .sc-sub, .sc-page > .sc-meta, .sc-page > .locknote { padding-inline: var(--space-4); }
+.sc-detail-head { padding-left: var(--space-2); padding-right: var(--space-2); }
