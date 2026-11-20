@@ -18,7 +18,29 @@ import type {
 } from "./types"
 import { permsOf } from "./types"
 import { uid, now, search, makeAnswer, makeScript } from "./lib"
-import { mat, frag, story, stories } from "./data"
+import { mat, frag, story, stories, fragments } from "./data"
+
+/** Демонстраційні сценарії: збираються справжнім генератором із справжніх фрагментів архіву. */
+const DEMO_SCRIPTS = [
+  { title: "Нарис про евакуацію", prompt: "Документальний нарис про евакуацію цивільних: стримано, без пафосу", tag: "евакуація", n: 4, days: 1 },
+  { title: "Взаємодопомога сусідів: тези для статті", prompt: "Тези для статті про взаємодопомогу сусідів під час блокади", tag: "взаємодопомога", n: 4, days: 3 },
+  { title: "Медики в блокаді", prompt: "Короткий огляд історій про роботу медиків без світла й ліків", tag: "медицина", n: 3, days: 6 },
+  { title: "Діти в укритті", prompt: "Сценарій короткого відео про дітей в укритті та навчання при свічках", tag: "діти", n: 5, days: 9 },
+  { title: "Пам’ять, листи й щоденники", prompt: "Ліричний нарис про листи, щоденники та речі, які зберігають родини", tag: "пам’ять", n: 4, days: 14 },
+  { title: "Повернення й відбудова вулиці", prompt: "Історія повернення: дахи, вода й школа — як громада відбудовується", tag: "відбудова", n: 3, days: 20 },
+]
+const demoScripts = (): Script[] =>
+  DEMO_SCRIPTS.map((d, i) => {
+    const ids = fragments.filter((f) => f.tags.includes(d.tag)).slice(0, d.n).map((f) => f.id)
+    return {
+      id: `demo-${i + 1}`,
+      title: d.title,
+      prompt: d.prompt,
+      body: makeScript(d.prompt, ids),
+      created: new Date(Date.now() - d.days * 86_400_000).toISOString(),
+      sources: Array.from(new Set(ids.map((id) => frag(id).mid))),
+    }
+  })
 
 export const TERMS_V = "2.0 від 01.09.2025"
 const emptyData = (): UserData => ({
@@ -123,6 +145,7 @@ function seed(): State {
   const q = "Евакуація цивільних і роль волонтерів"
   const hits = search(q, statusAll)
   const d = data.u1
+  d.scripts.push(...demoScripts())
   d.chats.push({
     id: "c1",
     title: "Евакуація цивільних",
@@ -213,7 +236,7 @@ function seed(): State {
     data,
     sessions,
     log,
-    settings: { timeoutMin: 15, termsVersion: TERMS_V, storyStatus: statusAll },
+    settings: { timeoutMin: 15, termsVersion: TERMS_V, storyStatus: statusAll, demoScripts: true },
     sessionId: "s0",
     notice: null,
   }
@@ -255,6 +278,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         stories.forEach((x) => {
           if (!(x.id in st)) st[x.id] = "Відкрита"
         })
+        // Демонстраційні сценарії додаємо в збережений стан один раз.
+        if (!saved.settings.demoScripts) {
+          const u1 = saved.data.u1
+          if (u1) {
+            const have = new Set(u1.scripts.map((x) => x.id))
+            u1.scripts.push(...demoScripts().filter((x) => !have.has(x.id)))
+          }
+          saved.settings.demoScripts = true
+        }
         return saved
       }
     } catch {

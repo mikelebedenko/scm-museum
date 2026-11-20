@@ -111,6 +111,8 @@ export interface Settings {
   timeoutMin: number
   termsVersion: string
   storyStatus: Record<string, string>
+  /** демонстраційні сценарії вже додано до збереженого стану */
+  demoScripts?: boolean
 }
 export interface State {
   users: User[]

@@ -15,11 +15,8 @@ import {
 } from "../data"
 import { fmt, dt, plural } from "../lib"
 
-const PRESETS = [
-  "Короткий огляд історій",
-  "Документальний нарис",
-  "Тези для статті",
-]
+/** Запит за замовчуванням, якщо поле порожнє. */
+const DEFAULT_PROMPT = "Короткий огляд історій"
 
 const TYPE_ICON = { video: "video", audio: "audio", text: "file" } as const
 
@@ -56,7 +53,7 @@ export function ScriptsPage(p: Props) {
     if (!hasSources || busy) return
     setBusy(true)
     setTimeout(() => {
-      const sc = a.genScript(prompt.trim() || PRESETS[0], p.scriptIds)
+      const sc = a.genScript(prompt.trim() || DEFAULT_PROMPT, p.scriptIds)
       setBusy(false)
       setPrompt("")
       setOpenId(sc.id)
@@ -209,18 +206,6 @@ export function ScriptsPage(p: Props) {
           </div>
         </div>
 
-        <div className="chips sc-presets">
-          {PRESETS.map((x) => (
-            <button
-              key={x}
-              type="button"
-              className={`chip ${prompt === x ? "on" : ""}`}
-              onClick={() => setPrompt(prompt === x ? "" : x)}
-            >
-              {x}
-            </button>
-          ))}
-        </div>
         {!p.canScript && (
           <p className="locknote">
             <Icon n="lock" s={13} /> Генерація сценаріїв — з Розширеною роллю

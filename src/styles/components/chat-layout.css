@@ -240,7 +240,6 @@
 .sc-label { font: var(--type-label); color: var(--color-text); }
 .fld > span.sc-label { margin-bottom: var(--space-2); font-size: var(--fs-md); color: var(--color-text); }
 .sc-count { color: var(--color-text-subtle); font-size: var(--fs-sm); }
-.sc-presets { margin: calc(var(--space-1) * -1) 0 var(--space-4); }
 
 /* структура панелі: прокрутка + нижня панель вибору + шторка */
 .lib { padding: 0; gap: 0; overflow: hidden; }
@@ -446,10 +445,6 @@
 
 /* модалка сценарію: підписи з поясненням праворуч, пресети-перемикачі */
 .sc-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
-.fld > span.sc-row { display: flex; margin-bottom: var(--space-2); }
-.fld > span.sc-row .sc-label { font: var(--type-label); color: var(--color-text); }
-.sc-presets { margin-bottom: 0; }
-.sc-presets .chip { cursor: pointer; }
 
 /* дії на екрані історії та в плеєрі — крупніші кнопки */
 .lib-actions .btn, .mpanel.inline .mactions .btn { height: var(--control-lg); font-size: var(--fs-base); gap: var(--space-2); }
