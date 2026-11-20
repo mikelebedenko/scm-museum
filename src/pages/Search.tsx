@@ -146,22 +146,10 @@ export default function Search() {
     setSel([])
     setStorySel([])
   }
-  const lastAi = aiMsgs[aiMsgs.length - 1]
-  const foundStories = lastAi
-    ? Array.from(
-        new Map(
-          visibleHits(lastAi).map((h) => {
-            const m = mat(frag(h.fid).mid)
-            return [m.storyId, m] as const
-          }),
-        ).values(),
-      )
-    : []
   const toggleStory = (id: string) =>
     setStorySel((cur) =>
       cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id],
     )
-  const lastQuery = lastAi?.query
   const empty = !chat || chat.msgs.length === 0
   const aiCan = perms.has("ai")
 
@@ -495,8 +483,6 @@ export default function Search() {
       </main>
 
       <LibPanel
-        foundStories={foundStories}
-        foundQuery={lastQuery ?? ""}
         storySel={storySel}
         selSummary={
           scriptIds.length > 0
@@ -509,7 +495,6 @@ export default function Search() {
             : ""
         }
         canScript={perms.has("script")}
-        busy={busy}
         open={libOpen}
         onToggle={() => setLibOpen(!libOpen)}
         fragSel={sel}
@@ -525,7 +510,6 @@ export default function Search() {
         }
         onClear={clearSel}
         onGenerate={() => setScript(true)}
-        onAsk={send}
         onManageTags={() => setTagsM(true)}
         onOpenScripts={() => setScripts(true)}
       />

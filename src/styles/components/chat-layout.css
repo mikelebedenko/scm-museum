@@ -202,9 +202,6 @@
 /* фільтри списку історій */
 .lib-seg { display: flex; width: 100%; }
 .lib-seg button { flex: 1; justify-content: center; }
-.lib-topics { display: flex; gap: var(--space-2); margin: 0 calc(var(--space-4) * -1); padding: 0 var(--space-4); overflow-x: auto; scrollbar-width: none; }
-.lib-topics::-webkit-scrollbar { display: none; }
-.lib-topics .fbtn { flex: none; height: var(--control-sm); padding: 0 var(--space-3); font-size: var(--fs-sm); border-radius: var(--radius-pill); white-space: nowrap; }
 .lib-actions .cb { align-items: center; gap: var(--space-2); }
 .lib-actions .cb em { font-style: normal; font-size: var(--fs-md); color: var(--color-text); }
 
@@ -230,9 +227,6 @@
 .lib-filters { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
 .lib-filters .lib-seg { width: auto; flex: 1; min-width: 0; }
 .lib-filters .lib-seg button { padding: 0 var(--space-2); }
-.lib-topic-btn { height: var(--control-md); max-width: 168px; border-radius: var(--radius-pill); }
-.lib-topic-btn span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.topicpop { right: 0; left: auto; width: 240px; }
 .lib-body .lnk { display: inline-flex; align-items: center; gap: var(--space-2); justify-self: start; padding: 0 var(--space-2); }
 
 /* різний вигляд карток за типом: відео — прев’ю, аудіо — іконка, текст — без зображення */
@@ -265,10 +259,7 @@
 .lib-all { margin: 0; padding: var(--space-1) var(--space-4); }
 .lib-all em { font-style: normal; font-size: var(--fs-md); color: var(--color-text-muted); }
 .lib-all.cb { align-items: center; gap: var(--space-2); }
-.lib-menu button.has-desc { height: auto; min-height: var(--control-xl); padding-top: var(--space-3); padding-bottom: var(--space-3); align-items: flex-start; }
-.lib-menu button.has-desc small { align-self: center; }
 .lib-menu .lbl { display: grid; gap: var(--space-half); text-align: left; }
-.lib-desc { color: var(--color-text-subtle); font-size: var(--fs-sm); font-weight: var(--fw-regular); line-height: var(--lh-snug); }
 .lib-story-head { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
 .lib-story-head .lib-thumb-sel { position: relative; top: auto; left: auto; flex: none; padding: 0; background: none; }
 .lib-story-head .lib-story-title { flex: 1; min-width: 0; }
@@ -290,14 +281,6 @@
 .lib-detail > .lib-sep { margin: var(--space-2) 0; }
 .lib-kind-ico { flex: none; display: inline-grid; place-items: center; color: var(--color-text-subtle); }
 
-/* випадаючий список тем */
-.lib-topic-btn .acc-chev { color: inherit; }
-.lib-topic-btn.on { background: var(--color-accent-subtle); }
-.topicpop { top: calc(100% + var(--space-2)); right: 0; left: auto; width: 280px; padding: var(--space-2); box-shadow: var(--shadow-md); }
-.topic-opts { display: grid; gap: var(--space-half); max-height: 360px; overflow: hidden auto; }
-.topic-opts button { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); height: var(--control-lg); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: var(--fs-base); text-align: left; transition: var(--duration-base); }
-.topic-opts button:hover { background: var(--color-surface-3); color: var(--color-text); }
-.topic-opts button.on { background: var(--color-accent-subtle); color: var(--color-accent); font-weight: var(--fw-medium); }
 
 /* підказки значків типів над розтягнутим посиланням картки */
 .found-meta .tipw { position: relative; z-index: 2; align-items: center; }
@@ -309,8 +292,6 @@
 .lib-genre { padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-accent-subtle); color: var(--color-accent); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
 
 /* кнопка тем має фіксовану ширину — рядок фільтрів не «стрибає» */
-.lib-topic-btn { flex: none; width: 148px; max-width: none; justify-content: space-between; }
-.lib-topic-btn > span:first-child { flex: 1; min-width: 0; text-align: left; }
 .lib-filters .relative { flex: none; }
 
 /* згортання правої панелі */
@@ -324,9 +305,6 @@
 .lib-rail-sep { width: var(--control-md); height: var(--border-width); margin: var(--space-1) 0; border: 0; background: var(--color-border); }
 .lib-rail [data-tip]:hover::after, .lib-rail [data-tip]:focus-visible::after { right: calc(100% + var(--space-2)); left: auto; bottom: auto; top: 50%; transform: translateY(-50%); }
 
-/* підпис блоку «Знайдені історії»: лічильник і запит */
-.lib-section .side-head .lib-count { margin-left: 0; padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-subtle); font: var(--fw-medium) var(--fs-sm) var(--font-sans); }
-.lib-found-q { margin: calc(var(--space-2) * -1) 0 0; padding: 0 var(--space-4); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text-subtle); font-size: var(--fs-sm); }
 
 /* однакові шеврони аккордеонів: одразу після заголовка, трохи більші */
 .lib-section .side-head { justify-content: flex-start; width: auto; gap: var(--space-2); }

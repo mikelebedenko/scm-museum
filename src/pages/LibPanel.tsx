@@ -5,12 +5,11 @@ import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
 import { IconButton } from "../components/IconButton"
 import { LinkButton } from "../components/LinkButton"
-import { Icon, Popover, Tip, type IconName } from "../ui"
+import { Icon, Tip, type IconName } from "../ui"
 import Media from "./Media"
 import { Chip } from "../components/Chip"
 import { useActions, useMe, useStore } from "../store"
 import {
-  RUBRICS,
   materials,
   stories,
   story,
@@ -29,8 +28,6 @@ import { fmt } from "../lib"
 type Nav =
   | { v: "menu" }
   | { v: "all" }
-  | { v: "topics" }
-  | { v: "topic"; id: string }
   | { v: "favs" }
   | { v: "tags" }
   | { v: "tag"; id: string }
@@ -53,12 +50,9 @@ const TYPE_ICON: Record<string, IconName> = {
 }
 
 type Props = {
-  foundStories: Material[]
-  foundQuery: string
   storySel: string[]
   selSummary: string
   canScript: boolean
-  busy: boolean
   open: boolean
   onToggle: () => void
   fragSel: string[]
@@ -68,7 +62,6 @@ type Props = {
   onSetStories: (ids: string[], on: boolean) => void
   onClear: () => void
   onGenerate: () => void
-  onAsk: (q: string) => void
   onManageTags: () => void
   onOpenScripts: () => void
 }
@@ -80,10 +73,7 @@ export function LibPanel(p: Props) {
   const status = state.settings.storyStatus
   const [nav, setNav] = useState<Nav>({ v: "menu" })
   const [menuOpen, setMenuOpen] = useState(true)
-  const [foundOpen, setFoundOpen] = useState(true)
   const [type, setType] = useState<TypeFilter>("all")
-  const [topic, setTopic] = useState("all")
-  const [topicMenu, setTopicMenu] = useState(false)
   const [sheet, setSheet] = useState(false)
 
   useEffect(() => {
@@ -116,17 +106,14 @@ export function LibPanel(p: Props) {
 
   const back = () => {
     if (nav.v === "story" || nav.v === "play" || nav.v === "systag") { setNav(nav.prev); return }
-    if (nav.v === "topic") setNav({ v: "topics" })
-    else if (nav.v === "tag") setNav({ v: "tags" })
+    if (nav.v === "tag") setNav({ v: "tags" })
     else setNav({ v: "menu" })
     setType("all")
-    setTopic("all")
   }
 
   const go = (n: Nav) => {
     setNav(n)
     setType("all")
-    setTopic("all")
   }
   const play = (id: string, text = false) =>
     setNav({ v: "play", id, text, prev: nav })
@@ -143,17 +130,13 @@ export function LibPanel(p: Props) {
   const StoryRows = ({
     ids,
     empty,
-    topics = false,
   }: {
     ids: string[]
     empty: string
-    topics?: boolean
   }) => {
     const shown = ids.filter(
       (id) =>
-        (type === "all" || storyMedia(id).some((m) => m.kind === type)) &&
-        (topic === "all" ||
-          RUBRICS.find((r) => r.id === topic)?.storyIds.includes(id)),
+        type === "all" || storyMedia(id).some((m) => m.kind === type),
     )
     return (
       <>
@@ -170,48 +153,6 @@ export function LibPanel(p: Props) {
               { value: "text", label: "Текст" },
             ]}
           />
-          {topics && (
-            <span className="relative">
-              <FilterButton
-                className="lib-topic-btn"
-                active={topic !== "all" || topicMenu}
-                aria-expanded={topicMenu}
-                onClick={() => setTopicMenu(!topicMenu)}
-              >
-                <span>
-                  {topic === "all"
-                    ? "Усі теми"
-                    : RUBRICS.find((r) => r.id === topic)?.title}
-                </span>
-                <span className={`acc-chev ${topicMenu ? "is-open" : ""}`}>
-                  <Icon n="down" s={14} />
-                </span>
-              </FilterButton>
-              <Popover
-                open={topicMenu}
-                onClose={() => setTopicMenu(false)}
-                className="topicpop"
-              >
-                <div className="topic-opts" role="listbox" aria-label="Тема">
-                  {[{ id: "all", title: "Усі теми" }, ...RUBRICS].map((r) => (
-                    <button
-                      key={r.id}
-                      role="option"
-                      aria-selected={topic === r.id}
-                      className={topic === r.id ? "on" : ""}
-                      onClick={() => {
-                        setTopic(r.id)
-                        setTopicMenu(false)
-                      }}
-                    >
-                      <span>{r.title}</span>
-                      {topic === r.id && <Icon n="check" s={16} />}
-                    </button>
-                  ))}
-                </div>
-              </Popover>
-            </span>
-          )}
         </div>
         {shown.length > 1 && (
           <Checkbox
@@ -493,33 +434,7 @@ export function LibPanel(p: Props) {
   let body: React.ReactNode = null
   if (nav.v === "all") {
     title = "Усі історії"
-    body = <StoryRows ids={allIds} topics empty="Історій немає." />
-  } else if (nav.v === "topics") {
-    title = "Історії за темами"
-    body = (
-      <nav className="side-nav lib-menu">
-        {RUBRICS.map((r) => (
-          <button key={r.id} className="has-desc" onClick={() => go({ v: "topic", id: r.id })}>
-            <span className="lbl">
-              {r.title}
-              <span className="lib-desc">{r.description}</span>
-            </span>
-            <small>{r.storyIds.filter(isOpen).length}</small>
-          </button>
-        ))}
-      </nav>
-    )
-  } else if (nav.v === "topic") {
-    const r = RUBRICS.find((x) => x.id === nav.id)!
-    title = r.title
-    body = (
-      <>
-        <LinkButton onClick={() => p.onAsk(r.title)} disabled={p.busy}>
-          <Icon n="search" s={14} /> Запитати про тему в чаті
-        </LinkButton>
-        <StoryRows ids={r.storyIds.filter(isOpen)} empty="У цій темі немає історій." />
-      </>
-    )
+    body = <StoryRows ids={allIds} empty="Історій немає." />
   } else if (nav.v === "favs") {
     title = "Вибрані історії"
     body = <StoryRows ids={favIds} empty="Позначайте історії зірочкою — вони з’являться тут." />
@@ -730,7 +645,6 @@ export function LibPanel(p: Props) {
     }
     const items: { icon: IconName; label: string; run: () => void }[] = [
       { icon: "grid", label: "Усі історії", run: () => railGo({ v: "all" }) },
-      { icon: "list", label: "Історії за темами", run: () => railGo({ v: "topics" }) },
       { icon: "star", label: "Вибрані історії", run: () => railGo({ v: "favs" }) },
       { icon: "tag", label: "Список тегів", run: () => railGo({ v: "tags" }) },
       { icon: "file", label: "Згенеровані сценарії", run: p.onOpenScripts },
@@ -812,8 +726,7 @@ export function LibPanel(p: Props) {
                   <nav className="side-nav lib-menu lib-menu-main">
                     <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
                     <hr className="lib-sep" />
-                    <NavItem icon="list" label="Історії за темами" count={RUBRICS.length} to={{ v: "topics" }} />
-                    <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
+                      <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
                     <NavItem icon="tag" label="Список тегів" to={{ v: "tags" }} />
                     <button onClick={p.onOpenScripts}>
                       <Icon n="file" s={24} />
@@ -821,33 +734,6 @@ export function LibPanel(p: Props) {
                       {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
                     </button>
                   </nav>
-                )}
-                {p.foundStories.length > 0 && (
-                  <div className="lib-section">
-                    <button
-                      className="acc-head side-head"
-                      aria-expanded={foundOpen}
-                      onClick={() => setFoundOpen(!foundOpen)}
-                    >
-                      <span>Знайдені історії в чаті</span>
-                      <small className="lib-count">{p.foundStories.length}</small>
-                      <span className={`acc-chev ${foundOpen ? "is-open" : ""}`}>
-                        <Icon n="down" s={22} />
-                      </span>
-                    </button>
-                    {foundOpen && p.foundQuery && (
-                      <p className="lib-found-q">
-                        За запитом «{p.foundQuery}»
-                      </p>
-                    )}
-                    {foundOpen && (
-                      <div className="lib-cards">
-                        {p.foundStories.map((m) => (
-                          <StoryCard key={m.storyId} id={m.storyId} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
                 )}
               </>
             ) : (
