@@ -1,3 +1,4 @@
+import { ChatSidebar } from "@scm/platform/components/ChatSidebar"
 import { Logo } from "../components/Logo"
 import { Segmented } from "../components/Segmented"
 import { Checkbox } from "../components/Checkbox"
@@ -374,89 +375,34 @@ export default function Search() {
 
   return (
     <div className={`shell ${side ? "" : "side-rail"} ${libOpen ? "" : "lib-off"}`}>
-      <aside className={`side ${side ? "" : "is-rail"}`} aria-label="Меню">
-        <div className="side-top">
-          {side && <span className="side-title">Чати</span>}
-          <IconButton
-            aria-label={side ? "Згорнути меню" : "Розгорнути меню"}
-            onClick={() => setSide(!side)}
-          >
-            <Icon n="panelL" s={20} />
-          </IconButton>
-        </div>
-        <nav className="side-nav">
-          <button title="Новий чат" onClick={newChat}>
-            <Icon n="plus" s={20} />
-            <span className="lbl">Новий чат</span>
-          </button>
-          {!side && (
-            <>
-              <hr className="side-sep" />
-              <div className="side-group-label" aria-hidden>Робочі матеріали</div>
-              <button
-                title="Сценарії"
-                className={`is-section ${view === "scripts" ? "on" : ""}`}
-                onClick={() => {
-                  setScriptOpenId(null)
-                  setView("scripts")
-                }}
-              >
-                <Icon n="file" s={20} />
-                <span className="lbl">Сценарії</span>
-              </button>
-            </>
-          )}
-        </nav>
-        {side && (
-          <>
-            <div className="side-label">Нещодавні</div>
-            <ul className="side-chats">
-              {visibleChats.length === 0 && (
-                <li className="muted">Поки порожньо</li>
-              )}
-              {visibleChats.map((c) => (
-                <li
-                  key={c.id}
-                  className={c.id === data.active && view === "chat" ? "on" : ""}
-                >
-                  <button
-                    className="side-chat"
-                    onClick={() => {
-                      a.setActive(c.id)
-                      setPick(null)
-                      setView("chat")
-                    }}
-                  >
-                    {c.title}
-                  </button>
-                  <IconButton
-                    size="sm"
-                    aria-label="Видалити чат"
-                    onClick={() => setDel(c.id)}
-                  >
-                    <Icon n="trash" s={18} />
-                  </IconButton>
-                </li>
-              ))}
-            </ul>
-            <section className="side-scripts">
-              <div className={`side-sec-row ${view === "scripts" && !scriptOpenId ? "on" : ""}`}>
-                <button
-                  className="side-sec-title"
-                  onClick={() => {
-                    setScriptOpenId(null)
-                    setView("scripts")
-                  }}
-                >
-                  <Icon n="file" s={18} />
-                  <span>Сценарії</span>
-                  {data.scripts.length > 0 && <small>{data.scripts.length}</small>}
-                </button>
-              </div>
-            </section>
-          </>
-        )}
-      </aside>
+      <ChatSidebar
+        chats={visibleChats}
+        activeId={view === "chat" ? (data.active ?? "") : ""}
+        open={side}
+        onOpenChange={setSide}
+        onSelect={(id) => {
+          a.setActive(id)
+          setPick(null)
+          setView("chat")
+        }}
+        onNew={newChat}
+        onDelete={(id) => setDel(id)}
+        confirmDelete={false}
+        sectionsLabel="Робочі матеріали"
+        sections={[
+          {
+            id: "scripts",
+            icon: "file",
+            label: "Сценарії",
+            count: data.scripts.length,
+            active: view === "scripts" && !scriptOpenId,
+            onClick: () => {
+              setScriptOpenId(null)
+              setView("scripts")
+            },
+          },
+        ]}
+      />
 
       <main className="main" aria-label={view === "scripts" ? "Сценарії" : "Пошуковий чат"}>
         {view === "scripts" ? (
