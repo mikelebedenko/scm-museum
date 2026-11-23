@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Доступ до приватного @scm/platform
+        run: git config --global url."https://x-access-token:${{ secrets.PLATFORM_TOKEN }}@github.com/".insteadOf "https://github.com/"
       - run: pnpm install --frozen-lockfile
       - name: Типи (tsc)
         run: pnpm typecheck

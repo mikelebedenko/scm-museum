@@ -1,8 +1,0 @@
-/* Stroke — товщина ліній і кільця фокуса */
-:root {
-  --border-width: 1px;
-  --border-width-thick: 2px;
-
-
-  --focus-outline: 2px solid var(--color-accent);
-}
