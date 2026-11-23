@@ -44,7 +44,6 @@ export default function Search() {
   const [pick, setPick] = useState<string | null>(null)
   const [hist, setHist] = useState(false)
   const [hq, setHq] = useState("")
-  const [del, setDel] = useState<string | null>(null)
   const end = useRef<HTMLDivElement>(null)
   const userRef = useRef<HTMLDivElement>(null)
   const [type, setType] = useState<"all" | "audio" | "video">("all")
@@ -74,15 +73,11 @@ export default function Search() {
   const taRef = useRef<HTMLTextAreaElement>(null)
   const newChat = () => {
     setView("chat")
-    // порожній чат не дублюємо: просто переводимо фокус на поле запиту
-    if (chat && chat.msgs.length === 0)
-      toast("Поточний чат порожній — введіть запит")
-    else {
-      a.newChat()
-      setPick(null)
-      toast("Створено новий чат")
-    }
     setTimeout(() => taRef.current?.focus(), 50)
+    // порожній чат не дублюємо: просто переводимо фокус на поле запиту (тости показує ChatSidebar)
+    if (chat && chat.msgs.length === 0) return "empty" as const
+    a.newChat()
+    setPick(null)
   }
 
   const send = (text: string, force = false) => {
@@ -386,8 +381,10 @@ export default function Search() {
           setView("chat")
         }}
         onNew={newChat}
-        onDelete={(id) => setDel(id)}
-        confirmDelete={false}
+        onDelete={(id) => {
+          a.deleteChat(id)
+          setPick(null)
+        }}
         sectionsLabel="Робочі матеріали"
         sections={[
           {
@@ -479,30 +476,6 @@ export default function Search() {
       />
 
       {tagsM && <TagsModal onClose={() => setTagsM(false)} />}
-      {del && (
-        <Modal
-          title="Видалити чат?"
-          onClose={() => setDel(null)}
-          foot={
-            <>
-              <Button onClick={() => setDel(null)}>Скасувати</Button>
-              <Button
-                variant="danger"
-                onClick={() => {
-                  a.deleteChat(del)
-                  setDel(null)
-                  setPick(null)
-                  toast("Чат видалено")
-                }}
-              >
-                Видалити
-              </Button>
-            </>
-          }
-        >
-          <p>Чат і всі його запити та результати буде видалено безповоротно.</p>
-        </Modal>
-      )}
     </div>
   )
 }
