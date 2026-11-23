@@ -6,7 +6,6 @@ import path from "node:path"
 const ROOT = path.resolve(import.meta.dirname, "../src")
 const files = [
   path.join(ROOT, "index.css"),
-  path.join(ROOT, "styles/base.css"),
   ...fs.readdirSync(path.join(ROOT, "styles/components")).map((f) => path.join(ROOT, "styles/components", f)),
 ]
 // Властивості, де px має бути токеном (--space-*, --fs-*, --radius-*, --z-*)

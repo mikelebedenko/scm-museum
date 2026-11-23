@@ -101,7 +101,7 @@ export default function Tokens() {
     >
       <h1 style={{ font: "var(--type-h1)" }}>Design tokens</h1>
       <p style={{ color: "var(--color-text-muted)" }}>
-        Джерело: src/styles/tokens.css
+        Джерело: @scm/platform · styles/tokens.css
       </p>
 
       <h2 style={h}>Кольори</h2>

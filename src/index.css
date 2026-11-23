@@ -1,10 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
-@import './styles/tokens.css';
-
-@import "./styles/base.css";
-@import "./styles/components/shell.css";
-@import "./styles/components/ui.css";
+@import "@scm/platform/styles/platform.css";
 @import "./styles/components/auth.css";
 @import "./styles/components/search.css";
 @import "./styles/components/media.css";
@@ -13,7 +9,6 @@
 @import "./styles/components/player-panel.css";
 @import "./styles/components/soft-theme.css";
 @import "./styles/components/thumbs-favorites.css";
-@import "./styles/components/tooltips.css";
 @import "./styles/components/fragment-card.css";
 @import "./styles/components/player-controls.css";
 @import "./styles/components/player-header.css";

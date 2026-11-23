@@ -4,7 +4,7 @@
 .brand b { font-size: var(--fs-xl); font-weight: var(--fw-semibold); letter-spacing: 0; } .brand small { text-transform: none; letter-spacing: 0; font-size: var(--fs-sm); }
 .eyebrow { letter-spacing: var(--ls-wider); text-transform: uppercase; font-size: var(--fs-xs); }
 .ws { gap: var(--space-4); padding: 0 var(--space-4) var(--space-4); }
-.chatcol, .rescol { border: 0; border-radius: var(--panel-radius); overflow: hidden; background: var(--panel-bg); }
+.chatcol, .rescol { border: 0; border-radius: var(--panel-radius); overflow: visible; background: var(--panel-bg); }
 .rescol { background: var(--color-surface-1); }
 .colhead { border-bottom: var(--border-width) solid var(--color-border); }
 .composer { background: transparent; border-top: 0; padding: var(--space-3) var(--space-4) var(--space-4); }
