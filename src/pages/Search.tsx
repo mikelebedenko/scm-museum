@@ -74,8 +74,8 @@ export default function Search() {
   const newChat = () => {
     setView("chat")
     setTimeout(() => taRef.current?.focus(), 50)
-    // порожній чат не дублюємо: просто переводимо фокус на поле запиту (тости показує ChatSidebar)
-    if (chat && chat.msgs.length === 0) return "empty" as const
+    // порожній чат не дублюємо: просто переводимо фокус на поле запиту
+    if (chat && chat.msgs.length === 0) return
     a.newChat()
     setPick(null)
   }
