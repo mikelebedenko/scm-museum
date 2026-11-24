@@ -42,7 +42,7 @@
 .cmp { position: relative; background: var(--composer-bg); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--composer-radius); padding: var(--space-4) var(--space-14) var(--space-4) var(--composer-padding); transition: var(--duration-base); }
 .cmp:focus-within { border-color: var(--color-accent); }
 .cmp textarea { display: block; width: 100%; min-height: var(--space-12); box-sizing: border-box; resize: none; border: 0; background: none; padding: 0; font: var(--type-body); }
-.cmp-send { position: absolute; right: var(--space-3); bottom: var(--space-3); background: var(--color-accent); color: var(--color-text-on-accent); }
+.cmp-send { position: absolute; right: var(--space-3); bottom: var(--space-3); border-radius: var(--radius-full); background: var(--color-accent); color: var(--color-text-on-accent); }
 .cmp-send:hover:not(:disabled) { background: var(--color-accent-hover); color: var(--color-text-on-accent); }
 
 /* переписка */
