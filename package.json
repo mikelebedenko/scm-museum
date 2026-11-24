@@ -8,14 +8,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "oxfmt",
-    "lint:tokens": "node scripts/check-tokens.mjs",
+    "lint:tokens": "node node_modules/@scm/platform/scripts/check-tokens.mjs --app",
     "typecheck": "tsc --noEmit",
     "check": "pnpm typecheck && pnpm lint:tokens && pnpm build"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@scm/platform": "git+https://github.com/mikelebedenko/scm-platform.git#v0.13.1"
+    "@scm/platform": "git+https://github.com/mikelebedenko/scm-platform.git#v0.13.3"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
