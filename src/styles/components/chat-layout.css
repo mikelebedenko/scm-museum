@@ -6,20 +6,8 @@
 .side { display: flex; flex-direction: column; gap: var(--space-3); min-height: 0; overflow: hidden auto; padding: var(--space-2) var(--space-1); }
 .side-top { display: flex; align-items: center; gap: var(--space-2); }
 .side-new { flex: 1; }
-.side-nav { display: grid; gap: var(--space-half); }
-.side-nav button { display: flex; align-items: center; gap: var(--space-3); height: var(--control-md); padding: 0 var(--space-3); border-radius: var(--radius-md); color: var(--color-text-muted); font-size: var(--fs-md); text-align: left; transition: var(--duration-base); }
-.side-nav button:hover { background: var(--color-surface-3); color: var(--color-text); }
 .side-nav button.on { background: var(--color-accent-subtle); color: var(--color-accent); }
 .side-nav small { margin-left: auto; color: var(--color-text-subtle); font-size: var(--fs-xs); }
-.side-chats { grid-template-columns: minmax(0, 1fr); display: grid; gap: var(--space-half); margin: 0; padding: 0; list-style: none; }
-.side-chats li { display: flex; align-items: center; border-radius: var(--radius-md); padding-right: var(--space-2); }
-.side-chats li:hover { background: var(--color-surface-3); }
-.side-chats li.on { background: var(--color-accent-subtle); }
-.side-chats li.muted { padding: var(--space-2) var(--space-3); font-size: var(--fs-md); }
-.side-chat { flex: 1; min-width: 0; padding: var(--space-2) var(--space-3); overflow: hidden; text-align: left; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-md); color: var(--color-text-muted); }
-.side-chats li.on .side-chat, .side-chat:hover { color: var(--color-text); }
-.side-chats .ib { opacity: 0; }
-.side-chats li:hover .ib, .side-chats .ib:focus-visible { opacity: 1; }
 
 /* основна область */
 .main { position: relative; display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
@@ -70,8 +58,6 @@
 
 /* вузька панель-«рейка» */
 .side.is-rail { align-items: center; padding: var(--space-2) 0; }
-.side.is-rail .side-nav { justify-items: center; }
-.side.is-rail .side-nav button { width: var(--icon-button-size); justify-content: center; padding: 0; border-radius: var(--radius-full); }
 .side.is-rail .lbl, .side.is-rail .side-nav small { display: none; }
 
 /* поле запиту — «таблетка», підпис під ним */
@@ -88,14 +74,11 @@
 .side:not(.is-rail) { padding: var(--space-4); background: var(--panel-bg); border-radius: var(--panel-radius); }
 .side-head { display: flex; align-items: center; justify-content: space-between; font: var(--type-h4); }
 .side:not(.is-rail) .side-new { flex: none; width: 100%; }
-.side:not(.is-rail) .side-nav { padding-bottom: var(--space-2); border-bottom: var(--border-width) solid var(--color-border); }
 
 /* стиль ChatGPT: плоска панель, «Новий чат» і список — прості рядки */
 .side:not(.is-rail) { padding: var(--space-2) var(--space-2); background: none; border-radius: 0; }
 .side-top { display: flex; justify-content: flex-end; }
 .side.is-rail .side-top { justify-content: center; }
-.side:not(.is-rail) .side-nav { padding-bottom: 0; border-bottom: 0; }
-.side-nav button, .side-chat { font-size: var(--fs-base); }
 
 /* права панель «Бібліотека» */
 .shell { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--lib-width); }
@@ -323,8 +306,6 @@
 .sel-toggle:focus-visible { outline-offset: 0; }
 
 /* «+» у «Новий чат»: видимий край значка на одній вертикалі із заголовком і списком */
-.side:not(.is-rail) .side-nav button:first-child { gap: var(--space-2); }
-.side:not(.is-rail) .side-nav button:first-child svg { margin-left: calc(var(--space-1) * -1); margin-right: calc(var(--space-1) * -1); }
 
 /* картка результату в чаті — та сама анатомія, що й картки бібліотеки */
 .lib-story.hit { grid-template-columns: var(--hit-thumb-width) minmax(0, 1fr); gap: var(--space-4); padding: var(--space-3); }
