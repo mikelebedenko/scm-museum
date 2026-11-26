@@ -29,12 +29,10 @@
 .cmp { position: relative; background: var(--composer-bg); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--composer-radius); padding: var(--space-4) var(--space-14) var(--space-4) var(--composer-padding); transition: var(--duration-base); }
 .cmp:focus-within { border-color: var(--color-accent); }
 .cmp textarea { display: block; width: 100%; min-height: var(--space-12); box-sizing: border-box; resize: none; border: 0; background: none; padding: 0; font: var(--type-body); }
-.cmp-send { position: absolute; right: var(--space-3); bottom: var(--space-3); background: var(--color-accent); color: var(--color-text-on-accent); }
-.cmp-send:hover:not(:disabled) { background: var(--color-accent-hover); color: var(--color-text-on-accent); }
 
 /* переписка */
 .thread2 { display: grid; gap: var(--space-6); padding: var(--space-14) 0 var(--space-6); }
-.msg-user { justify-self: end; max-width: 80%; padding: var(--space-3) var(--space-4); background: var(--msg-user-bg); border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs) var(--radius-lg); font: var(--type-body); }
+.msg-user { justify-self: end; max-width: 80%; }
 .msg-ai { display: grid; gap: var(--space-4); }
 .msg-ai .aitext { font: var(--type-body); line-height: var(--lh-relaxed); }
 .msg-ai .state { align-items: center; flex-wrap: wrap; }
@@ -53,7 +51,6 @@
 
 /* каталог тем */
 .browse { width: min(var(--container-md), 100%); box-sizing: border-box; margin: 0 auto; padding: var(--space-14) var(--space-6) var(--space-6); display: grid; gap: var(--space-4); align-content: start; }
-.msg-user { scroll-margin-top: var(--space-6); }
 .aitext svg { display: inline-block; }
 
 /* вузька панель-«рейка» */
@@ -66,7 +63,6 @@
 .disclaimer { text-align: center; font: var(--type-caption); color: var(--color-text-subtle); }
 .chat-dock { display: grid; gap: var(--space-2); }
 .msg-ai .aitext { font: var(--type-body-lg); line-height: var(--lh-relaxed); }
-.msg-user { border-radius: var(--radius-xl); font: var(--type-body-lg); }
 .cmp + .disclaimer { margin-top: var(--space-2); }
 .chat-scroll > .chat-dock { background: linear-gradient(to top, var(--panel-bg) 75%, transparent); padding-top: var(--space-6); }
 
@@ -118,7 +114,6 @@
 /* поле запиту з панеллю інструментів — як у референсі */
 .cmp { padding: var(--space-4) var(--space-4) var(--space-3); border-radius: var(--radius-xl); }
 .cmp textarea { min-height: var(--space-12); }
-.cmp-send { position: static; }
 .cmp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
 .home-logo { display: grid; place-items: center; --logo-fill: var(--color-text-subtle); }
 .home h1 { font-weight: var(--fw-regular); }

@@ -1,4 +1,5 @@
 import { ChatSidebar } from "@scm/platform/components/ChatSidebar"
+import { Composer } from "@scm/platform/components/Composer"
 import { Logo } from "../components/Logo"
 import { Segmented } from "../components/Segmented"
 import { Checkbox } from "../components/Checkbox"
@@ -143,7 +144,18 @@ export default function Search() {
   const aiCan = perms.has("ai")
 
   const composer = (
-    <div className="cmp">
+    <Composer
+      end={
+        <Button
+          disabled={!perms.has("script") || scriptIds.length === 0}
+          onClick={() => setView("scripts")}
+        >
+          <Icon n="spark" s={14} />
+          Згенерувати сценарій
+        </Button>
+      }
+      send={{ label: "Шукати", disabled: busy || !input.trim(), onClick: () => send(input) }}
+    >
       <textarea
         ref={taRef}
         value={input}
@@ -157,25 +169,7 @@ export default function Search() {
           }
         }}
       />
-      <div className="cmp-bar">
-        <span className="grow" />
-        <Button
-          disabled={!perms.has("script") || scriptIds.length === 0}
-          onClick={() => setView("scripts")}
-        >
-          <Icon n="spark" s={14} />
-          Згенерувати сценарій
-        </Button>
-        <IconButton
-          className="cmp-send"
-          aria-label="Шукати"
-          disabled={busy || !input.trim()}
-          onClick={() => send(input)}
-        >
-          <Icon n="send" s={18} />
-        </IconButton>
-      </div>
-    </div>
+    </Composer>
   )
 
   const renderHit = (m: Msg, h: { fid: string; score: number }) => {
@@ -283,7 +277,7 @@ export default function Search() {
           return (
             <div
               key={m.id}
-              className="msg-user"
+              className="bubble msg-user"
               ref={m.id === lastUserId ? userRef : undefined}
             >
               {m.text}
