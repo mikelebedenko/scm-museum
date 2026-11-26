@@ -8,6 +8,11 @@ import { LinkButton } from "../components/LinkButton"
 import { Segmented } from "../components/Segmented"
 import { Tabs } from "../components/Tabs"
 import { useState } from "react"
+import { Composer, ComposerCount, UserBubble } from "@scm/platform/components/Composer"
+import { Dots, Skeleton, Spinner } from "@scm/platform/components/Feedback"
+import { Input, Select, Textarea } from "@scm/platform/components/Field"
+import { FileTag, MidName } from "@scm/platform/components/FileTag"
+import { ErrorNote, Switch, Empty, toast, toastError } from "../ui"
 // Живий довідник токенів: відкривається за адресою #/tokens
 const colors = {
   Поверхні: [
@@ -87,6 +92,7 @@ const h = { font: "var(--type-h3)", margin: "var(--space-8) 0 var(--space-3)" }
 export default function Tokens() {
   const [seg, setSeg] = useState("all")
   const [tab, setTab] = useState("a")
+  const [sw, setSw] = useState(false)
   const [chk, setChk] = useState(true)
   const [flt, setFlt] = useState(false)
   return (
@@ -290,6 +296,61 @@ export default function Tokens() {
           <Segmented value={seg} onChange={setSeg} options={[{ value: "all", label: "Усі" }, { value: "video", label: "Відео" }, { value: "audio", label: "Аудіо" }]} />
           <code style={{ font: "var(--type-caption)", width: 120 }}>Tabs</code>
           <Tabs value={tab} onChange={setTab} options={[{ value: "a", label: "Транскрипція" }, { value: "b", label: "Метадані" }]} />
+        </div>
+      </div>
+
+      <h2 style={h}>Поля, чат, стани</h2>
+      <div style={{ display: "grid", gap: "var(--space-4)" }}>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Input / Select</code>
+          <div style={{ width: 220 }}><Input placeholder="Звичайне" /></div>
+          <div style={{ width: 220 }}><Input invalid defaultValue="З помилкою" /></div>
+          <div style={{ width: 180 }}><Select><option>Варіант</option></Select></div>
+          <div style={{ width: 180 }}><Select invalid><option>З помилкою</option></Select></div>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Textarea</code>
+          <div style={{ width: 280 }}><Textarea rows={2} placeholder="Звичайне" /></div>
+          <div style={{ width: 280 }}><Textarea rows={2} invalid defaultValue="З помилкою" /></div>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Composer</code>
+          <div style={{ width: 420 }}>
+            <Composer send={{ label: "Надіслати", onClick: () => toast("Надіслано") }}>
+              <textarea rows={2} placeholder="Запитайте…" />
+            </Composer>
+          </div>
+          <div style={{ width: 420 }}>
+            <Composer invalid end={<ComposerCount over>Забагато символів: 4 100 / 4 000</ComposerCount>} send={{ label: "Надіслати", disabled: true, onClick: () => {} }}>
+              <textarea rows={2} defaultValue="Помилка або перевищення ліміту" />
+            </Composer>
+          </div>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>UserBubble</code>
+          <UserBubble>Запит користувача</UserBubble>
+          <UserBubble failed>Не надіслано</UserBubble>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Dots / Spinner / Skeleton</code>
+          <Dots inline /> <Spinner />
+          <Skeleton style={{ width: 160 }} />
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>FileTag / MidName</code>
+          <FileTag name="звіт.pdf" /> <FileTag name="інтерв'ю.docx" />
+          <div style={{ width: 200 }}><MidName name="дуже-довга-назва-файлу-інтерв'ю-2022.pdf" /></div>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>ErrorNote / Toast</code>
+          <div style={{ width: 360 }}><ErrorNote title="Не вдалося завантажити" detail="Сервіс недоступний. Зверніться до адміністратора системи." actionLabel="Повторити" onAction={() => {}} /></div>
+          <Button onClick={() => toast("Збережено")}>toast</Button>
+          <Button onClick={() => toastError("Не вдалося видалити чат", "Сервіс недоступний.")}>toastError</Button>
+        </div>
+        <div style={{ ...box, display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
+          <code style={{ font: "var(--type-caption)", width: 120 }}>Switch / Empty</code>
+          <Switch on={sw} onChange={setSw} label="Перемикач" />
+          <Empty icon="search" title="Порожньо">Нічого не знайдено</Empty>
         </div>
       </div>
     </div>
