@@ -1,3 +1,4 @@
+import { Composer } from "@scm/platform/components/Composer"
 import { useState } from "react"
 import { Button } from "../components/Button"
 import { Checkbox } from "../components/Checkbox"
@@ -155,8 +156,9 @@ export function ScriptsPage(p: Props) {
       <div className="sc-page">
         <h1 className="sc-h1">Сценарії</h1>
 
-        <div className="cmp sc-cmp">
-          {sourcesCount > 0 && (
+        <Composer
+          context={
+            sourcesCount > 0 && (
             <div className="sc-sources-row">
               {p.storySel.slice(0, 6).map((id) => (
                 <span key={id} className="sc-src">
@@ -183,7 +185,25 @@ export function ScriptsPage(p: Props) {
                 <span className="sc-src is-more">+{sourcesCount - 6} ще</span>
               )}
             </div>
-          )}
+            )
+          }
+          start={
+            <Button size="sm" onClick={() => setPicker(true)}>
+              <Icon n="plus" s={14} />
+              Джерела{sourcesCount > 0 ? ` · ${sourcesCount}` : ""}
+            </Button>
+          }
+          action={
+            <Button
+              variant="primary"
+              disabled={!hasSources || !p.canScript || busy}
+              onClick={generate}
+            >
+              <Icon n="spark" s={14} />
+              {busy ? "Генерація…" : "Згенерувати"}
+            </Button>
+          }
+        >
           <textarea
             rows={3}
             value={prompt}
@@ -193,22 +213,7 @@ export function ScriptsPage(p: Props) {
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) generate()
             }}
           />
-          <div className="cmp-bar">
-            <Button size="sm" onClick={() => setPicker(true)}>
-              <Icon n="plus" s={14} />
-              Джерела{sourcesCount > 0 ? ` · ${sourcesCount}` : ""}
-            </Button>
-            <span className="grow" />
-            <Button
-              variant="primary"
-              disabled={!hasSources || !p.canScript || busy}
-              onClick={generate}
-            >
-              <Icon n="spark" s={14} />
-              {busy ? "Генерація…" : "Згенерувати"}
-            </Button>
-          </div>
-        </div>
+        </Composer>
 
         {!p.canScript && (
           <p className="locknote">

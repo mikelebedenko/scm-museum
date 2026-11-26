@@ -21,9 +21,6 @@
 .home h1 { font: var(--type-display); text-align: center; }
 
 /* поле запиту */
-.cmp { position: relative; background: var(--composer-bg); border: var(--border-width) solid var(--color-border-strong); border-radius: var(--composer-radius); padding: var(--space-4) var(--space-14) var(--space-4) var(--composer-padding); transition: var(--duration-base); }
-.cmp:focus-within { border-color: var(--color-accent); }
-.cmp textarea { display: block; width: 100%; min-height: var(--space-12); box-sizing: border-box; resize: none; border: 0; background: none; padding: 0; font: var(--type-body); }
 
 /* переписка */
 .thread2 { display: grid; gap: var(--space-6); padding: var(--space-14) 0 var(--space-6); }
@@ -49,11 +46,8 @@
 .side.is-rail .lbl, .side.is-rail .side-nav small { display: none; }
 
 /* поле запиту — «таблетка», підпис під ним */
-.cmp textarea { min-height: var(--space-6); line-height: var(--lh-normal); }
-.cmp { padding-top: var(--space-4); padding-bottom: var(--space-4); }
 .chat-dock { display: grid; gap: var(--space-2); }
 .msg-ai .aitext { font: var(--type-body-lg); line-height: var(--lh-relaxed); }
-.cmp + .disclaimer { margin-top: var(--space-2); }
 .chat-scroll > .chat-dock { background: linear-gradient(to top, var(--panel-bg) 75%, transparent); padding-top: var(--space-6); }
 
 /* розгорнута панель — картка з заголовком, як «Джерела» в референсі */
@@ -96,9 +90,6 @@
 .topic-list button.on { color: var(--color-accent); background: var(--color-accent-subtle); }
 
 /* поле запиту з панеллю інструментів — як у референсі */
-.cmp { padding: var(--space-4) var(--space-4) var(--space-3); border-radius: var(--radius-xl); }
-.cmp textarea { min-height: var(--space-12); }
-.cmp-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
 .home-logo { display: grid; place-items: center; --logo-fill: var(--color-text-subtle); }
 .home h1 { font-weight: var(--fw-regular); }
 .home .sugs2 { margin-inline: calc(-1 * var(--space-10)); gap: var(--space-2); }
@@ -381,9 +372,6 @@
 .sc-page { width: min(var(--container-chat), 100%); box-sizing: border-box; margin: 0 auto; padding: var(--space-10) var(--space-5) var(--space-8); display: grid; gap: var(--space-4); align-content: start; }
 .sc-h1 { font: var(--type-h1); color: var(--color-text); }
 .sc-sub { margin-top: var(--space-4); font: var(--type-label); color: var(--color-text-subtle); }
-.sc-cmp { display: grid; gap: var(--space-3); }
-.sc-cmp textarea { resize: none; }
-.sc-cmp .cmp-bar { margin-top: 0; }
 .sc-sources-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .sc-src { display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%; height: var(--control-sm); padding: 0 var(--space-2) 0 var(--space-3); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text); font-size: var(--fs-sm); }
 .sc-src > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -407,7 +395,6 @@
 .sc-pick li:hover { background: var(--color-surface-3); }
 .sc-pick .cb { flex: 1; min-width: 0; align-items: center; gap: var(--space-3); }
 .sc-pick-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; color: var(--color-text); font-size: var(--fs-base); }
-.sc-cmp { padding: var(--space-4); }
 
 /* сторінка «Сценарії»: тексти (заголовки, підписи, текст у полі й у рядках) — на одній осі, 16px від краю контейнерів */
 .sc-page > .sc-h1, .sc-page > .sc-sub, .sc-page > .sc-meta, .sc-page > .locknote { padding-inline: var(--space-4); }
