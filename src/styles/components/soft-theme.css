@@ -2,11 +2,6 @@
 .brand b { font-size: var(--fs-xl); font-weight: var(--fw-semibold); letter-spacing: 0; } .brand small { text-transform: none; letter-spacing: 0; font-size: var(--fs-sm); }
 .eyebrow { letter-spacing: var(--ls-wider); text-transform: uppercase; font-size: var(--fs-xs); }
 .ws { gap: var(--space-4); padding: 0 var(--space-4) var(--space-4); }
-.chatcol, .rescol { border: 0; border-radius: var(--panel-radius); overflow: visible; background: var(--panel-bg); }
-.rescol { background: var(--color-surface-1); }
-.colhead { border-bottom: var(--border-width) solid var(--color-border); }
-.composer { background: transparent; border-top: 0; padding: var(--space-3) var(--space-4) var(--space-4); }
-.composer textarea { border-radius: var(--radius-lg); background: var(--color-surface-2); padding: var(--space-3) var(--space-4); }
 .btn { font-weight: var(--btn-font-weight); } .btn.sm { padding: 0 var(--btn-padding-x); }
 .frag { border-radius: var(--card-radius); overflow: hidden; background: var(--card-bg); border-color: var(--card-border); margin-bottom: var(--space-3); }
 .frag:hover { border-color: var(--card-border-hover); }

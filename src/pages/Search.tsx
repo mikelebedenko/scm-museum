@@ -1,5 +1,6 @@
 import { ChatSidebar } from "@scm/platform/components/ChatSidebar"
 import { Composer } from "@scm/platform/components/Composer"
+import { Dots } from "@scm/platform/components/Feedback"
 import { Logo } from "../components/Logo"
 import { Segmented } from "../components/Segmented"
 import { Checkbox } from "../components/Checkbox"
@@ -346,11 +347,7 @@ export default function Search() {
       })}
       {busy && (
         <div className="state">
-          <span className="dots">
-            <i />
-            <i />
-            <i />
-          </span>{" "}
+          <Dots inline />{" "}
           Шукаю в архіві…
         </div>
       )}

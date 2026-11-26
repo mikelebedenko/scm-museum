@@ -20,4 +20,3 @@
 .filters.flat { padding: 0 0 var(--space-3); border: 0; }
 .confirm { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-md); color: var(--color-text-muted); } .confirm span { flex: 1; }
 .tlist .trow { background: var(--color-surface-1); border-color: transparent; border-radius: var(--radius-lg); }
-.crow { justify-content: flex-end; }

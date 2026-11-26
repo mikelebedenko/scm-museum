@@ -1,6 +1,5 @@
 /* ---------- картка фрагмента: групи за рівнями важливості ---------- */
 .frag { grid-template-columns: 176px minmax(0, 1fr); background: var(--color-surface-2); }
-.fr-media { position: relative; padding: var(--space-4) 0 var(--space-4) var(--space-4); }
 .fr-media .thumb { width: 100%; height: 120px; margin: 0; }
 .thumb .pos { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--color-border-stronger); }
 .thumb .pos i { position: absolute; top: 0; bottom: 0; background: var(--color-accent); border-radius: 0; }
@@ -8,20 +7,11 @@
 .cb.on-thumb { position: absolute; top: var(--space-6); left: var(--space-6); z-index: var(--z-raised); }
 .cb.on-thumb span { background: var(--color-overlay); border-color: var(--color-text-muted); }
 .cb.on-thumb input:checked + span { background: var(--color-accent); border-color: var(--color-accent); }
-.fr-body { padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4); display: grid; gap: var(--space-2); min-width: 0; align-content: start; }
-.fr-head { display: flex; align-items: flex-start; gap: var(--space-3); }
-.fr-id { flex: 1; min-width: 0; }
-.fr-body h3 { font: var(--type-h4); }
 .story-label { display: block; margin-bottom: var(--space-1); color: var(--color-accent); font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: var(--ls-wider); }
-.source-line { margin-top: var(--space-1); color: var(--color-text-subtle); font-size: var(--fs-sm); }
 .source-line .hlink { color: var(--color-text-muted); font-weight: var(--fw-medium); }
-.fr-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin-top: var(--space-1); font-size: var(--fs-sm); color: var(--color-text-muted); }
-.fr-meta .tcr { font: var(--fw-medium) var(--fs-sm) var(--font-mono); color: var(--color-text); background: var(--color-surface-3); padding: var(--space-half) var(--space-2); border-radius: var(--radius-pill); }
 .fr-meta .score { color: var(--color-accent); font-weight: var(--fw-semibold); }
 .fr-body .desc { font-size: var(--fs-base); font-weight: var(--fw-medium); line-height: 1.5; }
 .fr-body .quote { font-size: var(--fs-md); }
-.fr-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; padding-top: var(--space-3); margin-top: var(--space-half); border-top: var(--border-width) solid var(--color-border); }
-.fr-rate { display: inline-flex; gap: var(--space-1); }
 .fr-rate .rt { border-color: transparent; color: var(--color-text-muted); } .fr-rate .rt:hover { background: var(--color-surface-3); color: var(--color-text); }
 .fr-rate .rt.on { background: var(--color-accent-subtle); color: var(--color-accent); border-color: var(--color-accent-border); }
 .fr-rate .rt.on.bad { background: var(--color-danger-bg); color: var(--color-danger); border-color: var(--color-danger-border); }

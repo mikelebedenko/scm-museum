@@ -1,7 +1,4 @@
 /* ---------- лічильник вибраних фрагментів ---------- */
-.restitle { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
-.selpill { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-sm); padding: 0 var(--space-1) 0 var(--space-3); border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-text-on-accent); font: var(--fw-bold) var(--fs-sm) var(--font-sans); animation: up var(--duration-base); }
-.selpill i { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--color-text-on-accent); }
 .selpill button { display: grid; place-items: center; width: 20px; height: 20px; border-radius: var(--radius-full); background: var(--color-overlay-hover); color: var(--color-text-on-accent); } .selpill button:hover { background: var(--color-overlay-strong); }
 .restitle .lnk { font-weight: var(--fw-semibold); }
 
