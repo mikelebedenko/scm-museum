@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@scm/platform':
-        specifier: git+https://github.com/mikelebedenko/scm-platform.git#v0.17.7
-        version: git+https://github.com/mikelebedenko/scm-platform.git#172be6dc12ef6d7534ee9332165b78ab6e6f95e6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: git+https://github.com/mikelebedenko/scm-platform.git#v0.17.9
+        version: git+https://github.com/mikelebedenko/scm-platform.git#46bcbb2286b888ee522c1fad6b5556bc60322d6d(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
         specifier: ^19.0.0
         version: 19.2.4
@@ -224,8 +224,8 @@ packages:
   '@rolldown/pluginutils@1.0.0-rc.7':
     resolution: {integrity: sha512-qujRfC8sFVInYSPPMLQByRh7zhwkGFS4+tyMQ83srV1qrxL4g8E2tyxVVyxd0+8QeBM1mIk9KbWxkegRr76XzA==}
 
-  '@scm/platform@git+https://github.com/mikelebedenko/scm-platform.git#172be6dc12ef6d7534ee9332165b78ab6e6f95e6':
-    resolution: {commit: 172be6dc12ef6d7534ee9332165b78ab6e6f95e6, repo: https://github.com/mikelebedenko/scm-platform.git, type: git}
+  '@scm/platform@git+https://github.com/mikelebedenko/scm-platform.git#46bcbb2286b888ee522c1fad6b5556bc60322d6d':
+    resolution: {commit: 46bcbb2286b888ee522c1fad6b5556bc60322d6d, repo: https://github.com/mikelebedenko/scm-platform.git, type: git}
     version: 0.1.0
     peerDependencies:
       react: ^19.0.0
@@ -689,7 +689,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.0-rc.7': {}
 
-  '@scm/platform@git+https://github.com/mikelebedenko/scm-platform.git#172be6dc12ef6d7534ee9332165b78ab6e6f95e6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@scm/platform@git+https://github.com/mikelebedenko/scm-platform.git#46bcbb2286b888ee522c1fad6b5556bc60322d6d(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)

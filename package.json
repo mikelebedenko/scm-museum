@@ -15,7 +15,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@scm/platform": "git+https://github.com/mikelebedenko/scm-platform.git#v0.17.7"
+    "@scm/platform": "git+https://github.com/mikelebedenko/scm-platform.git#v0.17.9"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
