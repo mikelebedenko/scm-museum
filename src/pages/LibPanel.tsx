@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "../components/Button"
 import { Segmented } from "../components/Segmented"
 import { FilterButton } from "../components/FilterButton"
@@ -72,6 +72,9 @@ export function LibPanel(p: Props) {
   const [nav, setNav] = useState<Nav>({ v: "menu" })
   const [type, setType] = useState<TypeFilter>("all")
   const [sheet, setSheet] = useState(false)
+  /* прикріплені аудіофайли до історій (лише в межах сесії, без збереження) */
+  const [attached, setAttached] = useState<Record<string, { name: string; size: number; url: string }[]>>({})
+  const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (p.playReq)
@@ -318,9 +321,9 @@ export function LibPanel(p: Props) {
     onOpen: () => void
   }) => {
     const kind: "video" | "audio" | "text" = asText ? "text" : m.kind
-    const heading = asText ? "Текст і транскрипція" : m.title
+    const heading = asText ? "Інтерв'ю або сторонній матеріал" : m.title
     const desc = asText
-      ? "Повний текст розмови з поділом за мовцями"
+      ? "Текст розмови або матеріал від третьої сторони"
       : `${m.speaker} · ${m.recorded}`
     return (
       <article className={`lib-story is-${kind} ${kind === "text" ? "is-mat-text" : ""} ${current ? "selected" : ""}`}>
@@ -521,7 +524,15 @@ export function LibPanel(p: Props) {
         {(() => {
           const extra = media.slice(1)
           const showTr = st.hasText && cover.kind !== "text"
-          if (extra.length === 0 && !showTr) return null
+          const files = attached[nav.id] ?? []
+          const addFile = (f?: File) => {
+            if (!f) return
+            setAttached((a) => ({ ...a, [nav.id]: [...(a[nav.id] ?? []), { name: f.name, size: f.size, url: URL.createObjectURL(f) }] }))
+          }
+          const removeFile = (url: string) => {
+            URL.revokeObjectURL(url)
+            setAttached((a) => ({ ...a, [nav.id]: (a[nav.id] ?? []).filter((x) => x.url !== url) }))
+          }
           return (
             <>
               <hr className="lib-sep" />
@@ -533,7 +544,34 @@ export function LibPanel(p: Props) {
                 {showTr && (
                   <MatCard m={media[0]} asText onOpen={() => play(media[0].id, true)} />
                 )}
+                {files.map((f) => (
+                  <div key={f.url} className="lib-attach">
+                    <div className="lib-attach-head">
+                      <Icon n="audio" s={16} />
+                      <span className="lib-attach-name">{f.name}</span>
+                      <small>{(f.size / 1048576).toFixed(1)} МБ</small>
+                      <IconButton aria-label="Прибрати файл" onClick={() => removeFile(f.url)}>
+                        <Icon n="close" s={16} />
+                      </IconButton>
+                    </div>
+                    <audio controls src={f.url} />
+                  </div>
+                ))}
               </div>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="audio/*"
+                hidden
+                onChange={(e) => {
+                  addFile(e.target.files?.[0])
+                  e.target.value = ""
+                }}
+              />
+              <Button className="lib-attach-btn" onClick={() => fileRef.current?.click()}>
+                <Icon n="plus" s={14} />
+                Прикріпити аудіофайл
+              </Button>
             </>
           )
         })()}

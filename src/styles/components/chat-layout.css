@@ -427,3 +427,11 @@
 /* шапка подсписка библиотеки: штрих стрелки «назад» на одной линии с заголовком и иконками пунктов (636px) */
 .lib-crumb { padding-left: 0; }
 .lib-crumb > button:first-child { margin-left: calc(var(--space-1) * 0.5); }
+
+/* прикріплені аудіофайли в «Додаткових матеріалах» */
+.lib-attach { display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); background: var(--color-surface-2); }
+.lib-attach-head { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); }
+.lib-attach-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--color-text); font-size: var(--fs-md); }
+.lib-attach-head small { color: var(--color-text-subtle); font-size: var(--fs-xs); }
+.lib-attach audio { width: 100%; }
+.lib-attach-btn { margin-top: var(--space-3); width: 100%; }

@@ -117,7 +117,7 @@ export default function Media({
   const textual = textOnly || m.kind === "text"
   const eyebrow =
     textual && m.kind !== "text"
-      ? "Текст і транскрипція"
+      ? "Інтерв'ю або сторонній матеріал"
       : storyMedia(m.storyId).length > 1
         ? m.title
         : null
