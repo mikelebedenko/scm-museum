@@ -428,7 +428,6 @@ export function LibPanel(p: Props) {
     const cover = storyCover(nav.id)
     const media = storyMedia(nav.id)
     const fav = data.favs.includes(nav.id)
-    const sel = p.storySel.includes(nav.id)
     const genre = genreOf(st.tags)
     title = "Історія"
     body = (
@@ -494,13 +493,9 @@ export function LibPanel(p: Props) {
           </p>
         </div>
         <div className="lib-actions">
-          <Button variant={fav ? "primary" : "default"} onClick={() => act.toggleFav(nav.id)}>
+          <Button onClick={() => act.toggleFav(nav.id)}>
             <Icon n="star" s={14} fill={fav} />
             {fav ? "У вибраному" : "Додати до вибраного"}
-          </Button>
-          <Button variant={sel ? "primary" : "default"} onClick={() => p.onToggleStory(nav.id)}>
-            <Icon n={sel ? "check" : "plus"} s={14} />
-            {sel ? "У сценарії" : "Додати до сценарію"}
           </Button>
         </div>
         <p className="lib-hint">{st.summary}</p>
