@@ -70,7 +70,6 @@ export function LibPanel(p: Props) {
   const act = useActions()
   const status = state.settings.storyStatus
   const [nav, setNav] = useState<Nav>({ v: "menu" })
-  const [menuOpen, setMenuOpen] = useState(true)
   const [type, setType] = useState<TypeFilter>("all")
   const [sheet, setSheet] = useState(false)
 
@@ -675,26 +674,15 @@ export function LibPanel(p: Props) {
             {nav.v === "menu" ? (
               <>
                 <div className="lib-head">
-                  <button
-                    className="acc-head side-head lib-title-btn"
-                    aria-expanded={menuOpen}
-                    onClick={() => setMenuOpen(!menuOpen)}
-                  >
-                    <span>Бібліотека</span>
-                    <span className={`acc-chev ${menuOpen ? "is-open" : ""}`}>
-                      <Icon n="down" s={22} />
-                    </span>
-                  </button>
+                  <h2 className="side-head lib-title">Бібліотека</h2>
                   {collapseBtn}
                 </div>
-                {menuOpen && (
-                  <nav className="side-nav lib-menu lib-menu-main">
+                <nav className="side-nav lib-menu lib-menu-main">
                     <NavItem icon="grid" label="Усі історії" count={allIds.length} to={{ v: "all" }} />
                     <hr className="lib-sep" />
                       <NavItem icon="star" label="Вибрані історії" count={favIds.length} to={{ v: "favs" }} />
                     <NavItem icon="tag" label="Список тегів" to={{ v: "tags" }} />
-                    </nav>
-                )}
+                </nav>
               </>
             ) : (
               <>
