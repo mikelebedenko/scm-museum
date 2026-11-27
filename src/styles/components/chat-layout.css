@@ -419,3 +419,7 @@
 /* єдиний активний стан у лівій панелі: як у вибраного чату */
 .side-sec-row.on, .side-nav button.is-section.on { background: var(--color-accent-subtle); }
 .side-sec-row.on .side-sec-title { color: var(--color-text); }
+
+/* свернутая панель: иконки навигации строго по центру рейла */
+.side.is-rail .side-nav, .side.is-rail .side-scripts { justify-items: center; justify-content: center; }
+.side.is-rail .side-nav button, .side.is-rail .side-sec-row, .side.is-rail .side-sec-title { justify-content: center; padding-left: 0; padding-right: 0; }
