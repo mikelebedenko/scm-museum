@@ -15,8 +15,6 @@
 
 /* компактний плеєр у правій панелі */
 .mpanel.inline .tcbig { display: none; }
-.mpanel.inline .stream { padding: var(--space-1); }
-.mpanel.inline .stream-text { display: none; }
 .mpanel.inline .eq { inset: 36% 12% 30%; opacity: .7; }
 .mpanel.inline .cue { left: var(--space-3); right: var(--space-3); bottom: var(--space-2); padding: var(--space-1) var(--space-3); font-size: var(--fs-sm); line-height: var(--lh-snug); border-radius: var(--radius-md); }
 .mpanel.inline .pbar { padding: var(--space-3); gap: var(--space-2); }
